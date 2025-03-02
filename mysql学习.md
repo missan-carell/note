@@ -13,6 +13,7 @@
 ​                               
 
  ![image-20250115175018178](C:\Users\carell\Desktop\mysql学习.assets\image-20250115175018178.png)
+ ![image-20250115175018178](mysql学习.assets/image-20250115175018178.png)
 
 
 
