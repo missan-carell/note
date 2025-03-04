@@ -12,11 +12,11 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 ​                       
 
- ![image-20250115175018178](mysql.assets/image-20250115175018178.png)
+ ![image-20250115175018178](.assets/image-20250115175018178.png)
 
 
 
-<img src="mysql.assets/image-20250115175027925.png" alt="image-20250115175027925" style="zoom: 67%;align=left" />
+<img src=".assets/image-20250115175027925.png" alt="image-20250115175027925" style="zoom: 67%;align=left" />
 
 #### 1.1.1 数据库的结构：
 
@@ -26,17 +26,17 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 2. 数据库的三层结构图解：
 
-   <img src="mysql.assets/image-20250117200552362.png" alt="image-20250117200552362" style="zoom: 50%;" />
+   <img src=".assets/image-20250117200552362.png" alt="image-20250117200552362" style="zoom: 50%;" />
 
 3. 数据库结构对应的具体位置：
 
 ​	1） DBMS 在监听3306端口，在cmd输入netstat -anb，可找到对应内容
 
-![image-20250117201110137](mysql.assets/image-20250117201110137.png)
+![image-20250117201110137](.assets/image-20250117201110137.png)
 
  	2）数据库db 在安装mysql的文件位置中 --> data , 即可看到：
 
-<img src="mysql.assets/image-20250117201336738.png" alt="image-20250117201336738" style="zoom:50%;" />
+<img src=".assets/image-20250117201336738.png" alt="image-20250117201336738" style="zoom:50%;" />
 
 ​	3） 表的位置：接上一部，点开其中一个数据库，如db01，即可看到之前创建的表的位置：
 
@@ -46,14 +46,14 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 （注：并不是所有数据库的表都是文件）
 
-<img src="mysql.assets/image-20250117201700513.png" alt="image-20250117201700513" style="zoom:50%;" />
+<img src=".assets/image-20250117201700513.png" alt="image-20250117201700513" style="zoom:50%;" />
 
 #### 1.1.2 数据在数据库中的存储方式：
 
 1. 数据通过**表**存储在数据库中
 2. 在表中，竖过来的叫一列（column），横过来的叫一行（row）
 
-<img src="mysql.assets/image-20250117213314593.png" alt="image-20250117213314593" style="zoom: 67%;" />
+<img src=".assets/image-20250117213314593.png" alt="image-20250117213314593" style="zoom: 67%;" />
 
 3. 表的一行称之为**一条记录** --> 在java中，一条记录往往用一个对象来表示
 
@@ -90,7 +90,7 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 2. 编辑Path，新建，拷贝安装好的mysql 的bin目录的路径： 
 
-   ![image-20250115215855381](mysql.assets/image-20250115215855381.png)
+   ![image-20250115215855381](.assets/image-20250115215855381.png)
 
 3. （ps：若以前装过mysql，此处可能会识别成之前mysql的bin目录，把当前新目录上移，移到最上面即可）
 
@@ -100,7 +100,7 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 ![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 在自己安装的mysql目录（如D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64）下创建该文件 my.ini
 
-![*](mysql.assets\clip_image001.gif) 开my.ini ，复制如下内容：
+![*](.assets\clip_image001.gif) 开my.ini ，复制如下内容：
 
 ```
 [ client ]   
@@ -135,17 +135,17 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 ![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 数据库初始化成功后，mysql目录会出现一个data目录，里面有相应的内容（注意初始化时一定要退回到你安装mysql的盘：如D盘）
 
- ![image-20250115215914861](mysql.assets/image-20250115215914861.png)
+ ![image-20250115215914861](.assets/image-20250115215914861.png)
 
 3. 启动mysql ：net start mysql
 
- ![image-20250115215929098](mysql.assets/image-20250115215929098.png)
+ ![image-20250115215929098](.assets/image-20250115215929098.png)
 
 看到如上字样即为成功
 
 在任务管理器-服务中也可以找到mysql服务：
 
- ![image-20250115215937898](mysql.assets/image-20250115215937898.png)
+ ![image-20250115215937898](.assets/image-20250115215937898.png)
 
 ![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 终止mysql ：`net stop mysql`
 
@@ -159,11 +159,11 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 **解读**：这句话的意思是：修改root用户的密码为haohao123
 
-![image-20250115220011588](mysql.assets/image-20250115220011588.png)
+![image-20250115220011588](.assets/image-20250115220011588.png)
 
  ![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 这样即为成功
 
-![image-20250115220017076](mysql.assets/image-20250115220017076.png)
+![image-20250115220017076](.assets/image-20250115220017076.png)
 
  
 
@@ -204,7 +204,7 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 1. 在左上角这里选择新建查询编辑器，或者在‘文件’ 里新建：
 
-<img src="mysql.assets/image-20250119190422881.png" alt="image-20250119190422881" style="zoom: 67%;" />
+<img src=".assets/image-20250119190422881.png" alt="image-20250119190422881" style="zoom: 67%;" />
 
 2. 创建完成后，选择 ‘ 文件 ’ --> ‘ 另存为 ’ ，即可保存查询编辑器内容，可以选择保存在**桌面**以便后续使用
 3. 打开查询的方式：可以在桌面上把保存好的查询图标拖拽到sqlyog里，或者在打开方式里选择navicat（sqlyog没法通过打开方式打开）
@@ -219,7 +219,7 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 在使用语句的时候注意，在界面版中，**执行命令的时候需要选中要执行的语句**，否则会报错，如图：
 
-<img src="mysql.assets/image-20250117215628395.png" alt="image-20250117215628395" style="zoom: 67%;" />
+<img src=".assets/image-20250117215628395.png" alt="image-20250117215628395" style="zoom: 67%;" />
 
 如何创建查询编辑器见：[1.5.3 sqlyog中命令行的使用：](#1.5.3 sqlyog中命令行的使用：)
 
@@ -233,7 +233,7 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 2. 查找数据：`select * from 表名称 where name = ‘查询内容’`。这里注意，如果查询表在不同的数据库，但同名的情况下，可以查看上方自己现在打开的是哪个数据库，==查询只会查询当前数据库的表的内容==。
 
-   <img src="mysql.assets/image-20250119214115049.png" alt="image-20250119214115049" style="zoom:50%;" />-
+   <img src=".assets/image-20250119214115049.png" alt="image-20250119214115049" style="zoom:50%;" />-
 
 3. 删除数据库（**谨慎使用**) : `drop database 数据库名称;`
 
@@ -265,11 +265,11 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
    选择连接-->mysql
 
-<img src="mysql.assets/image-20250115224721663.png" alt="image-20250115224721663" style="zoom: 45%;" />
+<img src=".assets/image-20250115224721663.png" alt="image-20250115224721663" style="zoom: 45%;" />
 
 填写相关内容即可：
 
-<img src="mysql.assets/image-20250115225211505.png" alt="image-20250115225211505" style="zoom:45%;" />
+<img src=".assets/image-20250115225211505.png" alt="image-20250115225211505" style="zoom:45%;" />
 
 2. 使用navicat新建一个数据库，在数据库中创建表，并在表中存放数据
 
@@ -277,21 +277,21 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 右键-->选择新建数据库
 
-<img src="mysql.assets/image-20250115231007941.png" alt="image-20250115231007941" style="zoom:70%;" />
+<img src=".assets/image-20250115231007941.png" alt="image-20250115231007941" style="zoom:70%;" />
 
 依照下图填写新数据库的配置：
 
 
 
-<img src="mysql.assets/image-20250115231136318.png" alt="image-20250115231136318" style="zoom: 67%;" />
+<img src=".assets/image-20250115231136318.png" alt="image-20250115231136318" style="zoom: 67%;" />
 
 右键数据库-->打开数据库-->新建表
 
-![image-20250115231403022](mysql.assets/image-20250115231403022.png)
+![image-20250115231403022](.assets/image-20250115231403022.png)
 
 
 
-![image-20250115231429140](mysql.assets/image-20250115231429140.png)
+![image-20250115231429140](.assets/image-20250115231429140.png)
 
 ​      2）编辑表：
 
@@ -299,15 +299,15 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 注：varchar是指**字符串**，表示在后面编辑表内容的时候，该行可以填写字符串内容
 
-<img src="mysql.assets/image-20250115231715187.png" alt="image-20250115231715187" style="zoom:67%;" />
+<img src=".assets/image-20250115231715187.png" alt="image-20250115231715187" style="zoom:67%;" />
 
 选择“保存”之后，填写表名称，如“user” 。再如图打开user表，就可以编辑表的内容了
 
-![image-20250115231914343](mysql.assets/image-20250115231914343.png)
+![image-20250115231914343](.assets/image-20250115231914343.png)
 
 可以根据需要填写表的内容，按**tab或是左下角加号，新增行**
 
-![image-20250115232117769](mysql.assets/image-20250115232117769.png)
+![image-20250115232117769](.assets/image-20250115232117769.png)
 
 ---
 
@@ -321,36 +321,36 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 1. 新建一个mysql连接：
 
-<img src="mysql.assets/image-20250116214409109.png" alt="image-20250116214409109" style="zoom: 50%;" />
+<img src=".assets/image-20250116214409109.png" alt="image-20250116214409109" style="zoom: 50%;" />
 
 2. 如图填写内容：
 
-<img src="mysql.assets/image-20250116214631303.png" alt="image-20250116214631303" style="zoom: 50%;" />
+<img src=".assets/image-20250116214631303.png" alt="image-20250116214631303" style="zoom: 50%;" />
 
 3. 此处可以看到，之前在navicat上创建的表信息在这里也可以看到：
 
-   <img src="mysql.assets/image-20250116215047364.png" alt="image-20250116215047364" style="zoom: 50%;" />
+   <img src=".assets/image-20250116215047364.png" alt="image-20250116215047364" style="zoom: 50%;" />
 
    4. 右键主机创建新数据库：
 
-      <img src="mysql.assets/image-20250116220401732.png" alt="image-20250116220401732" style="zoom:50%;" />
+      <img src=".assets/image-20250116220401732.png" alt="image-20250116220401732" style="zoom:50%;" />
 
 5. 根据需要创建表：
 
-   <img src="mysql.assets/image-20250116220812094.png" alt="image-20250116220812094" style="zoom:50%;" />
+   <img src=".assets/image-20250116220812094.png" alt="image-20250116220812094" style="zoom:50%;" />
 
    6. 创建完成后，右键此处打开表（或者在命令行模式使用）
 
-      <img src="mysql.assets/image-20250116220957023.png" alt="image-20250116220957023" style="zoom:50%;" />
+      <img src=".assets/image-20250116220957023.png" alt="image-20250116220957023" style="zoom:50%;" />
 
       7. 完成信息后记得保存，如果有空白行，会无法正常保存，需要删除空白行。
 
-         <img src="mysql.assets/image-20250119212057897.png" alt="image-20250119212057897" style="zoom:50%;" />
+         <img src=".assets/image-20250119212057897.png" alt="image-20250119212057897" style="zoom:50%;" />
 
       
       8. 若创建了多余的行，可以通过表上面的垃圾桶删除：
       
-         ![image-20250119211855783](mysql.assets/image-20250119211855783.png)
+         ![image-20250119211855783](.assets/image-20250119211855783.png)
       
       9. sqlyog的优势：
       
@@ -361,11 +361,11 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 1. 单机上方的加号，选择 **新查询编辑器** 
 
-   <img src="mysql.assets/image-20250116221839596.png" alt="image-20250116221839596" style="zoom: 67%;" /> 
+   <img src=".assets/image-20250116221839596.png" alt="image-20250116221839596" style="zoom: 67%;" /> 
 
 2. 此处就可以编写mysql的语句，通过左上角的小三角执行命令：
 
-   <img src="mysql.assets/image-20250116222642930.png" alt="image-20250116222642930" style="zoom:50%;" />
+   <img src=".assets/image-20250116222642930.png" alt="image-20250116222642930" style="zoom:50%;" />
    
    ---
    
@@ -405,7 +405,7 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
      如：
 
-     <img src="mysql.assets/image-20250119222602286.png" alt="image-20250119222602286" style="zoom: 67%;" />
+     <img src=".assets/image-20250119222602286.png" alt="image-20250119222602286" style="zoom: 67%;" />
      
      当然删除该数据库时也要加反引号
 
@@ -425,7 +425,7 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
      
      ==注：==表也可以修改字符集校订规则，若不设置，默认和数据库的一致。可以在此处修改：
      
-     <img src="mysql.assets/image-20250119211017502.png" alt="image-20250119211017502" style="zoom: 67%;" />
+     <img src=".assets/image-20250119211017502.png" alt="image-20250119211017502" style="zoom: 67%;" />
      
      例：
      
@@ -437,7 +437,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
 1. 查找数据：`select * from 表名称[或其他内容] where name[或其他] = ‘查询内容’`。这里注意，如果查询表在不同的数据库，但同名的情况下，可以查看上方自己现在打开的是哪个数据库，==查询只会查询当前数据库的表的内容==。
 
-<img src="mysql.assets/image-20250119214115049.png" alt="image-20250119214115049" style="zoom:50%;" />~（在此处查看当前在哪个数据库，也可以在此处更改所处数据库）~
+<img src=".assets/image-20250119214115049.png" alt="image-20250119214115049" style="zoom:50%;" />~（在此处查看当前在哪个数据库，也可以在此处更改所处数据库）~
 
 
 
@@ -451,13 +451,13 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
 - 案例1：从表中查询名称
 
-<img src="mysql.assets/image-20250119213354796.png" alt="image-20250119213354796" style="zoom: 67%;" />
+<img src=".assets/image-20250119213354796.png" alt="image-20250119213354796" style="zoom: 67%;" />
 
 - 案例2：从列[名称]中查询列[id]内容：
 
 ​	SELECT `name` FROM users WHERE id = 1;
 
-<img src="mysql.assets/image-20250217211000165.png" alt="image-20250217211000165" style="zoom: 67%;" />
+<img src=".assets/image-20250217211000165.png" alt="image-20250217211000165" style="zoom: 67%;" />
 
 2. 查询show：
 
@@ -467,7 +467,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
 - 查询结果解释：
 
-<img src="mysql.assets/image-20250119215813659.png" alt="image-20250119215813659" style="zoom:50%;" />
+<img src=".assets/image-20250119215813659.png" alt="image-20250119215813659" style="zoom:50%;" />
 
 [查询相关指令：] **[https://blog.csdn.net/IT_Boy_/article/details/107096018]: www.example.com**
 
@@ -497,7 +497,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
    手动恢复：打开备份的文件--> 复制里面的内容，粘贴到sql的查询器里，运行即可。
 
-   <img src="mysql.assets/image-20250220182333185.png" alt="image-20250220182333185" style="zoom:50%;" />
+   <img src=".assets/image-20250220182333185.png" alt="image-20250220182333185" style="zoom:50%;" />
 
    4. 备份/恢复表：若数据库体积较大，不便于备份，可以选择备份其中的表
 
@@ -536,11 +536,11 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
    - ==注：==创建表时，要根据需保存的数据创建相应的列，并根据数据的类型定义相应的列类型，例：
 
-     ![image-20250217202833871](mysql.assets/image-20250217202833871.png)
+     ![image-20250217202833871](.assets/image-20250217202833871.png)
 
    - 表一定存在于数据库，不可以单独存在
 
-     - 在图形界面用指令创建表的时候，注意一定要选好上方的数据库名称，不要创建到其他数据库中去![image-20250217201616017](mysql.assets/image-20250217201616017.png)
+     - 在图形界面用指令创建表的时候，注意一定要选好上方的数据库名称，不要创建到其他数据库中去![image-20250217201616017](.assets/image-20250217201616017.png)
 
    - 注：表名的单词之间可以用下划线链接，如：table_01
 
@@ -553,9 +553,9 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
    见：[1.5.2 sqlyog的使用：](#1.5.2 sqlyog的使用：)或[1.4.3navicat的使用（基础）：](#1.4.3navicat的使用（基础）：)
 
-   <img src="mysql.assets/image-20250217111812215.png" alt="image-20250217111812215" style="zoom:50%;" />
+   <img src=".assets/image-20250217111812215.png" alt="image-20250217111812215" style="zoom:50%;" />
 
-   <img src="mysql.assets/image-20250217111937824.png" alt="image-20250217111937824" style="zoom: 67%;" />
+   <img src=".assets/image-20250217111937824.png" alt="image-20250217111937824" style="zoom: 67%;" />
    
    4. 修改已有表：
    
@@ -603,7 +603,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
 2. 例：
 
-   <img src="mysql.assets/image-20250217210236082.png" alt="image-20250217210236082" style="zoom: 67%;" />
+   <img src=".assets/image-20250217210236082.png" alt="image-20250217210236082" style="zoom: 67%;" />
    
    注意：
    
@@ -657,7 +657,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
 例：该语句指的是，id列的内容为整形，且具有唯一性，且会自增长
 
-![image-20250217204930131](mysql.assets/image-20250217204930131.png)
+![image-20250217204930131](.assets/image-20250217204930131.png)
 
 因此使用过后，在插入数据的时候可以不插入该行内容：
 
@@ -731,7 +731,7 @@ INTO OUTFILE 或 FOR UPDATE -- 可以放在limit后面
 
      ^这种情况，如果结果的name和English完全相同，才会去重^
 
-     <img src="mysql.assets/image-20250218171927094.png" alt="image-20250218171927094" style="zoom:60%;" />
+     <img src=".assets/image-20250218171927094.png" alt="image-20250218171927094" style="zoom:60%;" />
 
 4. `SELECT * FROM users order by xx LIMIT n;`（只查看部分， 在查阅大量数据时十分有效）
 
@@ -796,11 +796,11 @@ SELECT `name` ,( english+chinese+`name`)FROM student1
 SELECT `name` ,( english+chinese+math+10)FROM student1
 ```
 
-<img src="mysql.assets/image-20250218190021743.png" alt="image-20250218190021743" style="zoom: 67%;" />^图一^
+<img src=".assets/image-20250218190021743.png" alt="image-20250218190021743" style="zoom: 67%;" />^图一^
 
-<img src="mysql.assets/image-20250218190408681.png" alt="image-20250218190408681" style="zoom:67%;" />^图二^
+<img src=".assets/image-20250218190408681.png" alt="image-20250218190408681" style="zoom:67%;" />^图二^
 
-<img src="mysql.assets/image-20250218190813624.png" alt="image-20250218190813624" style="zoom:67%;" />^图三^
+<img src=".assets/image-20250218190813624.png" alt="image-20250218190813624" style="zoom:67%;" />^图三^
 
 2. as语句
 
@@ -815,9 +815,9 @@ SELECT `name` ,( english+chinese+math+10)AS score_name FROM student1
 SELECT `name` AS '名字' ,( english+chinese+math)FROM student1
 ```
 
-<img src="mysql.assets/image-20250218191638364.png" alt="image-20250218191638364" style="zoom:80%;" />^图一^
+<img src=".assets/image-20250218191638364.png" alt="image-20250218191638364" style="zoom:80%;" />^图一^
 
-<img src="mysql.assets/image-20250218191933099.png" alt="image-20250218191933099" style="zoom:80%;" />^图二^
+<img src=".assets/image-20250218191933099.png" alt="image-20250218191933099" style="zoom:80%;" />^图二^
 
 
 
@@ -829,7 +829,7 @@ SELECT `name` AS '名字' ,( english+chinese+math)FROM student1
 
 - where子句中常用运算符：
 
-<img src="mysql.assets/image-20250218192815548.png" alt="image-20250218192815548" style="zoom: 67%;" />
+<img src=".assets/image-20250218192815548.png" alt="image-20250218192815548" style="zoom: 67%;" />
 
 ```sql
 # = ，>使用 
@@ -977,7 +977,7 @@ SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
    	INNER JOIN score ON id = score_id
    ```
 
-   结果：<img src="mysql.assets/image-20250224155032145.png" alt="image-20250224155032145" style="zoom:67%;" />
+   结果：<img src=".assets/image-20250224155032145.png" alt="image-20250224155032145" style="zoom:67%;" />
 
 2. 语法2：left join 左连接
 
@@ -1003,7 +1003,7 @@ SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
    -- 得到结果图一
    ```
 
-   <img src="mysql.assets/image-20250224164916514.png" alt="image-20250224164916514" style="zoom: 67%;" />图一
+   <img src=".assets/image-20250224164916514.png" alt="image-20250224164916514" style="zoom: 67%;" />图一
 
    此时可以发现，虽然score表的内容是多于users的，但是显示的结果却只有对应的，这验证了left join是：返回左表**全部数据** + 右表**匹配的数据**
 
