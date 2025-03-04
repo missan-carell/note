@@ -7,6 +7,7 @@
 2. [bash学习笔记](bash.md)
 3. [markdown学习笔记](markdown.md)
 4. [linux学习笔记](linux.md)
+5. [git学习](git.md)
 
 
 
