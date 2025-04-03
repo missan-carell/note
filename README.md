@@ -4,14 +4,20 @@
 *（下载时要同时下载.assests 文件，否则会无法正常查看笔记内的图片）*
 
 1. [mysql学习笔记](mysql.md)
+
 2. [bash学习笔记](bash.md)
+
 3. [markdown学习笔记](markdown.md)
+
 4. [linux学习笔记](linux.md)
+
 5. [git学习](git.md)
 
+6. [python笔记](python.md)
 
+7. [docker笔记](docker.md)
 
-
+   
 
 作者：missan-carell
 
