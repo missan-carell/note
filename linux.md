@@ -1043,7 +1043,7 @@ yum list |grep xx ,查询yum服务器上是否有xx包
 
 ## 14.bash
 
-此处内容去<u>bash学习</u>中有详解
+此处内容去[bash](bash.md)中有详解
 
 ## **其他**
 
