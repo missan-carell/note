@@ -29,7 +29,7 @@ git diff <filename>                 # 查看变更日志
 
 1. 在typora的偏好设置-- 图像里勾选以下选项：
 
-<img src="./.assets/image-20250507204946132.png" alt="image-20250507204946132" style="zoom:50%;" />
+<img src="./.assets/image-20250507204946132.png" alt="image-20250507204946132" style="zoom: 50%;" />
 
 注意，如果上传多个笔记，建议把图像上传到同一个文件夹
 

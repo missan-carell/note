@@ -1,4 +1,6 @@
-[toc]
+
+
+
 
 # python学习
 
@@ -120,13 +122,13 @@ file->settings ->keymap（快捷键）->搜索run，找到Run-Run->右键Run，�
 
 ## 1.   转义字符的使用
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 使用转义字符的原因：在使用pycharm的时候，许多常见字符是无法正常表达的，如：print中，在要输出的内容里再添加双引号会报错
+- 使用转义字符的原因：在使用pycharm的时候，许多常见字符是无法正常表达的，如：print中，在要输出的内容里再添加双引号会报错
 
 - ![ ](.assets/image-20250327091310712.png)
 
 ![image-20250327091321908](.assets/image-20250327091321908.png)
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 常见转义字符：
+- 常见转义字符：
 
 - 注意：如果需要在print中使用，输出内容，同时加上函数，需要使用转义字符，要加逗号和双引号，如：
 
@@ -171,21 +173,21 @@ print('wow"o"')
 
 2. 注释的类型：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 单行注释：#xxx
+- 单行注释：#xxx
 
  <img src=".assets/image-20250327091618022.png" alt="image-20250327091618022" style="zoom:67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 多行注释（单行多行都可以）：’’’注释内容’’’,或者”””注释内容”””,使用三个双引号或是三个单引号即可
+- 多行注释（单行多行都可以）：’’’注释内容’’’,或者”””注释内容”””,使用三个双引号或是三个单引号即可
 
 （补充：若产生警告，则是因为，py会将’’’括起来的内容生成文档,此处警告是提示这段代码将用于生成文档，可以忽略）
 
  <img src=".assets/image-20250327091642652.png" alt="image-20250327091642652" style="zoom:67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 注释的使用事项：注意注释**不可以嵌套使用**：即注释里面加注释，否则会报错
+- 注释的使用事项：注意注释**不可以嵌套使用**：即注释里面加注释，否则会报错
 
  <img src=".assets/image-20250327091652278.png" alt="image-20250327091652278" style="zoom:50%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 文件编码声明注释：
+- 文件编码声明注释：
 
 - 格式:# coding:编码，在文件开头加上编码声明，用以指定文件的编码格式。若不指定，则默认是UTF-8
 
@@ -223,7 +225,7 @@ print('wow"o"')
 3. 概念：变量是组成程序的基本概念，相当于内存中一个数据存储空间的表示
 4. 三要素：名称，值，类型
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 注意的是：变量的名称只能有**英文，数字，和****_** ，没有空格，多个单词间用_连接：如left_days
+- 注意的是：变量的名称只能有**英文，数字，和****_** ，没有空格，多个单词间用_连接：如left_days
 
 5. 变量的注意事项：在使用前要先定义变量
 
@@ -250,7 +252,7 @@ print('wow"o"')
 
 2. 数据的使用注意：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) Python 中的变量在使用前都必须赋值，变量赋值以后该变量才会被创建。
+- Python 中的变量在使用前都必须赋值，变量赋值以后该变量才会被创建。
 
 3. 数据的"类型”：是变量所指的**内存数据**的类型。如：
 
@@ -264,9 +266,9 @@ a=1 b= “hello”中的**ab****本身是没有数据类型的**，只有数据�
 
 #### 6.1.1整形：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 整形可以表示的最大数可有4300位数字组成
+- 整形可以表示的最大数可有4300位数字组成
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 进制：Python 的整数有十进制，十六进制，八进制，二
+- 进制：Python 的整数有十进制，十六进制，八进制，二
 
 - 使用计算器查看进制：
 
@@ -278,7 +280,7 @@ a=1 b= “hello”中的**ab****本身是没有数据类型的**，只有数据�
 
  <img src=".assets/image-20250327092343752.png" alt="image-20250327092343752" style="zoom: 67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 整形的字节与位：
+- 整形的字节与位：
 
 - 字节(byte):计算机中（数据的）基本**存储**单元
 
@@ -296,7 +298,7 @@ a=1 b= “hello”中的**ab****本身是没有数据类型的**，只有数据�
 
 #### 6.1.2浮点型：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 在py中，浮点型表示的形式：
+- 在py中，浮点型表示的形式：
 
 - 十进制数形式，如:5.12，-5.12 或0.512（也可以写成.512, 0可以省略，但是必须要有**小数点**)
 
@@ -320,7 +322,7 @@ print("n5=", n5)
 n5= 0.0512
 ```
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 浮点数的范围：（大小限制）
+- 浮点数的范围：（大小限制）
 
 - 边界值为:
 
@@ -338,7 +340,7 @@ print(sys.float_info)
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 注意：浮点类型计算后，存在**精度的损失**，可以使用 Decimal 类进行精确计算，如何使用decimal
+- 注意：浮点类型计算后，存在**精度的损失**，可以使用 Decimal 类进行精确计算，如何使用decimal
 
 - 若不适用Decimal：
 
@@ -362,9 +364,9 @@ b=2.7
 
 #### 6.1.3布尔类型（bool）：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 取值：bool形只有两个值：True和False ，True 和 False 都是关键字，表示布尔值
+- 取值：bool形只有两个值：True和False ，True 和 False 都是关键字，表示布尔值
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 比较：布尔类型可以和其他数据类型进行比较，比如数字、字符串等。在比较时，Python 会将 True 视为 1，False 视为0
+- 比较：布尔类型可以和其他数据类型进行比较，比如数字、字符串等。在比较时，Python 会将 True 视为 1，False 视为0
 
 ```python
 # 数值的使用
@@ -377,7 +379,7 @@ a = True
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 特殊：在Python中，非0被视为真值（“xx”也可以算真值），0值和None，空字符串都被视为假值（区分大小写）
+- 特殊：在Python中，非0被视为真值（“xx”也可以算真值），0值和None，空字符串都被视为假值（区分大小写）
 
 ```py
 if 0:
@@ -392,7 +394,7 @@ print("222")
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 作用：bool类型适于逻辑运算，一般用于程序流程控制：
+- 作用：bool类型适于逻辑运算，一般用于程序流程控制：
 
 - 条件控制语句
 
@@ -445,9 +447,9 @@ print("222")
 
 #### 6.1.4 字符串（string）：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) str就是string的缩写，在使用type()查看数据类型时，字符类型显示的是str
+- str就是string的缩写，在使用type()查看数据类型时，字符类型显示的是str
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 使用引号(‘或”)包括起来，创建字符串:
+- 使用引号(‘或”)包括起来，创建字符串:
 
 - 使用案例：如想输出的字符串里包括了双引号，可以使用转义字符，也可以把外面的双引号改成单引号（单引号双引号位置可以互换）
 
@@ -463,7 +465,7 @@ print("222")
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 通过加号可以连接字符串：
+- 通过加号可以连接字符串：
 
  ```py
  print ("hi"+"tom")
@@ -472,7 +474,7 @@ print("222")
 
 ==字符串注意事项：==
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) Python 不支持单字符类型，单字符在 Python 中也是作为一个字符串使用（别的个别语言中，单字符可能认为是字符类型)
+- Python 不支持单字符类型，单字符在 Python 中也是作为一个字符串使用（别的个别语言中，单字符可能认为是字符类型)
 
 ```py
 str3 = "a"
@@ -481,7 +483,7 @@ print(f"str3的类型是：{type(str3)}")
 str3的类型是：<class 'str'>
 ```
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 用三个单引号’’’内容’’’，或三个双引号"""内容""",可以使字符串内容保持原样输出（包括**保留格式**)。在输出格式复杂的内容是比较有用的，比如输出一段代码：
+- 用三个单引号’’’内容’’’，或三个双引号"""内容""",可以使字符串内容保持原样输出（包括**保留格式**)。在输出格式复杂的内容是比较有用的，比如输出一段代码：
 
 - 直接使用””包括，因为文本内容复杂很容易报错：
 
@@ -503,7 +505,7 @@ str3的类型是：<class 'str'>
 
 - 单独使用可以用于注释内容，具体查看[2.注释:](#2.注释：)
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 在字符串前面加'r’，可以使整个字符串不会被转义（在双引号前加上r）
+- 在字符串前面加'r’，可以使整个字符串不会被转义（在双引号前加上r）
 
 ```py
 str4 = "jack\ntom\tking" 
@@ -524,15 +526,15 @@ jack\ntom\tking
 
 #### 6.1.5 ==字符串的驻留机制：==
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 概念：Python仅保存一份相同且不可变字符串，不同的值被存放在字符串的驻留池中，Pvthon的驻留机制对相同的字符只保留一份接贝，后续创建相同符串时，不会开辟新空间，而是把该字符串的地址赋给新创建的变量
+- 概念：Python仅保存一份相同且不可变字符串，不同的值被存放在字符串的驻留池中，Pvthon的驻留机制对相同的字符只保留一份接贝，后续创建相同符串时，不会开辟新空间，而是把该字符串的地址赋给新创建的变量
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 内存地址：内存地址是一个不确定的值。
+- 内存地址：内存地址是一个不确定的值。
 
 赋值过程图解
 
  <img src=".assets/image-20250327100941531.png" alt="image-20250327100941531" style="zoom:67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 驻留机制图解：py中，多个变量对应同一个值的时候，并不会创建多个值，而是让多个变量去**同一个内存地址**去获取这个值:
+- 驻留机制图解：py中，多个变量对应同一个值的时候，并不会创建多个值，而是让多个变量去**同一个内存地址**去获取这个值:
 
 <img src=".assets/image-20250327101001309.png" alt="image-20250327101001309" style="zoom:67%;" />
 
@@ -549,7 +551,7 @@ str1的地址： 140727803380312
 str2的地址： 140727803380312
 ```
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) **驻留机制几种情况讨论：只有在该范围内才会发生驻留**
+- **驻留机制几种情况讨论：只有在该范围内才会发生驻留**
 
 **（到交互模式下：win+r—>cmd—>python）**
 
@@ -579,19 +581,19 @@ str2的地址： 140727803380312
 
 4) [-5，256]的整数数字
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 在交互模式下，强制将两个字符串指向同一个内容： 
+- 在交互模式下，强制将两个字符串指向同一个内容： 
 
 <img src=".assets/image-20250327102045541.png" alt="image-20250327102045541" style="zoom:67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) PyCharm对字符串进行了优化处理，不需要遵守上述规则
+- PyCharm对字符串进行了优化处理，不需要遵守上述规则
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 驻留机制的优势：当需要值相同的字符串时，可以直接从字符串池里拿来使用，避免频繁的创建和销毁，提升效率和节约内存
+- 驻留机制的优势：当需要值相同的字符串时，可以直接从字符串池里拿来使用，避免频繁的创建和销毁，提升效率和节约内存
 
 ### 6.2 数据类型转换：
 
 #### 6.2.1隐式类型转换：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 概念：python的变量类型是不固定的，根据该变量使用的上下文（即当前值)在运行时决定的。，**注意不是所有语言都是这样，如 java，c等就是强制类型转换**
+- 概念：python的变量类型是不固定的，根据该变量使用的上下文（即当前值)在运行时决定的。，**注意不是所有语言都是这样，如 java，c等就是强制类型转换**
 
 （如图：即通过赋值或其他手段，就可改变变量的值）
 
@@ -599,7 +601,7 @@ str2的地址： 140727803380312
 
 通过 type（变量）查看变量类型就是隐式转换，又名自动转换
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 在运算的时候，数据类型会向高精度自动转换，float的精度高于int。
+- 在运算的时候，数据类型会向高精度自动转换，float的精度高于int。
 
 ```py
 b= 2.1
@@ -611,9 +613,9 @@ plnt("b的类型是:"，type(b)，"b的值是:"，b) # float 2.2
 
 #### 6.2.3显式类型转换
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 概念：如果需要对变量数据类型进行转换，只需要将数据类型作为函数名即可,这种方式就是显示转换/强制转换
+- 概念：如果需要对变量数据类型进行转换，只需要将数据类型作为函数名即可,这种方式就是显示转换/强制转换
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 实施：以下几个内置的函数可以完成数据类型之间的转换。实施过后，函数会返回一个新的对象/值，就是强制转换后的结果
+- 实施：以下几个内置的函数可以完成数据类型之间的转换。实施过后，函数会返回一个新的对象/值，就是强制转换后的结果
 
 基础类型：（其余查看python手册)
 
@@ -643,7 +645,7 @@ k的类型是： <class 'str'> k的值是： 10
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 显式类型的转化，==注意事项==：
+- 显式类型的转化，==注意事项==：
 
 1）    不管什么值的**int,float**都可以转成str，str(x)将对象x转换为字符串
 
@@ -740,7 +742,7 @@ print(int(n5))
 
 3. 运算符的优先级：即表达式的运算顺序
 
-​		![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 算术运算》位运算》比较运算符》逻辑运算符》赋值运算符
+​		- 算术运算》位运算》比较运算符》逻辑运算符》赋值运算符
 
 ​		 <img src=".assets/image-20250327104347865.png" alt="image-20250327104347865" style="zoom:67%;" />
 
@@ -750,9 +752,9 @@ print(int(n5))
 
 #### 7.2.1**算数运算符：**
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 概念：算术运算符是对数值类型的变量进行运算的，在程序中使用的非常多
+- 概念：算术运算符是对数值类型的变量进行运算的，在程序中使用的非常多
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 概览：
+- 概览：
 
 1.  // 整除 ：
 
@@ -791,7 +793,7 @@ print(int(n5))
  print(-10% 3) # 2
  ```
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 补充：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容。具体用法：
+- 补充：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容。具体用法：
 
  ```py
  # 保留小数后两位
@@ -804,7 +806,7 @@ print(int(n5))
 
 #### **7.2.2  **比较运算符：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 概念：比较运算符的结果要么是True，要么是False比较表达式。经常用在**if****结构的条件**,为True 就执行相应的语句，为False 就不执行。
+- 概念：比较运算符的结果要么是True，要么是False比较表达式。经常用在**if****结构的条件**,为True 就执行相应的语句，为False 就不执行。
 
  ```py
  n1 = 1
@@ -814,7 +816,7 @@ print(int(n5))
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 比较运算符一览：
+- 比较运算符一览：
 
 - is ：例如：a=1 ，b=1，则 a is b = Ture
 
@@ -838,7 +840,7 @@ print(int(n5))
 
 <img src=".assets/image-20250327110051029.png" alt="image-20250327110051029" style="zoom:67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 使用案例：
+- 使用案例：
 
 ``` py
 # 比较符号的使用案例(部分)
@@ -853,7 +855,7 @@ print(a is b)# 判断数据是否指向同一个数据空间
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 注意：
+- 注意：
 
 - 比较运算符的结果要么是True，要么是False
 
@@ -863,7 +865,7 @@ print(a is b)# 判断数据是否指向同一个数据空间
 
 #### **7.2.3 ** **逻辑运算符（布尔符号）：**
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 逻辑运算一览：
+- 逻辑运算一览：
 
 1. and：一假为假
    - and是种"短路运算符"，只有当第一个为True时才去验证第二个
@@ -880,7 +882,7 @@ print(score >= 60 and 9.1 ) # 注意区分上一个，and前后是整体，此�
 
 <img src=".assets/image-20250327110703340.png" alt="image-20250327110703340" style="zoom:67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 案例：
+- 案例：
 
 ```py
 a = 10
@@ -893,11 +895,11 @@ print(not (a and b)) # not与后面的结果相反
 
 4. **赋值运算符**：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 赋值运算符一览：
+- 赋值运算符一览：
 
  		<img src=".assets/image-20250327110831088.png" alt="image-20250327110831088" style="zoom:67%;" />
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 注意：
+- 注意：
 
 - 运算顺序从右往左
 
@@ -905,7 +907,7 @@ print(not (a and b)) # not与后面的结果相反
 
 - 赋值运算符的左边是变量,右边可以是变量、表达式、字面量
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 应用实例：
+- 应用实例：
 
  ```py
  num1 =100
@@ -920,7 +922,7 @@ print(not (a and b)) # not与后面的结果相反
  print(i) # 300 
  ```
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 交换赋值的应用实例：
+- 交换赋值的应用实例：
 
 ```py
 # 交换ab变量的值
@@ -950,15 +952,15 @@ print(f"交换后，a={a},b={b}")
 
 #### 7.2.4 **三元运算符**：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 概念：Python 是一种极简主义的编程语言，它没有引入?:这个运算符，而是使用 if else 关键字来实现相同的功能
+- 概念：Python 是一种极简主义的编程语言，它没有引入?:这个运算符，而是使用 if else 关键字来实现相同的功能
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 语法: `max= a if a>b else b`
+- 语法: `max= a if a>b else b`
 
 1)如果 a>b 成立,就把 a作为整个表达式的值,并赋给变量 max
 
 2)如果 a>b不成立,就把 b作为整个表达式的值，并赋给变量 max
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 应用：
+- 应用：
 
 通过三元运算符，得到两个数的最小值
 
@@ -992,21 +994,21 @@ max2 = (a if a>b else b) if (a if a>b else b)>(c if c>d else d) else (c if c>d e
 1. 概念：Python 对各种**变量、函数和类**等命名时使用的字符序列称为标识符。凡是自己可以**起名字的地方**都叫标识符，如：`num1=90`
 2. 命名规则：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 由26个英文字母大小写，0-9，_组成
+- 由26个英文字母大小写，0-9，_组成
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 数字不可以开头
+- 数字不可以开头
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 不可以使用关键字，但能**包含关键字**
+- 不可以使用关键字，但能**包含关键字**
 
 （查看下一节[**9.关键字:**](#_9.关键字：)，即系统规定的部分字母组合，如if，else，class等等）
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) Python分大小写
+- Python分大小写
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 标识符不能包含空格
+- 标识符不能包含空格
 
 3. 标识符命名规范（专业）：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 变量：变量要小写,若有多个单词,使用下划线分开。
+- 变量：变量要小写,若有多个单词,使用下划线分开。
 
 常量：全部大写 （常量：即恒定不变的量，如PI）
 
@@ -1019,9 +1021,9 @@ PI = 3.14
 
 
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 函数：函数名一律小写,如果有多个单词，用下划线隔开。私有函数以双下划线开头，如__private_func
+- 函数：函数名一律小写,如果有多个单词，用下划线隔开。私有函数以双下划线开头，如__private_func
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 类:使用大驼峰命名
+- 类:使用大驼峰命名
 
 - 知识扩展:
 
@@ -1040,18 +1042,18 @@ PI = 3.14
 
 3. 关键词的查看：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 进入python的交互模式，输入help（)，keywords即可
+- 进入python的交互模式，输入help（)，keywords即可
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) [2. 词法分析 — Python 3.13.0 文档](https://docs.python.org/zh-cn/3/reference/lexical_analysis.html#identifiers)
+- [2. 词法分析 — Python 3.13.0 文档](https://docs.python.org/zh-cn/3/reference/lexical_analysis.html#identifiers)
 
 ## 10. 键盘输入
 
 1. 概念：在编程中，需要接收用户输入的数据，就可以使用键盘输入语句来获取
 2. 相关函数 input（）
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 介绍：input（prompt）如果存在 prompt实参（即提示信息），则将其写入标准输出，末尾不带换行符。接下来，该函数从输入中读取一行，将其转换为字符串(除了未尾的换行符)并返回。当读取到 EOF时，则触发 EOFError。
+- 介绍：input（prompt）如果存在 prompt实参（即提示信息），则将其写入标准输出，末尾不带换行符。接下来，该函数从输入中读取一行，将其转换为字符串(除了未尾的换行符)并返回。当读取到 EOF时，则触发 EOFError。
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 使用案例：
+- 使用案例：
 
 如name = input（“请输入姓名：”），回车执行后，控制台会等待用户输入内容
 
@@ -1075,7 +1077,7 @@ print(f"\n输出的信息如下 \n 姓名： {name} \n 年龄：{age} \n 成绩:
  成绩:99
 ```
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 细节注意：从控制台输入的内容是str，即使是数字
+- 细节注意：从控制台输入的内容是str，即使是数字
 
 ```py
 # 注意：从控制台输入的内容是str，即使是数字
@@ -1104,17 +1106,17 @@ print("成绩2的类型是：",type(score_2))
 
 1. 整数的表达形式：
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 2进制: 0,1，满2进1 , 以0b或0B开头。
+- 2进制: 0,1，满2进1 , 以0b或0B开头。
 
 如：`print（0b111）`此处的111不是十进制的111，而是二进制的111
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 8进制:0-7，满8进1，因此**没有8这个数字**，二级制的8对应8进制的10。以数字0o或者0O开头表示。
+- 8进制:0-7，满8进1，因此**没有8这个数字**，二级制的8对应8进制的10。以数字0o或者0O开头表示。
 
 如：`print（0o111）`此处的111不是十进制的111，而是8进制的111
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 10进制:0-9，满10进1。
+- 10进制:0-9，满10进1。
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 16进制:0-9及A(10)-F(15)，满16进1.以0x或0X开头表示。此处的A-F不区分大小写
+- 16进制:0-9及A(10)-F(15)，满16进1.以0x或0X开头表示。此处的A-F不区分大小写
 
 2. ==进制的图示：==
 
@@ -1249,9 +1251,9 @@ print("成绩2的类型是：",type(score_2))
 
 ​	解释：
 
-​	![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 最高位：即二进制数最左侧的数字
+​	- 最高位：即二进制数最左侧的数字
 
-​	![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 正负如何用01表示：
+​	- 正负如何用01表示：
 
 - ==案例：==
 
@@ -1265,7 +1267,7 @@ print("成绩2的类型是：",type(score_2))
 
 2.结论2:  **正数**的原码，反码，补码都是一样的**（三码合一**）
 
-![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) 案例：3  > 原码：0000 0011
+- 案例：3  > 原码：0000 0011
 
  反码：0000 0011
 
@@ -1275,13 +1277,13 @@ print("成绩2的类型是：",type(score_2))
 
 3.结论3：负数的两种情况
 
-​	![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) **反码：原码的符号位不变，其他位取反（即0 ——> 1**)。还等于补码-1
+​	- **反码：原码的符号位不变，其他位取反（即0 ——> 1**)。还等于补码-1
 
 - ​	案例：-3原码：1000 0011 ——> 反码：1111 1100
 
 ​	**（符号位不变）**
 
-​	![*](file:///C:/Users/a/AppData/Local/Temp/48D01C6B.gif) **补码=** **反码+1** （即最小位变成1)
+​	- **补码=** **反码+1** （即最小位变成1)
 
 - ​	案例：-3反码：1111 1100 ——> 补码：1111 1101
 
@@ -1817,7 +1819,204 @@ Hello world
 Hello world
 ```
 
+#### 1.6.1 range
+
+若需要通过for遍历数字序列，则需要通过range()函数
+
+函数详解：
+
+1. 基础语法：`range（start，stop，[step])`
+
+- step 默认=1，start默认 = 0
+- range() 生成的数列是前闭后开的
+
+2. `list()` ：可用于查看生成的序列包含哪些内容
+
+3. 案例：
+
+   ```py
+   # 生成一个[1, 2, 3, 4, 5]的序列
+   print(list(range(1,6)))
+   
+   #[1, 3, 5, 7, 9]
+   print(list(range(1,10,2)))
+   
+   # 生成十句hello，python
+   print(list(range(1,10,2)))
+   ```
+
+#### 1.6.2 for和else的搭配
+
+1. 基础语法：
+
+```py
+for <variable> in <sequence>:
+	<statements>
+else :
+	<statements>
+```
+
+功能解读：在for循环**正常完成遍历后**（即没有被break打断[^打断]），则会进入else的内容
+
+基础使用：
+
+```py
+for i in range(10):
+    print("hello,python")
+
+for i in range(3):
+    print("循环中")
+else:
+    print("循环结束")
+    
+'''
+输出结果:
+循环中
+循环中
+循环中
+循环结束
+''' 
+```
+
+循环被打断：
+
+```py
+for i in range(4):
+    print(i,"循环中")
+    if i == 2:
+        break
+else:
+    print("数据未中断")  # 可用else验证循环是否被打断
+    
+'''
+输出结果:
+0 循环中
+1 循环中
+2 循环中
+''' 
+```
+
+
+
 ### 1.7 while循环
+
+while循环用于在表达式为真的情况下,重复的(循环的)执行
+
+1. 基础语法：
+
+```py
+while <条件>：
+	<循环体>
+```
+
+2. 案例：
+
+输出十个hello
+
+```py
+# 方法1
+while True:
+    for i in range(10):
+        print("hello")
+    break
+    
+# 方法2（推荐）
+i = 1
+while i < 10:
+    i += 1
+    print(i,"hello")
+```
+
+逻辑图解：（图源韩顺平）
+
+<img src="./.assets/image-20250508202547640.png" alt="image-20250508202547640" style="zoom: 33%;" />
+
+#### 1.7.2 while循环和else搭配
+
+在 while ... else在遍历过程中,没有被打断，且判断条件为 false 时,会执行 else 的语句块
+
+1. 案例
+
+```py
+i = 1
+while i <= 10:
+    print(i,"hello")
+    i += 1
+else:
+    print("循环结束，i=",i,">10")
+```
+
+被打断：
+
+```py
+i = 1
+while i <= 10:
+    print(i,"hello")
+    i += 1
+    if i == 2:
+        break
+else:
+    print("循环结束，i=",i,">10")
+    
+# 输出：1 hello
+
+```
+
+案例2：打印1-100所有能被3整除的数
+
+```py
+i = 1
+while i <= 100 :
+    if i % 3 == 0:
+        print(i)
+	i += 1
+```
+
+案例3:1-100所有9的倍数，并统计他们的个数和相加的和
+
+```py
+i = 1
+count = 0
+sum = 0
+while i <= 100 :
+    if i % 9 == 0:
+        count += 1
+        sum += i
+    i += 1
+else:
+    print(count,sum)
+```
+
+案例4：
+
+```py
+i = int(input("请输入一个整数"))
+a = 0
+while  i >= 0:
+    print(a,"+",i,"=",a+i)
+    a += 1
+    i -= 1
+'''
+输出结果：
+请输入一个整数3
+0 + 3 = 3
+1 + 2 = 3
+2 + 1 = 3
+3 + 0 = 3
+'''
+```
+
+**案例5: 99乘法表**
+
+```py
+for i in range(1,10):
+    a = 1
+    while  a <= 9:
+        print(i,"*",a,"=",a*i)
+        a += 1
+```
+
+
 
 ### 1.8 读取
 
@@ -2112,7 +2311,65 @@ write_mode()
 
 菜鸟教程：[Python3 JSON 数据解析 | 菜鸟教程](https://www.runoob.com/python3/python3-json.html)
 
+python和json区别：
 
+| 是/否 可用 | 单引号 | 双引号 |
+| ---------- | ------ | :----- |
+| json       | 不可用 | 可用   |
+| python     | 可用   | 可用   |
+
+1. python转json
+
+   基础语法：`json.dumps(文件名)`
+
+```py
+import json
+data = {'a':'123',
+'b':'234',
+'c':'567'
+
+}
+json_str = json.dumps(data)
+print("json格式：",json_str)
+print("原格式：",repr(data))
+
+# 返回结果：
+# json格式： {"a": "123", "b": "234", "c": "567"}
+# 原格式： {'a': '123', 'b': '234', 'c': '567'}
+```
+
+`repr`：将返回的格式转为str
+
+2. json 转python
+
+   基础语法：`json.loads(文件名)`
+
+```py
+data2 = json.loads(json_str)
+print("a=",data2['a'])
+print("b=",data2['b'])
+
+# 输出结果：
+# a= 123
+# b= 234
+```
+
+3. json写入文件：dump（区分dumps）
+
+   ```py
+   import json
+   data = {'a':'123',
+   'b':'234',
+   'c':'567'
+   
+   with open(r"C:\Users\25870\code\test_json.txt",mode="w") as f:
+       test_json = json.dump(data,f)
+   print("test_json<UNK>",test_json)
+   ```
+
+解读：`test_json = json.dump(data,f)` ：意思是把data的内容写入f，并且转成json格式
+
+这一步可以省去一个写入的过程
 
 ### 2.* 其他
 
@@ -2445,3 +2702,5 @@ main()
 [^补充1]: 补充1：关于浮点数：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容
 
 % 的更多使用：[Python之格式化输出(print %)_python print %-CSDN博客](https://blog.csdn.net/hesongzefairy/article/details/104179419) 
+
+[^打断]: 即在循环过程中跳出循环，循环被中止
