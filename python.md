@@ -2255,6 +2255,135 @@ a = 1234
 print(a[0,1,3]) # 若a是int/float，该方法则无法取值
 ```
 
+4. 输出不换行：
+
+   `end=""`
+
+   - 双引号里面不填内容，如果用循环，则不间隔
+   - 双引号填入什么，循环用什么间隔
+   - 具体使用看：[1.*.1 多重循环==(重难点)==](#1.*.1 多重循环==(重难点)==)案例2
+
+案例：
+
+```py
+for i in range(3):
+	print("*",end="")
+# 输出：***
+```
+
+
+
+#### 1.*.1 多重循环==(重难点)==
+
+将一个循环放在另一个循环的循环体内，不建议嵌套三层以上，否则会降低可读性
+
+注意：
+
+- 如果外层循环为m次，内层循环为n次，则内层实际循环m*n次
+
+  解读：以for为例，循环会执行外层的条件，然后与内层匹配所有可能的情况，再执行下一个外层条件，执行以上步骤
+
+​	图解：
+
+<img src="./.assets/image-20250512155929241.png" alt="image-20250512155929241" style="zoom:67%;" />
+
+​	案例1：
+
+```py
+for i in range(2):
+	for j in range(3):
+		print("i=",i,"j=",j)
+        
+'''
+输出结果：（六条）
+i= 0 j= 0
+i= 0 j= 1
+i= 0 j= 2
+i= 1 j= 0
+i= 1 j= 1
+i= 1 j= 2
+'''
+```
+
+==案例2：==
+
+制作一个空心的金字塔
+
+```py
+total_level = int(input("输入数值："))
+a = 1
+# i控制层数
+for i  in range(1,total_level+1):
+    # k金字塔前面的空格
+    for k in range(total_level-i):
+        print(" ",end="")
+    # j 控制*数量
+    for j in range(2*i-1):
+        if j == 0 or j == 2*i-2 or i == total_level:
+            print("*", end="")
+            a += 1
+
+        else:
+            print(" ",end="")
+    print("") # 在每次循环后换行
+```
+
+思路分析：
+
+第一步：
+
+```py
+# 打印矩形
+total_level = 5
+for i  in range(total_level):
+    for j in range(total_level):
+        print("*", end="")
+    print("") # 在每次循环后换行
+```
+
+第二步：先做半个实心金字塔
+
+```py
+# 半个三角
+total_level = int(input("输入数值："))
+a = 1
+# i控制层数
+for i  in range(1,total_level+1):
+    # j 控制*数量
+    for j in range(2*i-1):
+        print("*", end="")
+        a += 1
+    print("") # 在每次循环后换行
+```
+
+第三步：用for循环在金字塔前面增加空格，补全完整金字塔
+
+```py
+    # k金字塔前面的空格
+    for k in range(total_level-i):
+        print(" ",end="")
+    # j 控制*数量
+    for j in range(2*i-1):
+            print("*", end="")
+            a += 1
+```
+
+第四步：
+
+增加if的条件判断，最终生成空心金字塔
+
+```py
+if j == 0 or j == 2*i-2 or i == total_level:
+    print("*", end="")
+    a += 1
+else:
+    print(" ",end="")
+```
+
+
+
+
+
 ## 2. 应用进阶：
 
 ### 2.1 异常处理try：
