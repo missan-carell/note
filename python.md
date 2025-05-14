@@ -2012,8 +2012,9 @@ while  i >= 0:
 for i in range(1,10):
     a = 1
     while  a <= 9:
-        print(i,"*",a,"=",a*i)
+        print(f"{i}*{a}={a*i}" ,end = " ")
         a += 1
+    print(" ")
 ```
 
 
@@ -2349,8 +2350,10 @@ total_level = int(input("输入数值："))
 a = 1
 # i控制层数
 for i  in range(1,total_level+1):
+    # 1开头是因为，默认是0，会导致前面空一行
+    # total_levle +1 是因为从1开头会少一位，后面补上一位
     # j 控制*数量
-    for j in range(2*i-1):
+    for j in range(i):
         print("*", end="")
         a += 1
     print("") # 在每次循环后换行
@@ -2380,7 +2383,24 @@ else:
     print(" ",end="")
 ```
 
+案例3 ：
 
+n个班级，每个班级n个人，求每个班平均分和所有班平均分，以及及格人数
+
+```py
+class_num = int(input("班级数："))
+stu_num = int(input("学生数："))
+count = 0
+for j in range(1,class_num+1):
+    a = 0.0
+    for i in range(1,stu_num+1):
+        score = float(input(f"输入第{j}班，{i}个学生的成绩"))
+        if score >= 60:
+            count += 1
+        a += score
+    print(f"{j}班的平均分是{a/stu_num},及格人数是{count}")
+print(f"所有班平均分数是：{a/(class_num*stu_num)}，及格人数是：{count}")
+```
 
 
 
