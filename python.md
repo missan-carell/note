@@ -2271,7 +2271,7 @@ for i in range(3):
 # 输出：***
 ```
 
-
+换行：`print("")`
 
 #### 1.*.1 多重循环==(重难点)==
 
@@ -2335,7 +2335,7 @@ for i  in range(1,total_level+1):
 ```py
 # 打印矩形
 total_level = 5
-for i  in range(total_level):
+for i in range(total_level):
     for j in range(total_level):
         print("*", end="")
     print("") # 在每次循环后换行
