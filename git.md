@@ -82,3 +82,35 @@ git diff <filename>                 # 查看变更日志
 ![image-20250506175942116](.assets/image-20250506175942116.png)
 
 4. 如果之前clone过了，想要拉下笔记，用git pull即可
+
+==冲突==
+
+如果在git pull的时候提示：
+
+```shell
+error: Your local changes to the following files would be overwritten by merge:
+        python.md
+Please commit your changes or stash them before you merge.
+Aborting
+```
+
+说明你仓库里的文件和本地不同，可能出现的原因：1. 本地进行了修改 2. 仓库里和本地文件不一样
+
+解决方案：
+
+1. 先 `git status` 查看当前修改的文件
+
+2. 然后`git diff <文件名>` 来查看文件修改的内容
+
+3. 可选项：`git add`,并`git commit` ，把需要修改的文件备份一下，如果后面合并的时候内容出现问题，此处留痕之后后面可以找回
+
+4. 随后再次`git pull`
+
+5. 如果出现下图画面：提示你写一些更新的日志，可写可不写，写完后:wq即可
+
+   <img src="./.assets/image-20250515110305545.png" alt="image-20250515110305545" style="zoom: 67%;" />
+
+   6. 最后再次 git pull即可拉下仓库文件
+
+   注意：除非非常确信不要修改了，一般不要轻意 git restore，有的 git 版本用 `git checkout <文件名>`
+
