@@ -2402,7 +2402,86 @@ for j in range(1,class_num+1):
 print(f"所有班平均分数是：{a/(class_num*stu_num)}，及格人数是：{count}")
 ```
 
+#### 1.*.2 break
 
+一般用于退出for或while的循环，它会终结最近的**外层**循环，如果循环有可选的 else 子句，也会跳过该子句
+
+- 如果一个for 循环被break 所终结，该循环的控制变量会保持其当前值：
+
+```py
+for i in range(10):
+    if i > 7:
+        break
+print(i) # 8
+```
+
+案例1：
+
+随机i是1-100的随机数，当i=97时，计算循环了多少次
+
+```py
+import random
+count = 0
+
+while True:
+    # 生成随机数
+    i = random.randint(1, 100)
+    count += 1
+    if i == 97:
+        print(f"生成了：{count}次,i={i}")
+        break
+```
+
+案例2 ：
+
+加深理解break的含义：
+
+```py
+count = 0
+while True:
+    print("hi while")
+    count += 1
+    if count == 3:
+        break			# 这里是中止外层循环，此处终止后，下面一个循环也不会执行
+    while True:
+        print("OK while")
+        break			# 这里只会中止内层循环，然后又返回外层循环
+else:
+    print("Hello, while")
+    
+'''
+输出：
+hi while
+OK while
+hi while
+OK while
+hi while
+'''
+```
+
+#### 1.*.3 random
+
+使用前先要导入一下：import random
+
+使用方法：
+
+```py
+import random
+print(random.randint(0,9))#指定范围的整数
+
+print(random.random())          # 0.1-0.9的浮点数
+
+print(random.uniform(0,9))#指定范围浮点数
+
+digital = [1,2,3,4]
+print(random.choice(digital))   # 从指定范围里面随机选择
+
+print(random.sample(digital,2))# 选择k个内容
+
+random.shuffle(digital)         # 乱序
+print(digital)
+#如:[1，4，2，3]
+```
 
 ## 2. 应用进阶：
 
@@ -2703,7 +2782,7 @@ def code num(length):#货架号所数
 	charS ="ABCDEFGHIJKLMNOPORSTUVWXYZ0123456789'
 	code ='.ioin(random.choice(chars)for_in range(length))first = code[o:3]second = code3:6]
 	end = code6:97
-	code formatted =f"ffirst}-fsecond}-fend}'
+	code formatted =f"{first}-{second}-{end}'
 	return code formatted
 ```
 
