@@ -80,3 +80,5 @@ git diff <filename>                 # 查看变更日志
 ​	clone 后面的是自己的gihub链接，通过下图方式查看
 
 ![image-20250506175942116](.assets/image-20250506175942116.png)
+
+4. 如果之前clone过了，想要拉下笔记，用git pull即可
