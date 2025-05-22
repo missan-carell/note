@@ -114,3 +114,8 @@ Aborting
 
    注意：除非非常确信不要修改了，一般不要轻意 git restore，有的 git 版本用 `git checkout <文件名>`
 
+## 2. github 的使用
+
+### 2. 1 界面介绍：
+
+<img src="./.assets/image-20250522201620969.png" alt="image-20250522201620969" style="zoom:50%;" />

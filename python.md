@@ -1776,6 +1776,99 @@ if -1:
  hi
  ```
 
+#### 1.5.2 elif （双分支）
+
+1.基础语法：
+
+先判断条件1，若不成立判断条件2，以此类推，如果全部不成立再执行else的选项
+
+如果执行过程中，符合任一条件，则会执行该代码块并退出语句
+
+elif案例：[2.*.1 登录系统](#2.*.1 登录系统)
+
+```py
+if <条件1>:
+	<代码块1>
+elif <条件2>:
+	<代码块2>
+	
+...
+
+else：
+	<代码块>
+```
+
+2.嵌套分支：
+
+外部的分支叫外层分支，内部分支叫内层分支
+
+注意：
+
+- 嵌套最好不要超过三层（会减低可读性）
+
+案例1：
+
+```py
+def gift():
+    num = [i for i in range(100)]
+    while True:
+        score = input("请输入本次成绩：")
+        if not score:
+            print("成绩不能为空！")
+            continue
+        try:
+            score = int(score)
+        except ValueError:
+            print("请输入有效成绩！")
+            continue
+        if 100 >= score >= 0:
+            if score == 100:
+                print("奖励BWM")
+                break
+
+            elif score in num[80:100]:
+                print("奖励iPhone")
+                break
+
+            elif score in num[60:80]:
+                print("奖励ipad")
+                break
+
+            else:
+                print("没有奖励")
+                break
+        else:
+            print("请输入有效成绩！（0-100）")
+gift()
+```
+
+- `not() `:如果不满足某条件，则… ，用于判断规定条件外的条件
+
+案例2：
+
+```py
+def rise():
+    score = int(input("请输入成绩："))
+    while True:
+        if score >= 80:
+            grade = input("请输入性别：")
+            if grade == "女":
+                print("恭喜加入女子组")
+                break
+            elif grade == "男":
+                print("恭喜加入男子子组")
+                break
+            else:
+                print("请输入正确信息")
+                continue
+        else:
+            print("淘汰")
+
+rise()
+```
+
+
+
 ### 1.6 for的使用：
 
 1.  基础语句：
@@ -2204,7 +2297,78 @@ print(f"num1={num1},num2={num2}") # num1=1,num2=2
 #### 1.11.1 列表
 
 1. 基础语法：
-2. 更改列表内容的数据类型：ma
+
+   列表的内容间用逗号分割
+
+```py
+# 创建列表：
+list1 = ['a','b',1,2,3]
+```
+
+#### 1.11.1 索引列表
+
+索引的对应关系图：
+
+注意:索引的范围是**左闭右开**的（正负都如此）
+
+1. **范围索引：**
+
+```py
+# 正向索引
+a = list1[0:3]  
+print(a) # ['a', 'b', 1]
+
+num2 = list1[0:-2] # 从第一个取到倒数第二个（不包含）
+print(a) # ['a', 'b', 1]
+
+# 逆向索引：注意逆向从-1开始编号，没有0
+b = list1[-3:-1] 
+print(b) # [1, 2]
+```
+
+2. **切片索引：**(适用连续范围)
+
+```py
+# 从倒数到最后
+c = list1[-3:]
+print(c) # [1, 2, 3]
+
+# 从正数到最后
+d = list1[1:]
+print(d) # ['b', 1, 2, 3]
+
+# 开头到倒数
+e = list1[:-3]
+print(e) # ['a', 'b']
+```
+
+3. **逐个索引:**
+
+```py
+num1 = [list1[0],list1[2]]
+print(num1) # ['a', 1]
+```
+
+#### 1.11.2更改列表
+
+1. 更改列表内容：
+
+```py
+ls = [1,2,3,4,'abc','efg']
+ls[1] = 'change'
+print(ls)
+# [1, 'change', 3, 4, 'abc', 'efg']
+```
+
+2. 更新列表：append
+
+```py
+ls.append('new')
+print(f"更新后的列表{ls}")
+更新后的列表[1, 2, 3, 4, 'abc', 'efg', 'new']
+```
+
+3. 更改列表内容的数据类型：map
 
 - 基础语法
 
@@ -2213,8 +2377,6 @@ map(数据类型，列表名)
 map(str,num)
 ```
 
-
-
 ```py
 value=[1,2,3,4]
 str_value=map(str,value) # 更改类型后赋给新的值
@@ -2222,6 +2384,129 @@ num1,num2,num3,num4=str_value
 print(type(num1))
 
 ```
+
+4. 删除列表元素：
+
+- del：
+
+```py
+ls2 = [1,2,3,4,'abc','efg']
+del ls2[1:4]
+print(f"删除后的列表：{ls2}")
+# 删除后的列表：[1, 'abc', 'efg']
+```
+
+#### 1.10.3 列表的脚本操作符
+
+图源：菜鸟教程
+
+![image-20250522202841793](./.assets/image-20250522202841793.png)
+
+例：
+
+```py
+# 列表之间的运算符
+ls = [1,2,3,4,5,'a']
+ls2 = ['a','b','c','d']
+len_ls = len(ls)
+add_ls = ls + ls2
+print(len_ls,add_ls)
+
+#6 [1, 2, 3, 4, 5, 'a', 'a', 'b', 'c', 'd']
+
+# 列表拼接：
+add_ls2 = ls2 + [1,2,1]
+print(len(ls2),add_ls2)
+# 4 ['a', 'b', 'c', 'd', 1, 2, 1]
+```
+
+列表的嵌套：
+
+```py
+ls3 = [ls,ls2]
+print(ls3)
+# [[1, 2, 3, 4, 5, 'a'], ['a', 'b', 'c', 'd']]
+```
+
+#### 1.10.4  列表推导式：
+
+1. 基础语法：
+
+   图源：CSDN ：[python列表推导式](https://blog.csdn.net/Twinkle_sone/article/details/142799604)
+
+   ![image-20250522202747283](./.assets/image-20250522202747283.png)
+
+```py
+[expression for item in iterable if condition]
+```
+
+2. 使用：
+
+```py
+a = [x for x in range(10)] # 生成一个0-9的列表
+print(a)
+
+# 生成一个(0-3)*2的列表
+b = [x*2 for x in range(4)]
+print(b)
+# [0, 2, 4, 6]
+```
+
+3. 嵌套使用：
+
+```py
+# 生成所有范围内的坐标
+point = [(a,b) for a in range(2) for b in range(3)]
+print(point)
+# [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2)]
+```
+
+4. 条件判断：
+   - 可以有多个条件
+
+```py
+c = [x for x in range(10) if x > 2 if x % 2 ==0]
+print(c)
+# [4, 6, 8]
+```
+
+5. 进阶使用：
+
+- jion : 用单引号里的内容来分割列表的元素 
+
+```py
+''.jion(list)
+```
+
+```py
+# 将输入内容拆开，最终以点分割
+def main():
+	i = input("请以a=b,c=d的格式输入数据:")
+	i = [x.split('=')[1] for x in i.split(',')]
+	print('.'.join(i))
+    
+main()
+```
+
+```py
+# 输出结果：
+请以a=b,c=d的格式输入数据:a=1,b=2,c=3
+1.2.3
+```
+
+```py
+# 获取当前日期，并用.分割
+def time():
+    import datetime
+    a = datetime.datetime.today()
+    date = str(a).split( )[0].split('-')
+    print('.'.join(date))
+time()
+
+# 2025.04.07
+```
+
+- 注：日期本身就是列表，可以直接使用，如果再加[]会导致索引错误
 
 ### 1.12 字典
 
@@ -2467,20 +2752,23 @@ hi while
 
 ```py
 import random
-print(random.randint(0,9))#指定范围的整数
 
-print(random.random())          # 0.1-0.9的浮点数
-
-print(random.uniform(0,9))#指定范围浮点数
+print(random.randint(0,9)) # 指定范围的整数
+print(random.random())     # 0.1-0.9的浮点数
+print(random.uniform(0,9)) # 指定范围浮点数
 
 digital = [1,2,3,4]
-print(random.choice(digital))   # 从指定范围里面随机选择
+print(random.choice(digital))    # 从指定范围里面随机选择
 
-print(random.sample(digital,2))# 选择k个内容
+print(random.sample(digital,2))  # 选择k个内容
 
-random.shuffle(digital)         # 乱序
+random.shuffle(digital)          # 乱序
 print(digital)
-#如:[1，4，2，3]
+# 如：[1, 4, 2, 3]
+
+# 生成指定范围内的一个随机数
+print(random.randrange(0, 10, 2)) # 开始，结束，步长
+
 ```
 
 ## 2. 应用进阶：
@@ -2613,7 +2901,7 @@ print("b=",data2['b'])
        main()
    ```
 
-### 2.#.1 快递管理
+### 2.*.1 快递管理
 
 ```py
 import random
@@ -2772,91 +3060,122 @@ main()
 
 
 
-内容详解:
-1.random函数:详情见1.11 random
-2.import getpass:由于 PyCharm 当前版本编译器与 getpass函数有冲突，演示时该函数未实际使用，在其他环境里会投入使用
-3.自动生成随机取件码函数:
+内容详解：
 
-```py
-def code num(length):#货架号所数
-	charS ="ABCDEFGHIJKLMNOPORSTUVWXYZ0123456789'
-	code ='.ioin(random.choice(chars)for_in range(length))first = code[o:3]second = code3:6]
-	end = code6:97
-	code formatted =f"{first}-{second}-{end}'
-	return code formatted
-```
+1. random函数：详情见[1.*.3 random](#1.*.3 random)
 
-解释:
-。`chars:random`函数用于调用的随机数种子
-`code =.join(random.choice(chars)for_in range(length))`
+2. ` import getpass`:由于 PyCharm 当前版本编译器与`getpass`函数有冲突，演示时该函数未实际使用，在其他环境里会投入使用
 
-- `' '.join`:格式要求，生成数直接无连接符
-- `(random.choice(chars))`:random的随机选择功能，从chars里选择内容生成结果
-- `for-in range(length)`:用于限制random生成随机数的长度，length是输入参数
+3. 自动生成随机取件码函数：
 
-`code_formatted =f"{first}-{second}-{end}":`将三段内容链接，用-分割
-**注:此处用f-string使可读性更高**
+   ```py
+   def code_num(length): # 货架号函数
+       chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+       code = ''.join(random.choice(chars) for _ in range(length))
+       first = code[0:3]
+       second = code[3:6]
+       end = code[6:9]
+       code_formatted = f"{first}-{second}-{end}"
+       return code_formatted
+   ```
+
+ 解释：
+
+- chars ：random函数用于调用的随机数种子
+
+- `code = ''.join(random.choice(chars) for _ in range(length))`
+
+  - ` ''.join`：格式要求，生成数直接无连接符
+  - `(random.choice(chars))` ： random的随机选择功能，从chars里选择内容生成结果
+  - `for _ in range(length)`：用于限制random生成随机数的长度，length是输入参数
+
+- `first...end = ...` : 将生成的随机数分为三段
+
+- ` code_formatted = f"{first}-{second}-{end}"`：将三段内容链接，用-分割
+
+  **注：此处用f-string使可读性更高**
+
+4. 将取件码存储在本地的函数：
+
+   ```PY
+   couriers = { }
+   
+   def save_to_file(filename,dic_name):
+       data = str(dic_name)
+       with open(filename,mode="w", encoding='utf-8') as f:
+           f.write(data)
+   
+   def save_couriers():
+       save_to_file(r"D:\code\data\couriers.txt",couriers)
+   ```
+
+解释：
+
+- ```py
+  couriers = { }
+  ```
+
+  将couriers（取件号）定义为一个空字典，便于后面存储内容
+
+- ```PY
+  data = str(dic_name)
+  ```
+
+ 	将字典名参数转为str格式存入data
+
+- ```py
+  with open(filename,mode="w", encoding='utf-8') as f:
+          f.write(data)
+  ```
+
+  用w（编辑）模式打开目标文件，编码设定为utf-8，避免中文乱码，并将以上内容写入data中
+
+- ```PY
+  def save_couriers():
+      save_to_file(r"D:\code\data\couriers.txt",couriers)
+  ```
+
+  简化函数，因为在该脚本中，取件码都存储在同一个目录中，因此直接调用该函数则可以保存对字典的更改
+
+5. try函数的实用注意：
+
+   ```py
+   try:
+       _ = int(code_in)
+   except ValueError:
+       print("不是有效字符！")
+       continue
+   ```
+
+- ` _ = int(code_in)`: 
+
+  这里使用 ‘_’ 意思是，测试‘code_in’（输入内容）是否是int，同时抛弃结果，如果不抛弃结果，try则会捕获报错的结果**，并输出错误提示**
+
+6. .lower() 的使用：
+
+   ```py
+   print("欢迎,admin\n 请选择功能：\n 1. 添加快递"
+                         f"\n 2. 查询快递\n 3. 查询当前代取快递\n q. 保存并退出")
+                   choice = input("请输入选项：").lower()
+   ```
+
+   `choice = input("请输入选项：").lower()` ：
+
+   这里.lower() 的使用，可以在输入内容用包含字母时避免大小写问题，使使用体验更为流畅
+
+7. 添加入库时间：
+
+   ```py
+     couriers[code_in] = {
+                           'shelf':code_num(9),'create_time':time_now
+                       }
+   ```
+
+   给字典内嵌套字典，可以查看入库时间的同时可以让格式更为美观，当前快递格式：
+
+   {'123': {'shelf': 'YIM-HNE-8HS', 'create_time': '2025-04-15 17:44:25'}}
 
 
-
-4.将取件码存储在本地的函数:
-
-```py
-couriers ={}
-
-def save_to_file(filename,dic name):
-	data =str(dic name)with open(filename,mode="w",encoding='utf-8') as f:f.write(data)
-    
-def save couriersO:
-    save to file(r"D:\codedata couriers.txt",couriers)
-```
-
-解释:
-
-```py
-couriers={}
-```
-
-- 将couriers(取件号)定义为一个空字典，便于后面存储内容
-
-```py
-data = str(dic _name)
-```
-
-- 将字典名参数转为str格式存入data
-
-```py
-with open(filename,mode="w",encoding='utf-8') as f:
-	f.write(data)
-```
-
-5.try函数的实用注意:
-
-```py
-try:
-	_=int(code_in)
-except ValueError:
-	print("不是有效字符!")
-	continue
-	
-```
-
-- `_=int(code in):
-
-这里使用 “意思是，测试'code in'(输入内容)是否是int，同时抛弃结果，如果不抛弃结果，try则会捕获报错的结果，并输出错误提示
-
-6. lower()的使用:
-
-```py
-print("欢迎,admin\n 请选择功能:\n 1.添加快递”f"
-      \n 2.査询快递\n 3.査询当前代取快递\n q.保存并退出")
-choice = input("请输入选项:").lower()
-```
-
-`choice =input("请输入选项:").lower()`
-
-
-这里.lower()的使用，可以在输入内容用包含字母时避免大小写问题，使使用体验更为流畅
 
 ### 2.#.2 登录系统
 
@@ -2913,7 +3232,73 @@ main()
 
 
 
- 
+ 内容详解：
+
+1. 定义一个不区分大小写的函数,用于输入用户名时大小写都可以验证
+
+```py
+def trans(in_name,lis_name): 
+    # 定义两个参数，一个是输入的名称，一个是列表的名称
+    if in_name.lower() in [x.lower() for x in lis_name]:
+        return True
+    else:
+        return False
+```
+
+`if in_name.lower() in [x.lower() for x in lis_name]:`
+
+解释：将输入的 名字 ，和 名字列表 内容**都转为小写**，然后比对输入名字是否在列表内
+
+- .lower : 把前面的参数转为小写（只支持英语）
+
+- `[x.lower() for x in lis_name]` 
+
+  一个列表推导式，意为把 `名字列表里`的内容转为小写
+
+```  py
+return True
+    else:
+        return False
+```
+
+解释：这几行是**条件返回值的标准格式**
+
+2. 用函数代替in（避免系统不支持in的情况）
+
+```py
+def judge(target,iterable): # 定义一个函数代替in
+    for item in iterable:
+        if item == target:
+            return True
+        else:
+            return False
+```
+
+3. getpass() : 输入密码时不显示密码
+
+   功能介绍：[Python中的getpass模块介绍-CSDN博客](https://blog.csdn.net/jerry_1126/article/details/69870093)
+
+```py
+import getpass
+key_a = getpass.getpass("请输入实验室A密码：")
+```
+
+- ( ) : 括号内是会输出的提示词
+
+4. if not ：判断变量是否为空
+
+   功能介绍：[Python 中 if not 的用法_python if not-CSDN博客](https://blog.csdn.net/u010447297/article/details/84976242)
+
+```py
+if not stu_name:
+     print("输入姓名不能为空！")
+```
+
+- 此处用于判断，用户输入内容 `stu_name` 是否为空，如果为空，则结果为Ture，会继续执行下面的告警
+
+5. elif : 用于增加其他并列的条件，必须与if连用
+
+   功能介绍：[python中if的基本用法（if，else，elif，and，or，if嵌套，跟电脑猜拳）_python if-CSDN博客](https://blog.csdn.net/bmengmeng/article/details/93978182)
 
  
 
