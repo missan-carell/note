@@ -6,6 +6,8 @@
 
 ## 1．   mysql入门
 
+可参考文章：[快速入门-MySQL](https://mp.weixin.qq.com/s/uqDEEENiv9zRNaGfWRCcuQ?scene=1)
+
 ### 1.1.  数据库原理：
 
 mysql作为数据库，会通过监听某个端口与主机连接，即：
@@ -20,9 +22,11 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 #### 1.1.1 数据库的结构：
 
-1. **数据库的基础概念**：安装mysql数据库，即在主机上安装一个**数据库管理系统** （DBMS），这个管理系统可以用于管理多个数据库，每个数据库中有很多内容，如表，视图等内容，其中**表**是最重要的。
+1. **数据库的基础概念**：安装mysql数据库，即在主机上安装一个**数据库管理系统** （DBMS），这个管理系统使用的SQL语言可以用于管理多个数据库，每个数据库中有很多内容，如表，视图等内容，其中**表**是最重要的。
 
    注：DBMS: datebase manage system
+
+   mysql的特性有：事务支持、ACID特性（原子性、一致性、隔离性、持久性）、索引、触发器、存储过程、视图等
 
 2. 数据库的三层结构图解：
 
@@ -82,9 +86,9 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 #### 1.2.2 添加环境变量：
 
-在解压好后添加环境变量：(具体用途查看：[py笔记](py笔记.docx)中环境变量)
+在解压好后添加环境变量：(具体用途查看：[python](python.md)中环境变量)
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 电脑-->属性-->高级系统设置-->高级-->环境变量 :
+- 电脑-->属性-->高级系统设置-->高级-->环境变量 :
 
 1. 选择 Path （若没有则自己新建）
 
@@ -98,7 +102,7 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 1. 创建my.ini文件：
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 在自己安装的mysql目录（如D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64）下创建该文件 my.ini
+-  在自己安装的mysql目录（如D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64）下创建该文件 my.ini
 
 ![*](.assets\clip_image001.gif) 开my.ini ，复制如下内容：
 
@@ -121,19 +125,19 @@ skip-grant-tables
 
 2. 初始化mysql数据库：
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 找到cmd，选择以管理员身份运行
+- 找到cmd，选择以管理员身份运行
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 切换到mysql的bin目录下：
+- 切换到mysql的bin目录下：
 
 cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
 (ps:切到盘下，需要在cd后加/D)
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 执行指令：mysqld -install
+- 执行指令：mysqld -install(如果此处出现问题，请查看[缺少dll库解决](#缺少dll库解决))
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 初始化数据库：mysqld --initialize-insecure --user=mysq
+- 初始化数据库：mysqld --initialize-insecure --user=mysq
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 数据库初始化成功后，mysql目录会出现一个data目录，里面有相应的内容（注意初始化时一定要退回到你安装mysql的盘：如D盘）
+数据库初始化成功后，mysql目录会出现一个data目录，里面有相应的内容（注意初始化时一定要退回到你安装mysql的盘：如D盘）
 
  ![image-20250115215914861](.assets/image-20250115215914861.png)
 
@@ -147,42 +151,62 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 
  ![image-20250115215937898](.assets/image-20250115215937898.png)
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 终止mysql ：`net stop mysql`
+ 终止mysql ：`net stop mysql`
 
 4. 检查端口：`netstat -na` ，查看3306端口是否存在，若正常存在，则说明mysql服务已经启动
 5. 进入mysql管理终端：`mysql -u root -p`（当前未设置root密码，回车即可）
 6. 修改密码：
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) use mysql；（注意要打分号）
+use mysql；（注意要打分号）
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) update user set authentication_string=password(“haohao123”)where user=”root”and Host=”localhost”;
+-  update user set authentication_string=password(“haohao123”)where user=”root”and Host=”localhost”;
 
 **解读**：这句话的意思是：修改root用户的密码为haohao123
 
 ![image-20250115220011588](.assets/image-20250115220011588.png)
 
- ![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 这样即为成功
+- 这样即为成功
 
 ![image-20250115220017076](.assets/image-20250115220017076.png)
 
  
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) flush privileges 刷新权限即可
+-  flush privileges 刷新权限即可
 
 7. quit 退出mysql终端，mysql在后台运行
 8. 修改my.ini ,再次进入就会进行权限验证：
 
-![*](file:///C:/Users/carell/AppData/Local/Temp/msohtmlclip1/01/clip_image001.gif) 删除：skip-grant-tables ，下次进入mysq时则需要使用密码
+-  删除：skip-grant-tables ，下次进入mysq时则需要使用密码
 
 9. 修改后重启mysql，即可生效
+
+#### 缺少dll库解决
+
+解决方法参考：[完美解决：由于找不到msvcp120.dll,无法继续执行代码问题。 - 哔哩哔哩](https://www.bilibili.com/opus/964649886615076867)
+
+库下载：[Download Visual C++ Redistributable Packages for Visual Studio 2013 from Official Microsoft Download Center](https://www.microsoft.com/zh-CN/download/details.aspx?id=40784)
 
 ---
 
 ### 1.3 mysql的使用
 
-#### 1.3.1 命令行连接到mysql
+#### 1.3.1 启用/命令行连接到mysql
 
-1. 连接到mysql ：mysql -h 主机ip -P连接端口 -u用户名 -p密码 ，**注意大小写**
+注意，这里主要讲的是win的命令
+
+- 启动mysql： 
+
+​	`brew services start mysql`（win）
+
+​	`	sudo service mysql start`(linux)
+
+- 停止mysql：
+
+  `sudo service mysql stop`(linux)
+
+  `exit;`(win)
+
+1. 连接到mysql ：` mysql -h 主机ip -P连接端口 -u用户名 -p密码` ，**注意大小写**
 
    注意事项：
 
@@ -374,6 +398,7 @@ cd  /D D:\MYSQL\mysql-5.7.19-winx64\mysql-5.7.19-winx64\bin
 ### 1.6 Sql语句的分类（粗略）
 
 - 该章节将粗略的介绍部分常用语句，后续会有对部分sql语句的拓展介绍，根据超链接跳转到对应位置
+- sql的概念：SQL是一种结构化查询语言，用于管理和操作数据
 
 #### 1.6.1 主要分类：
 
@@ -464,6 +489,8 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
    1）查看当前主机所有数据库：`show databases ;`（databases有s，**注意和其他的区分**）
 
    2）查看指定数据库：`show create database 数据库名称` （此处database没有s）
+   
+   3）查看当前数据库所有表：`SHOW TABLES;`
 
 - 查询结果解释：
 
@@ -521,7 +548,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
    `create table 表名`
 
-   ```
+   ```sql
    create table 表名 (
        第一例内容   第一列格式,
    
@@ -562,7 +589,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
       - 修改已有表的字符集：
    
         ```sql
-        - ALTER TABLE 表名 CONVERT TO CHARACTER SET utf8; 
+        ALTER TABLE 表名 CONVERT TO CHARACTER SET utf8; 
         #将已有表的字符集该为utf8
         ```
    
@@ -584,6 +611,13 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
       #删除user表中，id为2的列
       
       DELETE FROM users WHERE id = 2;   
+      ```
+   
+   
+   6. 删除表：
+   
+      ```sql
+       DROP TABLE users;
       ```
    
       
@@ -610,9 +644,15 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
    - values前面没有逗号
    
 
-#### 1.6.7 插入列：
+#### 1.6.7 修改列（alter）：
 
-1. 基本语法：
+列的具体内容可见:[==1.7==列的类型和参数](#==1.7==列的类型和参数)
+
+修改列表参考文章：[如何在mysql上修改基本表 alter语句修改表结构-mysql教程-PHP中文网](https://www.php.cn/faq/1324266.html)
+
+1. 添加列：
+
+   基本语法：
 
    ```sql
    ALTER TABLE 表名
@@ -621,11 +661,77 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
    -- 该语句需要有对这个表的alter权限
    ```
 
-2. 位置可选项：
+   例子：
+
+   在students表中新增一列来记录age：
+
+   ```SQL
+   ALTER TABLE students ADD COLUMN age VARCHAR(255) NOT NULL;
+   ```
+
+   
+
+   位置可选项：
+
    - first 第一列
    - after 列名（指定某列后）
 
+2. 删除列：
 
+   ```sql
+    ALTER TABLE <表名> MODIFY <列名> SMALLINT;
+   ```
+
+   ```sql
+   ALTER TABLE <表名> DROP COLUMN <列名>;
+   ```
+   
+   此操作不可逆，谨慎使用
+
+3. 修改列的类型：
+
+   把某一列类型修改为 SMALLINT
+
+   ```sql
+    ALTER TABLE <表名> MODIFY <列名> SMALLINT;
+   ```
+
+4. 复制表结构（不含数据）
+
+```sql
+CREATE TABLE <新表名> LIKE <旧表名>;
+```
+
+5. 清空表数据（保留表结构）
+   ``` sql
+   TRUNCATE TABLE <表名>;
+   ```
+
+   
+
+#### 1.6.8 表的其他操作命令
+
+1. 查看当前数据库所有表：`SHOW TABLES;`
+
+2. 查看表结构 ：
+
+- `DESCRIBE users;`
+
+- ` SHOW COLUMNS FROM users;`
+
+3. 删除表：
+
+   ```sql
+    DROP TABLE <表名>;
+   ```
+
+4. 修改表名：
+
+   ````sql
+   RENAME TABLE <原表名> TO <新表名>;
+   ````
+
+   
 
 ---
 
@@ -733,19 +839,22 @@ INTO OUTFILE 或 FOR UPDATE -- 可以放在limit后面
 
      <img src=".assets/image-20250218171927094.png" alt="image-20250218171927094" style="zoom:60%;" />
 
-4. `SELECT * FROM users order by xx LIMIT n;`（只查看部分， 在查阅大量数据时十分有效）
 
-   只查看user表中的前n条数据  
+4. `SELECT DATABASE();` 查看当前选中的数据库
 
-   注意：
-   
-   - limit**必须放在最后，且必须在order by后面**
-   
-   - 如何从中间开始限制:
-   
-     `limit n-1 , n2  `
-   
-     从第n条开始，取n2条数据
+5. `SELECT * FROM users order by xx LIMIT n;`（只查看部分， 在查阅大量数据时十分有效）
+
+只查看user表中的前n条数据  
+
+注意：
+
+- limit**必须放在最后，且必须在order by后面**
+
+- 如何从中间开始限制:
+
+  `limit n-1 , n2  `
+
+  从第n条开始，取n2条数据
 
 ```sql
 #查询表中所有学生的信息。
