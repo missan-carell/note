@@ -4,11 +4,11 @@
 
 # mysql学习
 
-## 1．   mysql入门
+#  1．   mysql入门
 
 可参考文章：[快速入门-MySQL](https://mp.weixin.qq.com/s/uqDEEENiv9zRNaGfWRCcuQ?scene=1)
 
-### 1.1.  数据库原理：
+## 1.1.  数据库原理：
 
 mysql作为数据库，会通过监听某个端口与主机连接，即：
 
@@ -20,7 +20,7 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 <img src=".assets/image-20250115175027925.png" alt="image-20250115175027925" style="zoom: 67%;align=left" />
 
-#### 1.1.1 数据库的结构：
+### 1.1.1 数据库的结构：
 
 1. **数据库的基础概念**：安装mysql数据库，即在主机上安装一个**数据库管理系统** （DBMS），这个管理系统使用的SQL语言可以用于管理多个数据库，每个数据库中有很多内容，如表，视图等内容，其中**表**是最重要的。
 
@@ -52,7 +52,7 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 <img src=".assets/image-20250117201700513.png" alt="image-20250117201700513" style="zoom:50%;" />
 
-#### 1.1.2 数据在数据库中的存储方式：
+### 1.1.2 数据在数据库中的存储方式：
 
 1. 数据通过**表**存储在数据库中
 2. 在表中，竖过来的叫一列（column），横过来的叫一行（row）
@@ -61,11 +61,11 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 3. 表的一行称之为**一条记录** --> 在java中，一条记录往往用一个对象来表示
 
-#### 1.1.3 客户端与数据库的连接：
+### 1.1.3 客户端与数据库的连接：
 
 客户端（发出命令，如：select* from users）<--- [3306端口] DBMS监听端口，得到客户端的命令--->依据命令查找相应的表 users ，将表内的结果返回到界面
 
-#### 1.1.4 数据库和表的本质
+### 1.1.4 数据库和表的本质
 
 1. 表：类似Excel表格，有行（记录）和列（字段）。
 2. 数据库：存放数据的“仓库”。
@@ -76,15 +76,15 @@ mysql作为数据库，会通过监听某个端口与主机连接，即：
 
 ---
 
-### 1.2.  mysql的安装：
+## 1.2.  mysql的安装：
 
-#### 1.2.1．mysql下载
+### 1.2.1．mysql下载
 
 [mysql5.7下载地址](https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.19-winx64.zip)
 
 （ps：若在下载过程中遇到问题，或想要重新下载mysql，需要删除mysql，使用指令 sc delete mysql，<u>但在删除前一定要注意检查当前mysql里面没有存储重要内容。工作环境中不建议使用</u>）
 
-#### 1.2.2 添加环境变量：
+### 1.2.2 添加环境变量：
 
 在解压好后添加环境变量：(具体用途查看：[python](python.md)中环境变量)
 
@@ -188,9 +188,9 @@ use mysql；（注意要打分号）
 
 ---
 
-### 1.3 mysql的使用
+## 1.3 mysql的使用
 
-#### 1.3.1 启用/命令行连接到mysql
+### 1.3.1 启用/命令行连接到mysql
 
 注意，这里主要讲的是win的命令
 
@@ -222,7 +222,7 @@ use mysql；（注意要打分号）
 
    6）若没有写-P的地址，默认就是3306。实际工作中，默认端口往往会修改，因此建议**不要使用默认端口**
 
-#### 1.3.2 创建和使用查询
+### 1.3.2 创建和使用查询
 
 **编写语句要在查询界面查询** ,以下将介绍如何创建和使用查询（以sqlyog为例）：
 
@@ -235,7 +235,7 @@ use mysql；（注意要打分号）
 
 
 
-#### 1.3.3 mysql命令简介
+### 1.3.3 mysql命令简介
 
 语句的分类以及部分**命令详解**：[1.6 Sql语句的分类](#1.6 Sql语句的分类)
 
@@ -267,9 +267,9 @@ use mysql；（注意要打分号）
 
 ---
 
-### 1.4 navicat的安装和使用
+## 1.4 navicat的安装和使用
 
-#### 1.4.1 navicat 功能介绍：
+### 1.4.1 navicat 功能介绍：
 
 利：便于图形化的使用mysql功能，界面清晰，操作简单
 
@@ -277,13 +277,13 @@ use mysql；（注意要打分号）
 
 
 
-#### 1.4.2navicat的安装：
+### 1.4.2navicat的安装：
 
 [破解版安装](https://blog.csdn.net/qq_36324341/article/details/140777029)
 
 
 
-#### 1.4.3navicat的使用（基础）：
+### 1.4.3navicat的使用（基础）：
 
 1. 如何连接主机mysql：
 
@@ -335,13 +335,13 @@ use mysql；（注意要打分号）
 
 ---
 
-### 1.5 SQlyog 的安装和使用
+## 1.5 SQlyog 的安装和使用
 
-#### 1.5.1 Sqlyog的安装：
+### 1.5.1 Sqlyog的安装：
 
 [社区版下载方法](https://blog.csdn.net/qq_72641424/article/details/128773738)
 
-#### 1.5.2 sqlyog的使用：
+### 1.5.2 sqlyog的使用：
 
 1. 新建一个mysql连接：
 
@@ -381,7 +381,7 @@ use mysql；（注意要打分号）
       - sqlyog的代码行和下方的结果，都可以通过 crtl +鼠标滑轮放大缩小
       - 社区版免费，使用门槛更低
 
-#### 1.5.3 sqlyog中命令行的使用：
+### 1.5.3 sqlyog中命令行的使用：
 
 1. 单机上方的加号，选择 **新查询编辑器** 
 
@@ -395,12 +395,12 @@ use mysql；（注意要打分号）
    
    
 
-### 1.6 Sql语句的分类（粗略）
+## 1.6 Sql语句的分类（粗略）
 
 - 该章节将粗略的介绍部分常用语句，后续会有对部分sql语句的拓展介绍，根据超链接跳转到对应位置
 - sql的概念：SQL是一种结构化查询语言，用于管理和操作数据
 
-#### 1.6.1 主要分类：
+### 1.6.1 主要分类：
 
 1. DDL 数据语言定义：如create 表，库
 
@@ -410,9 +410,9 @@ use mysql；（注意要打分号）
 
 4. DCL 数据控制语言：一般用于管理数据库：如用户权限 grand（授权） revoke（撤回权限）
 
-   常见语句：[1.3.3 mysql的常见命令](#1.3.3 mysql的常见命令)
+   常见语句：[1.3.3 mysql命令简介](#1.3.3 mysql命令简介)
 
-#### 1.6.2 创建数据库
+### 1.6.2 创建数据库
 
 1. 基础语句：
 
@@ -456,7 +456,7 @@ use mysql；（注意要打分号）
      
      `CREATE DATABASE missan_db03 CHARACTER SET utf8 COLLATE utf8_general_ci;`
 
-#### 1.6.3 查询select和show
+### 1.6.3 查询select和show
 
 select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
@@ -498,7 +498,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
 [查询相关指令：] **[https://blog.csdn.net/IT_Boy_/article/details/107096018]: www.example.com**
 
-#### 1.6.4 备份和恢复数据库/表（重要）
+### 1.6.4 备份和恢复数据库/表（重要）
 
 1. 概念：数据库的本质还是**文件系统**。备份是指将数据库的内容备份到文件中，恢复是将数据库的内容重新从文件恢复到数据库中。
 
@@ -542,7 +542,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 
       
 
-#### 1.6.5 创建/修改表
+### 1.6.5 创建/修改表
 
 1. 基础语句：
 
@@ -562,6 +562,8 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
    有特殊词要用``括起来
 
    - ==注：==创建表时，要根据需保存的数据创建相应的列，并根据数据的类型定义相应的列类型，例：
+
+     此处的 `ENGINE INNODB`是数据库的引擎，具体可查看：[1.10.1数据库引擎](#1.10.1数据库引擎)
 
      ![image-20250217202833871](.assets/image-20250217202833871.png)
 
@@ -624,7 +626,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
    
    
 
-#### 1.6.6 插入数据：
+### 1.6.6 插入数据：
 
 1. 基础语法：
 
@@ -644,7 +646,7 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
    - values前面没有逗号
    
 
-#### 1.6.7 修改列（alter）：
+### 1.6.7 修改列（alter）：
 
 列的具体内容可见:[==1.7==列的类型和参数](#==1.7==列的类型和参数)
 
@@ -709,7 +711,7 @@ CREATE TABLE <新表名> LIKE <旧表名>;
 
    
 
-#### 1.6.8 表的其他操作命令
+### 1.6.8 表的其他操作命令
 
 1. 查看当前数据库所有表：`SHOW TABLES;`
 
@@ -737,9 +739,9 @@ CREATE TABLE <新表名> LIKE <旧表名>;
 
 
 
-### ==1.7==列的类型和参数
+## ==1.7==列的类型和参数
 
-#### 1.7.1 参数：
+### 1.7.1 参数：
 
 1.**primary key** （主键）可组合使用
 
@@ -800,9 +802,9 @@ VALUES
 
 
 
-### 1.8 select 语句详解：
+## 1.8 select 语句详解：
 
-#### 1.8.1 select 基础语法
+### 1.8.1 select 基础语法
 
 语法顺序：
 
@@ -880,7 +882,7 @@ LIMIT 2, 3;
 - *：表示查询所有列，若指定了查询哪一列，则不可加，否则会报错
 - from：表示查询指定表
 
-#### 1.8.2 as语句（别名）和列间关系（加法）
+### 1.8.2 as语句（别名）和列间关系（加法）
 
 1. 列之间的关系(加法）：
 
@@ -930,7 +932,7 @@ SELECT `name` AS '名字' ,( english+chinese+math)FROM student1
 
 
 
-#### 1.8.3 where子句
+### 1.8.3 where子句
 
 - where子句的主要功能是用于过滤
 - where子句中，多个并列条件用 and 连接
@@ -1004,7 +1006,7 @@ SELECT *FROM student1 WHERE `name` LIKE '李%' OR '宋';
 
 - between and是一个闭区间
 
-#### 1.8.4 order by子句
+### 1.8.4 order by子句
 
 - Order by 指定排序的列，排序的列既可以是表中的列名，也可以是select语句后指定的列名。
 
@@ -1014,7 +1016,7 @@ SELECT *FROM student1 WHERE `name` LIKE '李%' OR '宋';
 基本语句：
 
 ```sql
-select 表 from 列 order by asc或desc
+select 表 from 列 order by <排序对象>asc或desc
 
 # 对数学成绩排序后输出【升序】。
 SELECT *FROM student1 ORDER BY math;
@@ -1026,6 +1028,9 @@ SELECT `name`,(chinese + math + english) AS total_score FROM student1
 
 #对姓韩的学生数学成绩排序输出(升序)
 SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
+
+# 可以同时对多个对象排序
+SELECT *FROM student1 ORDER BY math ASC,chinese DESc;
 ```
 
 注意：
@@ -1034,7 +1039,7 @@ SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
 - order by 后面一定要加对象
 - 和limit一起用时，limit要放order by后面
 
-#### 1.8.5 多表查询
+### 1.8.5 多表查询
 
 1. 基础语法：
 
@@ -1045,7 +1050,7 @@ SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
 
    （未学完）
 
-#### 1.8.6 join的使用
+### 1.8.6 join的使用
 
 1. join的用途：在数据库中，可以会出现想要查询的多个数据在不同表的情况，如用户信息在a表，用户成绩在b表，想要得到用户信息+用户成绩的结果，就需要使用join来联合查询
 
@@ -1064,7 +1069,7 @@ SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
    -- 内连接，只返回两个表完全匹配的行
    SELECT 列名
    FROM 表1
-   INNER JOIN 表2 ON 表1.共同字段 = 表2.共同字段;
+   INNER JOIN 表2 ON 表1共同字段 = 表2共同字段;
    
    -- 案例：
    -- 先创建两个表，分别的内容是用户信息和成绩（此处省略插入信息）：
@@ -1078,7 +1083,7 @@ SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
    	chinese INT,
    	math INT,
    	english INT);
-   -- 在创建表的时候要注意，最后提前设置用于对应两个表的项目，如id和score_id
+   -- 在创建表的时候要注意，最好提前设置用于对应两个表的项目，如id和score_id
    -- 但是对应名称不可重复，如果两个都是id，则会报错
    
    SELECT `name`,chinese,math,english # 这里需要写完整，需要查找对应的列
@@ -1132,6 +1137,267 @@ SELECT *FROM student1 WHERE `name` LIKE '韩%' ORDER BY math;
    返回两个表的所有行（不匹配的部分填充NULL），但MySQL不支持，需用UNION实现。
 
 
+
+### 1.8.7 case when 条件查询
+
+相当于python中的if..else ,通过符合一定的条件，来给出查询结果
+
+基础语法：
+
+```SQL
+CASE 列名1，列2,...
+    WHEN 值1 THEN 结果1
+    WHEN 值2 THEN 结果2
+    ...
+    ELSE 默认结果
+END [AS 判断结果的名称]
+```
+
+注意：
+
+1. `CASE WHEN` 会按顺序评估条件，第一个满足的条件会被执行，后面的条件将被忽略
+2. 不要忽略`END` 关键字
+3. `ELSE` 子句是可选的，如果不提供且没有条件匹配，结果将为 NULL
+4. 可以在 SELECT、WHERE、ORDER BY 等子句中使用
+5. 可以嵌套使用，但不宜过深以免难以维护，降低可读性
+
+案例1：
+
+```sql
+SELECT su_name , grade,
+    CASE grade
+        WHEN 'a' THEN '优秀'
+        WHEN 'b' THEN '良好'
+        WHEN 'c' THEN '及格'
+        ELSE '不及格'
+    END AS grade_description
+FROM students;
+```
+
+
+
+<img src="./.assets/image-20250527110107671.png" alt="image-20250527110107671" style="zoom:67%;" />
+
+注意：
+
+- 如果end后面不加内容，它会以上面的格式为输出结果的名称：
+
+  <img src="./.assets/image-20250527110532606.png" alt="image-20250527110532606" style="zoom: 67%;" />
+
+  输出效果较为不美观，建议在使用中用as命名
+
+案例2：同样可以进行一些数值判断
+
+```sql
+SELECT sut_name, score,
+    CASE
+        WHEN score >= 90 THEN 'A'
+        WHEN score >= 80 THEN 'B'
+        WHEN score >= 60 THEN 'C'
+        ELSE 'D'
+    END AS grade
+FROM exam_results;
+```
+
+
+
+## 1.9 用户管理
+
+注意:
+
+- 在已经登录进一个用户的情况下，是无法用`mysql -u -p` 进入其他用户的，需要先退出再登入用户
+
+​	(因为无法在mysql的shell里面使用mysql命令)
+
+- 这里的主机名(如：localhost)，是客户端的名字或者IP地址，不是服务器端的地址。
+
+  就是用来限制，哪些客户端可以连接这台服务器
+
+1. 创建新用户
+
+   参考文章：[MySQL -- 创建用户 CREATE USER 、GRANT语句 - Be-myself - 博客园](https://www.cnblogs.com/gengyufei/p/13378482.html)
+
+   ```sql
+   CREATE USER <用户> [ IDENTIFIED BY [ PASSWORD ] 'password' ] ,[ 用户 [ IDENTIFIED BY [ PASSWORD ] 'password' ]]
+   ```
+
+ 创建用户账号格式：
+
+`user_name'@'host_name`
+
+- user_name 填写需要的用户名称
+- host_name 填写对应主机名称
+
+用户默认无密码，因此password语句可省略，若要设置密码，则需要用PASSWORD
+
+- `PASSWORD` 是使用哈希来设置密码，若不需要此方法加密，可不使用
+-  `'password' ` 单引号内部填入登录密码，引号不可省略
+
+使用案例1：不使用PASSWORD
+
+```sql
+CREATE USER 'test1'@'localhost' IDENTIFIED BY '123123';
+```
+
+案例2：使用PASSWORD
+
+```sql
+-- 此处填入你的密码
+SELECT password('123123');
+-- 系统输出相应的哈希值：
++-------------------------------------------+
+| password('123123')                         |
++-------------------------------------------+
+|  *E56A114692FE0DE073F9A1DD68A00EEB9703F3F1  |
++-------------------------------------------+
+1 row in set, 1 warning (0.00 sec)
+
+-- 其中 *E56A1... 就是所得到的哈希值
+-- 再创建用户
+CREATE USER 'test1'@'localhost'IDENTIFIED BY PASSWORD ' *E56A114692FE0DE073F9A1DD68A00EEB9703F3F1';
+```
+
+PASSWORD 的作用：一般用于将自己的密码进行哈希后，把哈希值交给数据库管理员统一储存，提高安全性
+
+
+
+注意，此后的命令都要带上 @'localhost' (若主机名不是这个自行更改)
+
+2. 授予权限
+
+   ```sql
+   GRANT ALL PRIVILEGES ON mydb.* TO 'test1'@'localhost';
+   ```
+
+   
+
+    
+
+3.  查看权限
+
+   ```sql
+   SHOW GRANTS FOR 'test1'@'localhost';
+   ```
+
+   
+
+    
+
+4. 撤销权限
+
+   ```sql
+    REVOKE ALL PRIVILEGES ON mydb.* FROM 'test1'@'localhost';
+   ```
+
+   
+
+   
+
+5. 修改用户密码（MySQL 8+）
+
+   ```sql
+    ALTER USER 'test1'@'localhost' IDENTIFIED BY 'newpassword';
+   ```
+
+   
+
+6.  删除用户
+
+   ```sql
+    DROP USER 'test1'@'localhost';
+   ```
+
+
+7. 更改用户名：
+
+   ```sql
+   RENAME USER '旧用户名'@'主机名' TO '新用户名'@'主机名';
+   ```
+
+   - 更改用户名不会自动转移该用户创建的对象所有权，这些对象需要手动更新
+
+   - 如果用户当前有活动连接，可能需要先终止这些连接:
+
+     ```sql
+     -- 查看进程
+     SHOW PROCESSLIST;
+     -- 终止特定连接
+     KILL <进程ID>;
+     ```
+
+     
+
+## 1.10 系统管理
+
+### 1.10.1数据库引擎
+
+概念：数据库引擎，负责数据库里数据的不同方式，不同的数据库引擎，有不同的特点，适合不同的应用场景。
+
+​	    当前常用的引擎有：**InnoDb和 MyISAM**
+
+- InnoDb：默认方式，适合大量并发写入操作，但读性能相对一般。功能全，适合大部分应用场景。。
+
+- MyISAM：适合大量数据存储和查询，不支持大量并发写入。读性能好，但不能多个客户端同时写，适合大量数据存储和大量查询的场景。
+
+两者的区分：类似于内存和硬盘的差别，内存速度快，掉电数据丢失；硬盘慢，但适合长期保存数据。
+
+- memory引擎：直接使用，性能极好，但容量受内存限制。使用用在数据量小，但性能极高的场景。比如创建临时表，保存中间结果，用完就删除掉
+
+- archive：归档类型，就是把大量历史数据封存起来。它适合海量数据的存储，但查询性能极低的场景。
+
+  它是把数据顺序的写入磁盘，很少对数据进行分类标记。所以写入海量数据时速度快，但查询时，得把数据全读出一般才行，所以查询性能极低。
+
+  它的特点：海量数据写入极快，但查询速度极慢，查询效率极低。
+
+​										-- 不同数据库的引擎的功能对照表 --
+
+<img src="./.assets/image-20250527075222089.png" alt="image-20250527075222089" style="zoom: 67%;" />
+
+### 1.10.2 系统操作命令
+
+
+
+1. 查看当前版本
+
+   ```sql
+   SELECT VERSION();
+   ```
+
+2. 查看当前时间
+   ```sql
+    SELECT NOW();
+   ```
+
+   
+
+3. 查看连接数
+
+   ```sql
+    SHOW PROCESSLIST;
+   ```
+
+   
+
+4. 查看系统变量
+   ```sql
+    SHOW VARIABLES;
+   ```
+
+   
+
+5. 查看服务器运行状态
+   ```sql
+    SHOW STATUS;
+   ```
+
+   
+
+6. 刷新权限（授权变更后执行）
+   ```sql
+    FLUSH PRIVILEGES;
+   ```
+
+   
 
 
 
