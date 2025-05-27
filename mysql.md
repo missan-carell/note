@@ -8,6 +8,48 @@
 
 可参考文章：[快速入门-MySQL](https://mp.weixin.qq.com/s/uqDEEENiv9zRNaGfWRCcuQ?scene=1)
 
+**mysql的基础构成：**
+
+举例：把mysql设想为一个图书馆，**mysql实例**即是图书馆的大楼，而**数据库**是其中的分区（小说/散文..)，**表**是分区中的书架，**行**是书架上具体的书籍。
+
+而**用户/管理员**就是拥有不同**权限**（可借阅/可增加书..) 的读者和管理员，**shell**是图书馆的服务台，用于和图书馆进行交互（查询书籍，增改书籍等..)
+
+1. **mysql的结构层次：**
+
+​	MySQL 服务器实例 → 数据库(Database) → 表(Table) → 数据行(Row) & 列(Column)
+
+- **MySQL 服务器实例**：安装在电脑或服务器上的整个 MySQL 程序
+- **数据库(Database)**：存储相关数据的容器（如：`电商系统数据库`、`学生管理系统数据库`）
+- **表(Table)**：数据库中存储特定类型数据的结构化集合（如：`用户表`、`订单表`）
+- **行(Row) & 列(Column)**：表中的数据，行=记录，列=字段（如：一行=一个用户信息）
+
+
+
+2. **用户与权限：**
+
+   - **用户账户**：用于连接和操作 MySQL 的身份（如：`root`、`user1`）
+     - 格式：`'用户名'@'主机'`（如 `'admin'@'localhost'`）
+
+   - **权限**：控制用户能做什么（如：只能查询某个表，或能创建新数据库）
+
+
+
+3. **mysql shell命令行客户端：**
+
+   - **mysql**：最常用的 MySQL 命令行客户端
+
+   ```bash
+   # 在终端连接数据库
+   mysql -u 用户名 -p
+   
+   # 进入后可以执行SQL命令
+   mysql> SHOW DATABASES;  -- 查看所有数据库
+   mysql> USE 数据库名;    -- 选择数据库
+   mysql> SHOW TABLES;    -- 查看当前数据库的所有表
+   ```
+
+   
+
 ## 1.1.  数据库原理：
 
 mysql作为数据库，会通过监听某个端口与主机连接，即：
@@ -1213,13 +1255,13 @@ FROM exam_results;
 
   就是用来限制，哪些客户端可以连接这台服务器
 
-1. 创建新用户
+### 1.9.1创建新用户
 
-   参考文章：[MySQL -- 创建用户 CREATE USER 、GRANT语句 - Be-myself - 博客园](https://www.cnblogs.com/gengyufei/p/13378482.html)
+参考文章：[MySQL -- 创建用户 CREATE USER 、GRANT语句 - Be-myself - 博客园](https://www.cnblogs.com/gengyufei/p/13378482.html)
 
-   ```sql
-   CREATE USER <用户> [ IDENTIFIED BY [ PASSWORD ] 'password' ] ,[ 用户 [ IDENTIFIED BY [ PASSWORD ] 'password' ]]
-   ```
+```sql
+CREATE USER <用户> [ IDENTIFIED BY [ PASSWORD ] 'password' ] ,[ 用户 [ IDENTIFIED BY [ PASSWORD ] 'password' ]]
+```
 
  创建用户账号格式：
 
@@ -1259,14 +1301,14 @@ CREATE USER 'test1'@'localhost'IDENTIFIED BY PASSWORD ' *E56A114692FE0DE073F9A1D
 
 PASSWORD 的作用：一般用于将自己的密码进行哈希后，把哈希值交给数据库管理员统一储存，提高安全性
 
-
+### 1.9.2 其他管理
 
 注意，此后的命令都要带上 @'localhost' (若主机名不是这个自行更改)
 
 2. 授予权限
 
    ```sql
-   GRANT ALL PRIVILEGES ON mydb.* TO 'test1'@'localhost';
+   GRANT ALL PRIVILEGES ON <数据库名>.* TO '用户名'@'localhost';
    ```
 
    
