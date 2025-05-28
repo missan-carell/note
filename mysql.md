@@ -647,30 +647,21 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
         UPDATE student1 SET english = 79 WHERE id = 1; 
         ```
    
-   5. 删除列：
+   5. 删除表：
    
-      ```sql
-      DELETE FROM 表名 WHERE 列 = x;   
-      
-      #删除user表中，id为2的列
-      
-      DELETE FROM users WHERE id = 2;   
-      ```
+   ```sql
+    DROP TABLE users;
+   ```
    
    
-   6. 删除表：
-   
-      ```sql
-       DROP TABLE users;
-      ```
-   
-      
    
    
 
-### 1.6.6 插入数据：
+### 1.6.6 插入数据in/up：
 
-1. 基础语法：
+1. **INSERT**
+
+   基础语法：
 
    ```sql
    insert into 表名（列1,列2)
@@ -679,14 +670,67 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
    ('内容3'，'内容4'); # 注意这里是单引号
    ```
 
-2. 例：
+   例：
 
    <img src=".assets/image-20250217210236082.png" alt="image-20250217210236082" style="zoom: 67%;" />
-   
+
    注意：
-   
+
    - values前面没有逗号
-   
+
+   - **insert 是新增数据，即会同时创建行**，并不是再原来的数据后加入数据，若错误使用会导致以下情况：
+
+     ```sql
+     INSERT INTO students(score) 
+     VALUES
+     (99),
+     (60),
+     (88),
+     (50);
+     ```
+
+     <img src="./.assets/image-20250527194128051.png" alt="image-20250527194128051" style="zoom:67%;" />
+
+     若需要再原先有的行内添加数据，则需要使用update
+
+   2. **update**
+
+      基础语法：
+
+      ```sql
+      UPDATE <表名> 
+      SET <列> = <value> 
+      WHERE <根据需要填写> = <需求> ;  
+      ```
+
+      - 案例1：更新单条数据：
+
+      ```sql
+      UPDATE students
+      SET socre = 90
+      WHERE id = 4 ；
+      ```
+
+      
+
+      - 案例2：更新多条数据：
+
+      ```sql
+      UPDATE students
+      SET score = CASE 
+          WHEN su_name = 'lucy' THEN 99
+          WHEN su_name = 'bob' THEN 60
+          WHEN su_name = 'tom' THEN 88
+          WHEN su_name = 'kitty' THEN 50
+          ELSE score  -- 保持其他用户原有值不变
+      END;
+      ```
+
+   注意：
+
+   - update是修改列表的内容，而不是添加内容，他会覆写原本位置的内容，**若需要添加新的行，要用insert**
+   - **必须加 WHERE 条件**：不加 WHERE 会更新（覆盖）整张表的所有用户
+   - 最好通过唯一标识更新，如 `id` 而非用户名（避免重名问题）：
 
 ### 1.6.7 修改列（alter）：
 
@@ -723,14 +767,61 @@ select语句详解：[1.8 select 语句详解：](#1.8 select 语句详解：)
 2. 删除列：
 
    ```sql
-    ALTER TABLE <表名> MODIFY <列名> SMALLINT;
-   ```
-
-   ```sql
    ALTER TABLE <表名> DROP COLUMN <列名>;
    ```
-   
+
    此操作不可逆，谨慎使用
+
+   ```sql
+   DELETE FROM 表名 WHERE 列 = x;   
+   
+   #删除user表中，id为2的列
+   
+   DELETE FROM users WHERE id = 2;   
+   ```
+
+   - 如何删除空列：
+
+     如下图情况，其id之类的为空如何删除
+
+     <img src="./.assets/image-20250527195241309.png" alt="image-20250527195241309" style="zoom: 50%;" />
+
+   方法1：判断是否为空来删除
+
+   -- 先检查要删除的部分是否正确
+
+   避免删去自己需要内容
+
+   ```sql
+   SELECT * 
+   FROM students
+   WHERE 
+       id IS NULL 
+       AND su_name IS NULL 
+       AND grade IS NULL;
+   ```
+
+   -- 再执行删除操作
+
+   ```
+   DELETE FROM students
+   WHERE 
+       id IS NULL 
+       AND su_name IS NULL 
+       AND grade IS NULL;
+   ```
+
+   方法2： 若之前有id或其他可判断数值，可直接统一删除
+
+   ```sql
+   -- 查找错误数据
+   SELECT * FROM users WHERE id > 4;  
+   
+   -- 2. 删除错误数据
+   DELETE FROM users WHERE id > 4;
+   ```
+
+   
 
 3. 修改列的类型：
 
@@ -795,14 +886,12 @@ CREATE TABLE <新表名> LIKE <旧表名>;
 
 - **单字段或多字段**：可以设置单字段主键或多字段主键（复合主键），用多个字段共同确定唯一性。
 
-2. **auto_increment**（自增长），常用于id等需要自增长的数字
+2. **auto_increment**（自增长），常用于id等需要自增长的数字。只有主键才可使用
 
 **自增长**是用于自动生成唯一<u>数字的字段属性</u>，通常与主键结合使用。它具有以下特点：
 
 - **自动递增**：每次插入新记录时，字段值自动递增，默认从1开始，每次加1。
-
 - **唯一性**：自增长字段必须是唯一索引，即主键或主键的一部分。
-
 - **整数类型**：自增长字段只能是整数类型，如TINYINT、SMALLINT、INT、BIGINT等。
 
 例：该语句指的是，id列的内容为整形，且具有唯一性，且会自增长
@@ -1103,7 +1192,7 @@ SELECT *FROM student1 ORDER BY math ASC,chinese DESc;
    - 注意事项：
      - 不要漏写on，漏写on会导致所有行组合（N×M行）
 
-2. 语法1：inner join内连接
+2. 语法1：inner join内连接（取交集）
 
    注意：返回的是**完全匹配**的行
 
@@ -1135,14 +1224,15 @@ SELECT *FROM student1 ORDER BY math ASC,chinese DESc;
 
    结果：<img src=".assets/image-20250224155032145.png" alt="image-20250224155032145" style="zoom:67%;" />
 
-2. 语法2：left join 左连接
+3. 语法2：left join 左连接（左表+左与右交集）
 
    返回左表**全部数据** + 右表**匹配的数据**（不匹配的显示NULL）
 
    ```sql
    SELECT 列名
    FROM 表1
-   LEFT JOIN 表2 ON 表1.共同字段 = 表2.共同字段;
+   LEFT JOIN 表2 ON 表1共同字段 = 表2共同字段;
+   -- 左右是 on 后面的表的位置
    
    -- 案例：
    -- 若直接使用上述案例，可能看不出来区别，此处先给score表增加几行数据：
@@ -1241,7 +1331,40 @@ SELECT sut_name, score,
 FROM exam_results;
 ```
 
+### 1.8.8 **子查询**subqueries
 
+子查询是嵌套在另一个查询中的查询。
+
+它可以出现在 SELECT, INSERT, UPDATE, 或 DELETE ,HAVING 子句的语句中，并且可以返回单个值、一行或多行
+
+基础语法：
+
+```sql
+SELECT <列> FROM <表名> 
+WHERE <筛选操作> (
+    SELECT <列> FROM <表> 
+    [WHERE condition]);
+```
+
+筛选操作可以有：=，<,>,>=,<=
+
+注意：
+
+- 必须用 () 包裹
+- 该命令先执行**子查询**，后执行外层查询
+
+案例1：查询学生成绩中大于平均值的学生和成绩
+
+```sql
+SELECT su_name, score FROM students 
+WHERE score > (
+    SELECT AVG(score)
+    FROM students);
+```
+
+与join的对比:
+
+<img src="./.assets/image-20250528145254263.png" alt="image-20250528145254263" style="zoom: 67%;" />
 
 ## 1.9 用户管理
 
@@ -1439,21 +1562,146 @@ PASSWORD 的作用：一般用于将自己的密码进行哈希后，把哈希�
     FLUSH PRIVILEGES;
    ```
 
+   ---
+   
    
 
+# 2. mysql进阶
 
 
 
+## 2.1 函数
+
+### 2.1.1 聚合函数：
+
+聚合函数一览：
+
+<img src="./.assets/image-20250527192148700.png" alt="image-20250527192148700" style="zoom: 67%;" />
+
+#### 2.1.1.1 AVG() 平均值
+
+AVG(): 用于计算某列数据的平均值的函数
+
+基础语法：
+
+```sql
+SELECT AVG(列名) FROM 表名 [WHERE 条件];
+```
+
+注意：
+
+- AVG只能用于数值的计算：int，float，decimal
+- avg会自动忽略null值
+
+#### 2.1.2 count() 统计
+
+基础语法：
+
+```sql
+SELECT COUNT(列名或*) 
+FROM 表名 
+[WHERE 条件];
+```
+
+案例1：count(*) 统计行数
+
+```sql
+SELECT COUNT(*) [AS <别名>] FROM <列表>;
+
+-- 统计学生个数
+SELECT COUNT(*) AS total FROM students2;
+```
+
+案例2：统计特定行数（排除null值）
+
+```sql
+SELECT COUNT(列) [AS <别名>] FROM <列表>;
+
+-- 求所有学生（非空）等地的个数
+SELECT COUNT(grade) AS total_grade FROM students2;
+```
+
+案例3：统计唯一值count(distinct)
+
+```sql
+-- 统计不同成绩等级的数量
+SELECT COUNT(DISTINCT grade) AS distinct_grades 
+FROM students2;
+```
+
+案例4：与group by配合使用
+
+查找每个等地多少人
+
+```sql
+SELECT COUNT(id) 
+FROM students2
+GROUP BY grade
+```
 
 
 
+## 2.2 group by分组
+
+用于将数据按指定字段分组，并对每个分组执行聚合计算（如求和、计数、求平均等）。用于处理**数据汇总**
+
+基础语法：
+
+```sql
+SELECT 分组列, 聚合函数(列)
+FROM 表名
+GROUP BY 分组列;
+```
+
+案例1：
+
+```sql
+-- 统计每个等地平均分
+SELECT grade,AVG(score) AS avg_socre
+FROM students2
+GROUP BY grade
+```
+
+解释：先在students2 以grade来分组，然后寻找garde和平均成绩，并以avg_score 作为别名输出
+
+输出结果：
+
+<img src="./.assets/image-20250528155432386.png" alt="image-20250528155432386" style="zoom:80%;" /> 
+
+案例2：统计每个等地有多少人
+
+```sql
+SELECT COUNT(id) 
+FROM students2
+GROUP BY grade
+```
 
 
 
+与其他过滤条件组合使用：
 
+```sql
+SELECT 
+    分组字段,
+    聚合函数(计算字段) 
+FROM 表名
+WHERE 过滤条件（分组前）
+GROUP BY 分组字段
+HAVING 过滤条件（分组后）
+ORDER BY 排序字段;
+```
 
+注意：
 
+- **SELECT 字段限制**：
 
+​	- 非聚合字段必须出现在 `GROUP BY` 中
+
+​	- 聚合字段（如 `SUM()`）无需出现在 `GROUP BY`
+
+- 执行顺序：`FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY`
+
+- 必须搭配 `COUNT()`, `SUM()`, `AVG()`, `MAX()`, `MIN()` 等使用。
 
 
 
