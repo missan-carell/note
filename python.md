@@ -2024,6 +2024,31 @@ while i < 10:
 
 <img src="./.assets/image-20250508202547640.png" alt="image-20250508202547640" style="zoom: 33%;" />
 
+案例2：
+
+要求：
+
+某人有100,000元,每经过一次路口，需要交费,规则如下:
+
+当现金>50000时，每次交5%
+
+当现金<=50000时,每次交1000
+编程计算该人可以经过多少次路口
+
+```py
+while True:
+    if total > 50000:
+        total -= total*0.05
+        count += 1
+    elif total >= 1000:# 此处即省略了<=50000,同时避免了钱的负数问题
+        total -= 1000
+        count += 1
+    else:
+        print(f"他总共可以走：{count}次")
+
+        break
+```
+
 #### 1.7.2 while循环和else搭配
 
 在 while ... else在遍历过程中,没有被打断，且判断条件为 false 时,会执行 else 的语句块
@@ -2234,6 +2259,8 @@ def greet(name): # 函数名和参数
     print(f"Hello {name}")
 greet("Alice")
 ```
+
+函数进阶：[4. 函数：](#4. 函数：)
 
 ### 1.10 split
 
@@ -2730,7 +2757,7 @@ while True:
         break			# 这里是中止外层循环，此处终止后，下面一个循环也不会执行
     while True:
         print("OK while")
-        break			# 这里只会中止内层循环，然后又返回外层循环
+        break			# 这里只会中止内层循环，然后又返回外层循环，然后再回此处输出
 else:
     print("Hello, while")
     
@@ -2770,6 +2797,90 @@ print(digital)
 print(random.randrange(0, 10, 2)) # 开始，结束，步长
 
 ```
+
+#### 1.*.4 continue
+
+1.基础语法：用于for或while循环所嵌套的代码中**结束本次循环**，继续执行循环的下一个轮次（该项目**最近**的外层循环的下一个轮次，类似于break）
+
+- continue原理图解：
+
+​	以while为例，如果嵌套的语句里有可以被执行的continue，那么则会忽略后续其他语句（即结束本次循环），直接转回上一层循环。如果想要一次跳出多个循环，可使用goto语句
+
+注：continue并非退出while循环
+
+<img src="python.assets/image-20250717154920321.png" alt="image-20250717154920321" style="zoom: 67%;" />
+
+2. 应用案例：
+
+   案例1：
+
+```py
+for i in range(0,2):
+	for j in range(1,4):
+		if j == 2:
+			continue
+		print("i=",i,"j=",j)
+        
+# 输出结果：
+i= 0 j= 1
+i= 0 j= 3
+i= 1 j= 1
+i= 1 j= 3
+```
+
+#### 1.*.5return
+
+1. 基础语法：return用于**跳出函数**，执行return语句时，该函数会直接结束，并跳转到**调用函数**的地方
+
+   在函数中，如果return后面跟有变量，则会在跳出函数的同时返回变量结果
+
+```py
+def r1():
+    for i in range(1,5):
+        if i == 3:
+            return
+        print("i=",i)
+    print("循环结束")
+r1()
+
+# 输出结果:
+i= 1
+i= 2
+# 可以看到这里跳过了语句“循环结束”，以及后面的循环
+```
+
+对比break和continue：
+
+```py
+# break
+def r1():
+    for i in range(1,5):
+        if i == 3:
+            break
+        print("i=",i)
+    print("循环结束")
+# 输出结果：
+i= 1
+i= 2
+循环结束
+
+# continue
+def r1():
+    for i in range(1,5):
+        if i == 3:
+            continue
+        print("i=",i)
+    print("循环结束")
+r1()
+
+# 输出结果：
+i= 1
+i= 2
+i= 4
+循环结束
+```
+
+
 
 ## 2. 应用进阶：
 
@@ -3302,9 +3413,88 @@ if not stu_name:
 
  
 
- 
+## 3. 命令进阶：
 
- 
+## 4. 函数：
+
+### 4.1 函数基础：
+
+1. 定义：为完成某一功能的程序指令(语句)的集合
+
+2. 分类：主要分为**系统函数**和**自定义函数**。
+
+   系统函数又包括[^内置函数],以及[^模块]。
+
+   自定义函数使用关键字 def，后跟函数名与括号内的形参列表。函数语句从下一行开始，并且必须缩进。
+
+3. 函数的优势：提高代码的复用性：将写好的代码封装起来，在其他用户需要使用时直接调用即可
+
+4. 基础语法：
+
+   ```py
+   # 括号内可不填写内容，也可填入多个参数
+   # name处为函数名，根据需要填入
+   def  name(形参列表):
+   	# 函数内容，注意缩进
+       ....
+   
+   name() # 调用函数
+   ```
+
+   ![image-20250719220357158](python.assets/image-20250719220357158.png)
+
+   图源：[韩顺平](https://www.bilibili.com/video/BV1zN4y1v7Vv/?p=67&share_source=copy_web&vd_source=670072b151e9fb277c65473cfa10e116) 
+
+解释：
+
+- 函数定义好之后并不会自动执行，需要通过`name(实参列表)`来调用函数
+
+  （补充：[^形参列表和实参列表])
+
+- 函数可以有返回值，也可以没有，无指定返回值默认为None。
+
+  如果有返回值，则需要用return表示，return后面如果连接具体变量，则会返回变量的值：如案例中的函数，可能返回a/b中的一个数值给**这个函数**
+
+  return用法：[return](#1.*.5return)
+
+- 注意：函数用return返回的值不会输出到屏幕，而是返回给函数本身，如案例1
+
+- 案例1：
+
+  ```py
+  def comp(a,b):
+      if a > b:
+          return a
+      else:
+          return b
+  
+  c = comp(1,2) # 调用函数
+  print(c)
+  
+  # 输出结果：
+  2
+  ```
+
+  案例2：
+
+  ```py
+  # 从1累加到n
+  def cal02(n):
+      a = 0
+      for i in range(0,n+1):
+          a += i
+      print(a)
+  
+  cal02(100)
+  ```
+
+  
+
+  函数的其他案例：[自定义函数def](#1.9 自定义函数def),[快递管理](#2.*.1 快递管理)
+
+
+
+
 
  
 
@@ -3317,3 +3507,6 @@ if not stu_name:
 % 的更多使用：[Python之格式化输出(print %)_python print %-CSDN博客](https://blog.csdn.net/hesongzefairy/article/details/104179419) 
 
 [^打断]: 即在循环过程中跳出循环，循环被中止
+[^内置函数]: https://docs.python.org/zh-cn/3.11/library/functions.html
+[^模块]: https://docs.python.org/zh-cn/3.12/py-modindex.html，各种专业领域的函数，如数学模块
+[^形参列表和实参列表]: 形参：在定义函数时指定的参数名，如案例1 comp (a,b)。实参：调用时输入的参数，如案例1中的comp（1,2）
