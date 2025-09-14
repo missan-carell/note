@@ -4345,7 +4345,7 @@ print("全局变量n1=",n1)
 
 
 
-## 2. 列表 list
+## 2. 列表 [list]
 
 定义：列表可以存放多个不同类型数据，即:列表就是一列数据(多个数据)，列表也是一种**数据类型**，元素可重复
 
@@ -4915,7 +4915,7 @@ print(list_c)
 ['100', '99', '80']
 ```
 
-## 3.元组 tuple
+## 3.元组 （tuple）
 
 1. 定义：元组是**不可变**序列，元组实现了所有 一般 序列的操作。
 
@@ -5068,7 +5068,7 @@ tuple_d = (1,) # 只有应该元素1
 
 
 
-## 4.字典 dict：
+## 4.字典 {dict}：
 
 1. 定义：字典(dict,完整的单词是dictionary)也是一种常用的 Python 数据类型,其他语言可能把字典称为 联合内存 或 联合数组
 
@@ -5079,7 +5079,7 @@ tuple_d = (1,) # 只有应该元素1
 
    - 键（key）：通常是数字或字符串。不同于以固定范围的数字进行索引的序列，**字典是以 键进行索引**的，键可以是任何**不可变类型**;字符串和数字总是可以作为键。如果一个元组只包含字符串、数字或**元组**则也可以作为键
 
-     字典的key必须是**唯一的**，如果你指定了多个相同的key，**后面的键值对会覆盖前面的**
+     字典的key必须是**唯一的**，如果你指定了多个相同的key，**<u>后面的键值对会覆盖前面的</u>**
 
    - 值（value）：可以是**任意数据类型**
 
@@ -5184,9 +5184,144 @@ print(dict_ele,type(dict_ele))
    dict_2 = dict()
    ```
 
+
+### 4.1 字典的常用操作
+
+1. 查看字典内键值对的个数：
+
+   ```py
+   len(set)
+   ```
+
+2. 检索key所对应的value
+
+   ```py
+   set(key)
+   ```
+
+   ```py
+   fruit = {'apple':1,'orange':2,'banana':3}
+   print(fruit['apple']) # 1
+   ```
+
    
 
-## 5. 集合 set
+3. 为key赋值
+
+   ```py
+   set(key) = value
+   ```
+
+   注意：
+
+   - 如果key不存在，则会创建一个新的键值对
+   - 如果key存在，则会覆盖原有的value
+
+   ```py
+   fruit = {'apple':1,'orange':2,'banana':3}
+   fruit['orange'] = 4
+   fruit['pear'] = 5
+   print(fruit) # 修改了orange，并新增了pear的值
+   
+   # 输出结果：
+   {'apple': 1, 'orange': 4, 'banana': 3, 'pear': 5}
+   ```
+
+   
+
+4. 删除键值对：如果key不存在，则会报错keyerror
+
+   ```py
+   del set(key)
+   ```
+
+   ```py
+   fruit = {'apple':1,'orange':2,'banana':3}
+   del fruit['banana']
+   print(fruit) # {'apple': 1, 'orange': 2}
+   ```
+
+5. 移除键值对并返回值：（类似于剪切）
+
+   注意：该操作会影响字典的值
+
+   ```py
+   pop(key[,default])
+   ```
+
+   - defalut是可选项，用于指定默认值
+   - 如果指定的键值对(key) 存在于字典中 ，则将其(key)移除并返回其键值，否则返回 default。
+
+   - 如果default 未给出，且 key 不存在于字典中，则会引发 KeyError
+
+   ```py
+   fruit = {'apple':1,'orange':2,'banana':3}
+   
+   # 1.key存在于字典中，则会正常移除，并返回key对应的键（value）值
+   a = fruit.pop('banana','该项不存在')
+   print(a) 
+   # 输出结果：
+   3
+   
+   # 2. 如果key不存在于字典，且设置了default（默认）值，则会返回default值
+   a = fruit.pop('pear','该项不存在')
+   print(a) 
+   # 输出结果：
+   该项不存在
+   
+   # 3.如果key不存在于字典，且未设置默认值，则会报错
+   a = fruit.pop('a')
+   print(a)
+   # 输出结果：
+   ....
+   KeyError: 'a'
+   ```
+
+6. 返回字典所有的**键（key）**
+
+   ```py
+   keys()
+   ```
+
+   ```py
+   fruit = {'apple':1,'orange':2,'banana':3}
+   print(fruit.keys(),type(fruit.keys()))
+   
+   # 输出结果：
+   dict_keys(['apple', 'orange', 'banana']) <class 'dict_keys'>
+   ```
+
+   从案例可以看出，.keys() 返回的并不是列表元组等类型，而是单独的 `dict_keys` 这种类型。这种类型也可以用for来遍历
+
+   
+
+7. 判断键是否存在于字典：
+
+   ```py
+   key in set
+   ```
+
+   - 如果存在key，则返回true，不存在则返回false
+
+   
+
+8. 清除字典所有元素（清空字典）
+
+   ```py
+   clear()
+   ```
+
+   ```py
+   fruit.clear
+   ```
+
+   使用该命令后，字典会被清空为空字典
+
+9. 1
+
+10. 1
+
+## 5. 集合 {set}
 
 1. 定义：集合是由**不重复**元素组成的**无序**容器。基本用法包括成员检测、消除重复元素。（区别列表元组）
 
@@ -5308,7 +5443,7 @@ print(set_a, type(set_a))
 
 
 
-5. 从集合中移除并**返回**任意一个元素。如果集合为空则会引发KeyErro
+5. 从集合中**移除并返回**任意一个元素。如果集合为空则会引发KeyErro
 
    而每次执行的返回结果都可能不一样（随机），但是pop操作会影响原集合
 
