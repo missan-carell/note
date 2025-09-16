@@ -4613,7 +4613,7 @@ list[索引(下标)]
 
 ```py
 list1 = ['a','b',1,2,3]
-print(list1[0list1 = [1,'a',1,True]])
+print(list1[0],list1 = [1,'a',1,True])
 
 # 输出结果
 a b 1
@@ -5923,7 +5923,7 @@ print(set_a, type(set_a))
    n = 0
    def bubble_sort(ls):
        global n
-       n
+       n += 1
        for i in range(0,4):
            for j in range(0,4 - i):
                if ls[j] > ls[j+1]:
@@ -6055,10 +6055,58 @@ print(a)
 
 ### 2.2 二分查找
 
-注意：使用二分查找的列表必须是排好序的，根据实际需求排序
+注意：使用二分查找的列表必须是**排好序**的，根据实际需求排序
 
 1. 案例：请对一个列表(**元素是从小到大排序的**)进行二分査找[1,8,10,89,1000,1234]，输入一个数看看该列表是否存在此数，并且求出下标，如果没有就返回-1
-   
+
+思路分析：
+
+![image-20250916170301950](./.assets/image-20250916170301950.png)
+
+（图源：韩顺平）
+
+简而言之，二分查找就是通过不停的折半，对比和所找的数的大小，最终确定位置的方法
+
+代码实现：
+
+```py
+ls = [1,8,10,89,1000,1234]
+
+def binary(my_ls,find_ls):
+    left,right = 0,len(my_ls)-1 # 此处是定义列表左右两侧的位置
+
+    while left <= right:
+        mid = (left + right) // 2  # 确定中间值
+        if find_ls == my_ls[mid]:
+            return mid
+        elif find_ls > my_ls[mid]:
+            left = mid + 1 # 通过这种方法，把最左侧的定位直接放到中间值的右侧，随后对整个右半边继续二分
+        else:
+            right = mid - 1
+
+    else:
+        return -1
+
+result = binary(ls,0)
+if  result == -1:
+    print("没有找到该元素")
+else:
+    print("所找的元素引是：",result)
+    
+# 输出结果：
+没有找到该元素
+
+....
+result = binary(ls,10)
+# 输出结果：
+所找的元素引是： 2
+```
+
+思路分析：
+
+- 使用left 和right来界定左右的位置是为了方便后续，把二分的范围调整至左侧或者右侧
+- 把 mid = (left + right) // 2 放在循环中间是因为：在第一次二分确定范围之后，中间值也会随之发生改变，直到二分到最后，中间值=寻找元素（或不等于，则返回else里的 “没有找到该元素”）为止
+- 通过return来避免循环无结束，只有在确认mid=find_ls 时，使用return来跳出循环
 
 ---
 
