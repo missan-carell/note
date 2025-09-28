@@ -2857,7 +2857,6 @@ i= 1 j= 2
 
 ```py
 total_level = int(input("输入数值："))
-a = 1
 # i控制层数
 for i  in range(1,total_level+1):
     # k金字塔前面的空格
@@ -2867,7 +2866,6 @@ for i  in range(1,total_level+1):
     for j in range(2*i-1):
         if j == 0 or j == 2*i-2 or i == total_level:
             print("*", end="")
-            a += 1
 
         else:
             print(" ",end="")
@@ -2886,6 +2884,8 @@ for i in range(total_level):
         print("*", end="")
     print("") # 在每次循环后换行
 ```
+
+`end=""`:一般情况下，print命令执行完之后会自动换行，如果不加这句话，会导致输出的`*`不在同一行，无法实现控制`*`数量的功能
 
 第二步：先做半个实心金字塔
 
@@ -2946,6 +2946,69 @@ for j in range(1,class_num+1):
     print(f"{j}班的平均分是{a/stu_num},及格人数是{count}")
 print(f"所有班平均分数是：{a/(class_num*stu_num)}，及格人数是：{count}")
 ```
+
+==案例4==（较难）：**用字符绘制圆形：**
+
+```py
+a = int(input("输入半径："))
+def f1(r):
+    x = r
+    while x > -r:
+        y = r
+        while y > -r:
+            if x*x + y*y < r*r:
+                print('a', end='')
+            else:
+                print(' ', end='')
+            y -= 0.017
+        print()
+        x -= 0.05
+
+f1(a)
+```
+
+解释：
+
+首先这道题的重点在于，如何绘制圆形，与三角形不同，圆形的图形结构更为复杂，没法用简单的输出和空格来构造图形
+
+根据题目要求，我们要用字符来绘制图形，此时可将这个图形具象的看做一个坐标轴中的圆形，以（0，0）为圆心，以r为半径，而为了绘制出这个圆形，我们要画出所有符合在这个圆形里和这个圆形上的点（即字符）
+
+- 来看内层循环：
+
+```py
+...
+        while y > -r:
+            if x*x + y*y < r*r:
+                print('a', end='')
+            else:
+                print(' ', end='')
+            y -= 0.017
+...
+```
+
+为了更简单理解，假设圆的半径=1，即r=1
+
+那么我们得到了一个计算机内的坐标（1,1），首先y=1>-1,因此符合条件，带入圆的函数公式进行计算，这个点是否在圆内/圆上，如果是，则打印a，如果不是，则打印空格
+
+每次内循环，y都-0.017，这个数值控制了圆的高矮，减的越多越矮胖
+
+- 来看外层循环：
+
+```py
+...
+    x = r
+    while x > -r:
+        y = r
+      ...
+        print()
+        x -= 0.05
+```
+
+每次外层大循环结束，都有个print()用于换行，因此可知：**外层的循环x在控制圆的行数。**
+
+一次循环结束，x都-0.05，这里减去的数字最终决定了圆形的宽度（减去的越少，圆形越瘦长)
+
+
 
 #### 1.*.2 break
 
@@ -6494,6 +6557,476 @@ f2.hi()
 hi,f1
 hi,f2
 ```
+
+
+
+#### 1.2.1 自定义模块
+
+1. 定义：在实际开发中，python提供的标准库模块不能满足开发需求,程序员需要一些个性化的模块，就可以进行自
+   定义模块的实现
+
+==使用以及注意事项：==
+
+1. 通过`__name__`可以避免模块中测试代码的执行：（注意是两个下划线）
+
+   案例：不使用`__name__`,且模块中有测试命令
+
+   ```py
+   # 模块：module1.py
+   
+   def hi():
+       print("hi")
+   
+   hi() # 在写模块时，可能会在模块内测试模块
+   ```
+
+   ```py
+   # 文件：use.py 在该文件中引用module的模块
+   
+   import module1
+   module1.hi()
+   
+   # 输出结果：
+   hi
+   hi  # 此处会导致模块被执行了两次
+   ```
+
+   直接输出会发现，如果在模块里面测试的代码，也会被看做模块的一部分一起执行，因此执行了两次。
+
+- **功能介绍：**
+
+  当一个Python 模块\包被导入时，`__name__`会被设为**模块的名称**，通常，这将是 Python 文件本身的名称，去掉 .py 后缀。
+
+  不过，如果模块是在**最高层级代码环境**(即主程序）中执行的，则它的`__name__`会被设为字符串`__main__`.
+
+  演示：
+
+  ```py
+  # 模块：module1.py
+  
+  def hi():
+      print("hi")
+  
+  hi() 
+  print("module.py:",__name__)  # 测试__name__的输出内容
+  ```
+
+  ```py
+  # 文件：use.py 在该文件中引用module的模块
+  import module1
+  module1.hi()
+  print("use.py:",__name__) # 测试主函数的__name__
+  
+  # 输出结果：
+  hi
+  module.py: module1 # 此处可以看到，因为 __name__ 所以这里输出了去掉后缀的模块名
+  hi
+  use.py: __main__ # 在主函数中，__name__ 会被命名为 __main__ ,而非文件名
+  ```
+
+- **具体使用：**
+
+  可以用于避免执行模块里的测试命令被执行：
+  
+  当前文件的`__name__`的值为`__name__` 才执行
+  
+  ```py
+  if __name__ =='main':
+      函数()
+  ```
+  
+  ```py
+  # 模块：module1.py
+  
+  def hi():
+      print("hi")
+  
+  if __name__ == "__main__":
+      hi() # 把测试模块放在这里，既不影响模块本身的测试，最终导入模块时也不会被执行两次
+  ```
+  
+  ```py
+  # 文件：use.py 在该文件中引用module的模块
+  
+  import module1
+  module1.hi()
+  
+  # 输出结果：
+  hi
+  ```
+
+2. 使用`__all__`可以控制 ` import*` 时,哪些功能被导入。注意:·` import 模块 `方式,不受`__all__`的限制
+
+   案例1：不使用`__all__`时，直接使用 `import *` 会导入模块所有功能
+
+   ```py
+   # 模块：module1.py
+   
+   def hi():
+       print("hi")
+   
+   def ok():
+       print("ok")
+   
+   if __name__ == "__main__":
+       hi() 
+   ```
+
+   ```py
+   # 文件：use.py 在该文件中引用module的模块
+   
+   from module1 import *
+   hi()
+   ok()
+   
+   # 输出结果：
+   hi
+   ok
+   ```
+
+- 使用 `__all__`:
+
+  ```py
+  def hi():
+      print("hi")
+  
+  def ok():
+      print("ok")
+  
+  # 表示如果其它文件使用的是 from module1 import*导入，则只能导入ok函数
+  __all__ = ['ok']
+  ```
+
+  ```py
+  from module1 import *
+  hi() # 这里就会报错，因为从module1只能用 * 导入ok函数
+  ok()
+  ```
+
+  ```py
+  import module1
+  module1.hi() # 但是如果直接调用，哪怕被__all__ 限制，也可以正常使用
+  module1.ok()
+  ```
+
+## 2. 包 packge
+
+1. 定义：从结构上看,包就一个文件夹,在该文件夹下包含了一个`__init__py `文件，该文件夹可以用于包含多个模块文件。
+
+   ​	    从逻辑上看，包可以视为**模块集合**
+
+   - `__init_.py__`:控制包的导入操作
+
+2. 包的结构图：
+
+   <img src="./.assets/image-20250926150427984.png" alt="image-20250926150427984" style="zoom: 33%;" />
+
+   （图源：韩顺平）
+
+3. 使用场景： 在实际使用中，可能会遇到有非常多的模块的情况，此时若把所有模块都放在一个目录下，可能会导致管理的混乱。
+
+   ​		     此时，把不同的模块放入多个包内进行管理，会更为清晰：
+
+   <img src="./.assets/image-20250926145837867.png" alt="image-20250926145837867" style="zoom: 33%;" />
+
+   （图源：韩顺平）
+
+###  2.1 包的导入和使用
+
+创建包：以pycharm为例：创建包之后，会自动创建`__init__`文件
+
+<img src="./.assets/image-20250926151052838.png" alt="image-20250926151052838" style="zoom: 50%;" />.
+
+创建后得到的包：
+
+![image-20250926151419095](./.assets/image-20250926151419095.png).
+
+
+
+1. 导入：
+
+   注意：<u>包内的文件或者不在同一个文件夹下的文件</u>是不能导入这个包的，必须是**和包平行的文件**才能导入这个包
+
+```python
+import 包名.模块
+包名.模块.功能 # 使用
+```
+
+#### 2.1.1**快捷键（仅限pycharm）：**
+
+alt+enter / shift+alt+enter  快捷导入
+
+1. alt + enter ：显示解决方案。
+
+   若不导入模块，直接使用功能会导致报错，将光标停在错误位置，使用该快捷键，会提示应当导入的模块：如图
+
+![image-20250927165947155](./.assets/image-20250927165947155.png)
+
+因为未导入math模块直接使用fabs导致了报错，通过该快捷键可以得知该导入哪个模块
+
+
+
+2. shift +alt +enter：直接导入相关模块
+
+   将电脑的鼠标光标放在报错区域（注意是电脑的光标，而不是输入的光标）
+
+   ![image-20250927172315766](./.assets/image-20250927172315766.png)
+
+   使用快捷键后会自动补齐导入模块：
+
+   ![image-20250927172419268](./.assets/image-20250927172419268.png)
+
+---
+
+#### 2.1.2 导入&使用：
+
+1. **导入：**
+
+- `from 包名 import 模块`，这种方式导入，在使用时，直接用:`模块.功能`，不用带包名
+
+```py
+from 包名 import 模块
+模块.功能 # 使用
+
+from package_learn import module_1
+module_1.ok()
+```
+
+
+
+- 也可以导入包的指定模块的功能：
+
+```py
+from 包名.模块 import 功能
+
+from package_learn.module_1 import ok
+ok()
+```
+
+
+
+- 导入模块的全部功能：
+
+```py
+from 包名.模块 import *
+```
+
+
+
+- 导入包内全部模块：
+
+```py
+from 包名 import *
+```
+
+
+
+2. **使用：**
+
+```py
+包名.模块.功能
+```
+
+
+
+**案例1：导入并使用包里的模块**
+
+1. 创建包：package_learn
+2. 在包里创建两个模块：
+
+```python
+# 创建在包package_learn 下的 module_1.py 模块
+def ok():
+    print("module1:ok")
+```
+
+```python
+# 创建在包package_learn 下的 module_2.py 模块
+def hi():
+    print("module2:hi")
+```
+
+3. 创建与**包平行的文件**：use_packge.py,并在该文件中导入并使用包模块
+
+```py
+# 与包同级的文件use_package.py
+
+import package_learn.module_1
+import package_learn.module_2
+
+package_learn.module_1.ok()
+package_learn.module_2.hi()
+
+# 输出结果：
+module1:ok
+module2:hi
+```
+
+
+
+### 2.2 包的使用细节
+
+1. `__init__·py` 通过`__all__`控制允许导入的模块
+
+   这样在导入包内所有模块时，也会只导入在all里设定好的模块
+
+```py
+# 在__init__.py 文件
+__all__ = [模块] # 限定允许导入的模块范围
+```
+
+注意：
+
+- 这种方式只对`from 包名 import *` 的方法有限定效果，对 `import 模块`的方式无效
+
+2. 创建子包：在包下面创建新的包，可以嵌套使用。用 `.`来区分层级
+
+​	图例：
+
+![image-20250927163604663](./.assets/image-20250927163604663.png)
+
+​	（如图：package_2 就是package_learn下的子包)
+
+---
+
+**使用子包的方法：**
+
+1. 直接导入子包的模块：
+
+缺点：使用麻烦
+
+优点：层级关系清晰，可读性好，无同名函数问题
+
+```py
+import 外层包名.内层包名.模块名
+```
+
+使用：使用时相对麻烦，需要将包的层级关系写清楚
+
+```py
+外层包名.内层包名.模块名.功能
+```
+
+案例：
+
+```py
+import package_learn.package_2.module_3
+package_learn.package_2.module_3.hello()
+```
+
+
+
+2. 从包导入功能：
+
+缺点：若有多个同名函数时需要取别名
+
+优点：使用更为方便
+
+```py
+from 外层包.内层包.模块 import 功能
+```
+
+使用：直接写功能名即可
+
+```py
+功能
+```
+
+案例：
+
+```py
+from package_learn.package_2.module_3 import hello
+hello()
+```
+
+
+
+3. 从包导入模块：
+
+```py
+from 外层包.内层包 import 模块
+```
+
+使用：
+
+```py
+模块.功能
+```
+
+案例：
+
+```py
+from package_learn.package_2 import module_3
+module_3.hello()
+```
+
+## 3. （拓展）第三方库
+
+常用第三方库：[常用第三方库](https://zhuanlan.zhihu.com/p/138634430)
+
+1. 定义：第三方库/包:就是非Pvthon 官方提供的库，Pvthon语言有很多的第三方库，盖几乎所有领域，比如:网络爬虫、自动化、数据分析与可视化、WEB开发、机器学习等
+
+2. 常见第三方库：（图源：韩顺平）
+
+   1）网络爬虫：
+
+   - requests-对HTTP协议进行高度封装，支持非常丰富的链接访问功能。
+   - PySpider-一个国人编写的强大的网络爬虫系统并带有强大的WebUl
+   - bs4-beautifulsoup4库，用于解析和处理HTML和XML。
+   - Scrapy-很强大的爬虫框架，用于抓取网站并从其页面中提取结构化数据。可用于从数据挖掘到监控和自动化测试的各种用途
+   - Crawley-高速爬取对应网站的内容，支持关系和非关系数据库，数据可以导出为JSON、XML等
+   - Portia-可视化爬取网页内容
+   - cola-分布式爬虫框架
+
+​	2）自动化：
+
+![image-20250927175110370](./.assets/image-20250927175110370.png)
+
+​	3）数据分析与可视化
+
+![image-20250927175156809](./.assets/image-20250927175156809.png)
+
+​	4）web开发
+
+![image-20250927174502464](./.assets/image-20250927174502464.png)
+
+
+
+### 3.1 使用pip安装第三方库：
+
+1. 定义：pip是Python的包管理器，是一个工具，允许你安装和管理第三方库和依赖
+
+   注意:pip 是通过网络安装的，需要网络是连通的
+
+2. 使用pip：
+
+   1)进入到命令行控制台cmd
+
+   2)语法:pip install 库名/包名
+
+   3)pip 除了安装还有很多其它用法,可以根据需求选择使用，比如:
+
+3. 常用命令：
+
+   - install ： 安装
+   - uninstall ：卸载
+   - list ：列出当前安装的第三方库列表
+
+4. 案例：
+
+   案例1：通过pip安装第三方库 requests
+
+```py
+pip install requests
+```
+
+![image-20250927180509533](./.assets/image-20250927180509533.png)
+
+看到这个提示则是安装成功：
+
+![image-20250927180653235](./.assets/image-20250927180653235.png)
+
+检验是否安装成功：在pythoncharm中Import这个函数，如果能成功import，则代表成功（如果安装好没有提示，重启pycharm即可）
 
 ---
 
