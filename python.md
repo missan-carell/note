@@ -6990,9 +6990,9 @@ module_3.hello()
 
 ![image-20250927174502464](./.assets/image-20250927174502464.png)
 
+### 3.1 pip：
 
-
-### 3.1 使用pip安装第三方库：
+#### 3.1.1 使用pip安装第三方库
 
 1. 定义：pip是Python的包管理器，是一个工具，允许你安装和管理第三方库和依赖
 
@@ -7028,7 +7028,251 @@ pip install requests
 
 检验是否安装成功：在pythoncharm中Import这个函数，如果能成功import，则代表成功（如果安装好没有提示，重启pycharm即可）
 
----
+#### 3.1.2 指定pip源
+
+在python中的默认pip源：https://pypi.python.org/simple ，因为在国外，所以安装速度较慢。为避免下载较大库时安装速度过慢，可通过指定pip源来解决这个问题。
+
+1. 国内常用库
+
+豆瓣(douban)https://pypi.douban.com/simple
+
+清华大学 https://pypi.tuna.tsinghua.edu.cn/simple
+
+阿里云 https://mirrors.aliyun.com/pypi/simple
+
+中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple
+
+
+
+2. 指定源：
+
+```
+pip install -i 指定源 包/库名
+```
+
+
+
+案例：从阿里云上下载requests库
+
+```
+pip install -i  https://mirrors.aliyun.com/pypi/simple requests
+```
+
+![image-20251009135700313](./.assets/image-20251009135700313.png)
+
+
+
+### 3.2 pycharm安装库
+
+1. 进入pycharm，左键单击右下角的版本处
+
+<img src="./.assets/image-20251009142332011.png" alt="image-20251009142332011" style="zoom: 33%;" />
+
+2. 出现如图菜单后选择：interpret settings..
+
+![image-20251009142426376](./.assets/image-20251009142426376.png)
+
+3. 在该菜单里选择 + 
+
+   - 下面的框里是当前已安装的库/包列表![image-20251009142627133](./.assets/image-20251009142627133.png)
+
+4. 点击加号后出现的界面可以搜索指定库/包，这里以numpy为例子
+
+   - 右下角的options可通过填入选项来制定功能，此处示范如何指定安装源，具体可看 [3.1.2 指定pip源](#3.1.2 指定pip源)
+
+     注意选项一定要加对应的名称，比如此处的-i
+
+     ```py
+     -i https://pypi.tuna.tsinghua.edu.cn/simple
+     ```
+
+     
+
+   <img src="./.assets/image-20251009144100078.png" alt="image-20251009144100078" style="zoom:50%;" />
+
+   5. 此处显示成功即表示安装成功
+
+   <img src="./.assets/image-20251009144247233.png" alt="image-20251009144247233" style="zoom: 67%;" />
+
+   6. 安装成功后使用时只要和其他内置库一样导入进行了
+
+   ![image-20251009144416150](./.assets/image-20251009144416150.png)
+
+   7. 卸载：
+
+      在刚才第三步的界面中，选择要卸载的库/包，在点击上方的减号即可
+
+      ![image-20251009144627390](./.assets/image-20251009144627390.png)
+
+      这样就是卸载成功
+
+      ![image-20251009144651135](./.assets/image-20251009144651135.png)
+
+      
+      
+      
+
+# 第八章：面对对象编程 OOP
+
+## 1. 类与实例
+
+1. 定义：类提供了把**数据和功能绑定**在一起的方法。创建新类时创建了新的数据类型，即<u>对象类型</u>，从而能够创建该类型的新实例。
+
+   优势：相比于字典，类可以添加功能，同时对属性和实例的管理都更为方便
+
+2. ==类与实例的关系：==（万物皆对象）
+
+   1)类是抽象的，概念的，代表一类事物,比如人类,猫类..即它是数据类型
+
+   2)对象是具体的，实际的，代表一个具体事物，即是实例
+
+   3)类是对象的模板，对象是类的一个个体，对应一个实例
+
+   ![image-20251020150717083](./.assets/image-20251020150717083.png)
+
+- 注意：创建实例有很多种说法，但是本质都是创建实例对象：1.创建一个对象 2.实例化一个对3.把类实例化
+
+3. 对象在内存中的形式：
+
+​	对象在内存的图解：
+
+<img src="./.assets/image-20251020172253322.png" alt="image-20251020172253322" style="zoom:67%;" />
+
+​	==对象在内存中的传递：==
+
+​	情况1：
+
+​	从图中可以看到，实例的属性都是取的同一地址里的内容，因此p1,p2的属性和地址应该是完全相同的
+
+<img src="./.assets/image-20251020183331943.png" alt="image-20251020183331943" style="zoom:67%;" />
+
+代码：
+
+```py
+class Person:
+    name = None
+    age = None
+
+p1 = Person()
+p1.name = "jack"
+p1.age = 10
+p2 = p1
+print(f"p1年龄：{p1.age},p2年龄：{p2.age},id p1:{id(p1.age)},id p2:{id(p2.age)}")
+
+# 输出结果：
+p1年龄：10,p2年龄：10,id p1:140726303909064,id p2:140726303909064
+```
+
+**情况2：（重要）**
+
+**<img src="./.assets/image-20251020191606136.png" alt="image-20251020191606136" style="zoom: 67%;" />**
+
+代码：
+
+```py
+a= Person()
+a.age=10
+a.name = "jack"
+b=a
+print(b.name) # jack
+b.age = 200
+b = None
+print(a.age) # 200
+print(b.age) # 报错，b没有age值
+
+# 输出结果：
+jack
+200
+..'NoneType' object has no attribute 'age'
+```
+
+解读：
+
+- 首先把a的值赋给b，b此时应该是：age=10，name=jack
+- 然后b.age = 200, 因为a，b指向同一个地址，所以此时a.age =200 ,a也发生了改变
+- b = None，注意，==在此处b就不是一个实例了，而是一个单独的None值==，所以print(a.age)应该返回 200，而b.age则是报错，因为b没有age值
+
+4. 属性(成员变量）
+
+- 定义：
+
+​	1)类中定义的属性(变量)，我们也称为:成员变量
+​	2)属性是类的一个组成部分，一般是**字符串、数值**,也可是其它类型(list、dict等),比如 案例1 定义Cat类 的 name、age 就是属性
+
+- 注意事项：
+
+  1)属性的定义语法同变量,示例: `属性名=值`，如果没有值，可以赋值 None,但是不能不写
+
+  关于None可查看文档:[内置常量None](https://docs.python.org/zh-cn/3.12/library/constants.html?highlight=none#None)
+
+  2)如果给属性指定的有值，那么创建的对象，属性就有值(相当于给对象的属性赋予**默认值**)。如果后面的实例给这个属性赋值，那默认值就会被后续的值覆盖
+
+4. 基础语法：
+
+```py
+# 创建类
+class 类名:
+	属性1 = None # 不指定的时候都使用None
+    属性2 = None
+    
+    行为
+	
+# 创建实例
+对象名 = 类名()
+
+# 为属性赋值(若不赋值则默认使用定义类时的属性)
+对象名.属性名 = "内容"
+
+# 获取属性值
+print(对象名.属性名)
+print(对象名) # 直接这样打印会获取对象的地址，而不是属性值
+```
+
+解读：
+
+1)上面是定义类的基本语法
+
+2)class 是关键字,表示后面定义的是 类
+
+3)属性，即定义在类中的变量(成员变量)
+
+4)行为，即定义在类中的函数(成员方法)
+
+注意：
+
+- 定义类名的时候，首字母最好大写
+
+6. 应用案例：
+
+案例1：
+
+```py
+# 定义一个猫类。age，name，color是属性,或者称为成员变量Cat类
+
+# 1. 定义类
+class Cat: # 定义一个 cat 类
+    age = None # 定义属性，如果内容不确定就用None表示
+    name = None
+    color = None
+
+# 2. 创建实例：
+cat1 = Cat()
+
+# 3. 给实例赋值：
+cat1.age = 4
+cat1.name = "卡奇"
+
+print(cat1) # 直接输出对象会得到地址，而不是属性的值
+print(cat1.age) # 只有对象.属性 ，才能得到属性值
+print(cat1.name)
+print(cat1.color) # 如果没有定义，会用默认值
+
+# 输出结果：
+<__main__.Cat object at 0x00000184A27B6F90>
+4
+卡奇
+None
+```
 
 [^补充1]: 补充1：关于浮点数：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容
 
