@@ -7274,6 +7274,333 @@ print(cat1.color) # 如果没有定义，会用默认值
 None
 ```
 
+
+
+### 1.1 对象的布尔值
+
+1. 定义：python一切皆为对象，所有对象都有一个布尔值，通过内置函数`bool()`可以获取对象的布尔值
+   下面对象的布尔值为False
+
+```
+False
+数值0
+None
+空字符串
+空列表
+空字典
+空元组
+空集合
+```
+
+2. 应用案例：
+
+案例1：可用对象的布尔值作为判断的条件：
+
+```py
+content = "jack"
+content2 = ""
+
+if content:
+    print(content)
+else:
+    print("字符串为空")
+
+if content2:
+    print(content2)
+else:
+    print("字符串为空")
+    
+# 输出结果
+jack
+字符串为空
+```
+
+
+
+## 2. 成员方法 method
+
+1. 定义：类中定义的**行为(**函数)，就称为:成员方法/方法。在类中定义方法（method）与定义函数（function）基本相同（原理和运行机制相同），但在形式上有所出入
+2. 使用：
+
+```py
+def 方法名(self,形参列表)：
+	方法体
+
+# 调用：
+对象名.方法名()
+```
+
+解读：
+
+1)在方法定义的参数列表中，有一个 **self**
+
+2)self 是定义成员方法时，需要写上，只有在个别情况可以不写
+3)self 表示当前对象本身
+4)当我们通过对象调用方法时，self 会**隐式**的传入
+
+5)在方法内部，需要使用self，才能访问到成员变量
+
+
+
+3. 应用案例：
+
+```py
+class Person:
+    name = None
+    age = None
+    def hi(self): # 定义成员方法
+        print("hello")
+    def cal01(self):
+        sum = 0
+        for i in range(1001):
+            sum += i
+        print(sum)
+    def cal02(self):
+        sum = 0
+        num = int(input("输入数字："))
+        for i in range(num+1):
+            sum += i
+        print(sum)
+    def get_sum(self,num1,num2):
+        return num1 + num2
+
+test = Person()
+test.cal01()
+test.cal02()
+print(test.get_sum(1,2))
+
+
+# 输出结果：
+500500
+输入数字：10
+55
+3
+```
+
+
+
+### 2.1 使用细节：
+
+1. python也支持对象动态的添加方法：
+
+语法：
+
+```py
+class 类:
+	类体
+
+def 函数():
+	函数体
+
+对象 = 类()
+# 动态的添加方法
+对象.方法名 = 函数 # 此处不要加括号
+
+# 调用：
+对象.方法名()
+```
+
+
+
+```py
+class Person:
+    name = None
+    age = None
+
+def hi():
+    print("hello")
+
+p = Person()
+'''
+   1. 动态的给p添加方法m1,m1只针对p对象，对Person这个方法没有影响
+   2. m1是新增的方法名，可根据需求自定义
+   3. 在调用p.m1时，会自动调用到上面的hi函数
+'''
+p.m1 = hi # 注意这里hi后面不能加括号，这里只是把函数赋给对象，而不是调用
+p.m1() # 此处要调用的是方法而不是函数hi
+
+# 输出结果
+hello
+```
+
+
+
+### 2.2. self
+
+1. 定义：self的内容是不确定的，当谁调用self，self就代表谁。self的值是式传入的。通过self，我们可以区分调用的是局部变量还是属	    性。若不写self，也可将方法转为静态方法来避免报错，可见：[2.2.1静态方法](#2.2.1**静态方法**：)
+
+   
+
+2. **self表示当前对象本身**：哪个对象调用，self就代表哪个对象
+
+   案例：
+
+   从案例中可以看到，dog的id和方法里self的id是完全相同的，
+
+   而dog2调用时，self也与它的id相同，这印证了：**<u>self=调用它的对象</u>** 这一结论
+
+   ```py
+   class Dog:
+       name = "狗"
+       age = 2
+       def get_name(self):
+           print("self的id",id(self))
+   
+   dog = Dog()
+   print("dog的id",id(dog))
+   dog.get_name()
+   print("-"*10)
+   dog2 = Dog()
+   print("dog2的id",id(dog2))
+   dog2.get_name()
+   
+   
+   # 输出结果：
+   dog的id 2568613228432
+   self的id 2568613228432
+   ----------
+   dog2的id 2568615186576
+   self的id 2568615186576
+   ```
+
+​	可以这样理解：
+
+​	小明，小红，小李三个人（对象）都养了一只狗（self），
+
+​	那么小明说：”我的狗。“时，就是指的小明的狗（<u>即小明这个对象调用了狗这个slef，此时的self就特指小明的狗）</u>。
+
+​	而小红说：”我的狗。”时，也特指小红的狗
+
+
+
+3. self是隐式传入的：在上一个案例中可以看到，在调用方法的时候我们并没有直接给self传入内容，都是用`dog.get_name()`这样的方法调用的，但是此时对象自己其实是被传入到self中去的。
+
+4. 在方法内需要访问**成员变量,成员方法**，需要用self
+
+   语法:
+
+   ```py
+   self.变量
+   self.方法
+   ```
+
+   
+
+   案例1：
+
+   这里可以看到，此时方法里的形参虽然也叫name，但是实际上是传入的实参"jack",而非属性的"狗"
+
+   ```py
+   class Dog:
+       name = "狗"
+       age = None
+       
+       def eat(self):
+    	print(f"{self.name}吃肉") # 这里必须要self，因为name还未被定义，并且这里的self也还是默认属性的“狗”
+       
+       def get_name(self,name): 
+           print(name) # 这里是被调用时传入的name
+           print(self.name) # 这里是默认属性的name
+           self.eat() # 要在方法内调用其他方法，也要加slef
+   
+   dog = Dog()
+   dog.get_name(name="jack")
+   
+   # 输出结果：
+   jack
+   狗
+   狗吃肉
+   ```
+
+​	如果对dog的名字进行修改，相当于把dog的属性默认值改了，所以原本狗的地方都会变成金毛：
+
+- ```py
+  ...
+  dog = Dog()
+  dog.name = "金毛"
+  dog.get_name(name="jack")
+  
+  # 输出结果：
+  jack
+  金毛
+  金毛吃肉
+  ```
+
+
+
+案例2：判断两个人是否完全相同：
+
+```py
+class Person:
+    name = None
+    age = None
+    def compare_to(self,other):
+        return self.name == other.name and self.age == other.age # 这里用self会传入调用值
+
+p1 = Person()
+p1.name = 1
+p1.age = 1
+
+p2 = Person()
+p2.name = 1
+p2.age = 2
+
+print(p1.compare_to(p2))
+```
+
+
+
+#### 2.2.1**静态方法**：
+
+1. 定义：静态方法<u>不会接收隐式的第一个参数</u>，且不需要使用self。
+
+   在定义成员方法时，通常需要带上self，如果不写，需要用[^**@staticmethod**]标注，将方法转为静态，否则会报错。
+
+2. 静态方法的使用：
+
+- 静态方法有两种调用形式：
+
+  ```py
+  # 1.通过对象调用：
+  对象.方法()
+  # 2.通过类调用：
+  类.方法
+  ```
+
+  ```py
+  class Dog:
+      name = "狗"
+      age = 2
+      def get_name(self,name):
+          print(name)
+  
+      @staticmethod
+      def get_age():
+          print(Dog.age)
+  
+  dog = Dog()
+  dog.get_name(name="jack")# 普通方法的调用
+  
+  #静态方法的调用
+  dog.get_age() #方法一：通过对象调用
+  Dog.get_age() #方法二：通过类调用
+  
+  输出结果：
+  jack
+  2
+  2
+  ```
+
+
+
+
+
+
+
+
+
+
+
 [^补充1]: 补充1：关于浮点数：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容
 
 % 的更多使用：[Python之格式化输出(print %)_python print %-CSDN博客](https://blog.csdn.net/hesongzefairy/article/details/104179419) 
@@ -7284,3 +7611,4 @@ None
 [^形参列表和实参列表]: 形参：在定义函数时指定的参数名，如案例1 comp (a,b)。实参：调用时输入的参数，如案例1中的comp（1,2）
 [^斐波那契数列]: 即：1,1,2,3,5,8,13 .... 的数列，从第三位起，由前两位相加构成
 [^Unicode 码]: 一种字符编码，能够表示的数量为65536个字符，是国际组织制定的可以容纳世界上所有文字和符号的字符编码方案。
+[^**@staticmethod**]: 相关文档：https://docs.python.org/zh-cn/3.12/library/functions.html?highlight=staticmethod#staticmethod
