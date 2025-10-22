@@ -7317,6 +7317,108 @@ jack
 
 
 
+### 1.2 对象的传参机制
+
+对象作为参数传入到函数和方法内的原理是一样的，此处以函数作为分析
+
+代码：
+
+```py
+class Person:
+    name = None
+    age = None
+
+# 将对象作为参数传入函数
+def f1(person):
+    print(f"person的地址:{id(person)}")
+    person.name =("james")
+    person.age += 1
+
+p1 = Person()
+p1.name = "lucy"
+p1.age = 20
+
+print(f"传入参数前，p1的id={id(p1)}，名字{p1.name},年龄.{p1.age}")
+f1(p1)
+print(f"传入参数后，p1的id={id(p1)}，名字{p1.name},年龄.{p1.age}")
+
+# 输出结果：
+传入参数前，p1的id=3030041915280，名字lucy,年龄.20
+person的地址:3030041915280
+传入参数后，p1的id=3030041915280，名字james,年龄.21
+```
+
+图解：
+
+<img src="./.assets/image-20251022122812667.png" alt="image-20251022122812667" style="zoom: 67%;" />
+
+解释：
+
+1. 由图我们可以看到，在定义对象p1的时候它指向了一个数据空间，假如地址是xxxx，在空间中存储了两个属性（name，age），而属性存放的是另一个数据空间的地址，分别是lucy和james。此时p1的id是xxxx，name=lucy，age=20
+2. 而调用函数后，函数内的p1会指向和p**1同一个数据空间**，所以对象p1的地址没有发生改变，但是函数内改变了p1的name和age的值，这个数据空间里的name和age**存储的地址就会发生改变**，因此在调用函数后，再次打印p1，会发现其地址没有改变，但是name和age发生了变化
+
+### 1.3 对象的作用域
+
+1. 在oop中，对象的作用域主要分为：成员变量（属性），以及局部变量
+
+​	成员变量（属性）
+
+```py
+class Cat:
+	name = "a" # 这里的name，age就是成员变量
+	age = "2"
+```
+
+​	局部变量：一般就是在成员方法里定义的变量
+
+```py
+class Cat:
+	name = "a" 
+	def get_age(self,age): # 这里的age，result就是局部变量
+		result = age + 1
+```
+
+2. 作用域的分类：
+
+   1）属性作用域为整个类：即在类里定义的属性，在整个类里都是可以使用的
+
+   ```py
+   class Cat:
+   	name = "a" 
+       age = 2
+   	def get_name(self):
+   		print(self.name) # 在成员方法里可以调用属性
+           
+   	def get_age(self):
+   		print(self.age)
+   ```
+
+   2）局部变量：作用域的范围是在定义它的方法
+
+   ```py
+   class Cat:
+   	name = "a" 
+   	def get_age(self,age): # 这里的age，result就只能在这个方法里用
+   		result = age + 1
+   ```
+
+注意：**属性和局部变量可以重名**，访问时带上self，表示访问的属性,没有带self, 则是访问局部变量
+
+```py
+class Cat:
+    name = "kaqi"
+	age = 2
+    def get_age(self,age):
+        result = age + 1 # 这里的age就是局部变量age
+        print(self.name,result) # name是属性里的name
+
+c1 = Cat()
+c1.get_age(2)
+
+# 输出结果：
+kaqi 3
+```
+
 ## 2. 成员方法 method
 
 1. 定义：类中定义的**行为(**函数)，就称为:成员方法/方法。在类中定义方法（method）与定义函数（function）基本相同（原理和运行机制相同），但在形式上有所出入
@@ -7585,21 +7687,163 @@ print(p1.compare_to(p2))
   dog.get_age() #方法一：通过对象调用
   Dog.get_age() #方法二：通过类调用
   
-  输出结果：
+  # 输出结果：
   jack
   2
   2
   ```
 
+## 3. 构造方法（构造器）
+
+1. 定义：构造方法用于完成初始化任务。在使用实例的时候，原先需要手动传入实例中的属性，通过构造方法，可以在定义实例时直接传入属性内容，或定义默认方法
+
+   
+
+2. 语法：
+
+```py
+def __init__(self,参数列表)： # 是两个下划线
+	方法体
+```
+
+注意：这里的`__init__`是python预设的名称，不能更改
+
+3. 在初始化对象时，会**自动**执行`__init__`方法
+
+```py
+class Person:
+    def __init__(self):
+        print("init被执行了")
+
+p1 = Person()
+p2 = Person()
+# 输出结果：
+init被执行了
+init被执行了
+```
+
+从结果可以看到，这个构造器会在创建实例后自动执行，**创建几个实例，就会执行几次**
+
+4. 通过构造器直接传入属性内容：
+
+   如果构造器里定义了参数列表，在创建实例的时候需要传入内容
+
+   同时因为python动态传入属性的特点，这里的name和age其实可以不用提前定义
+
+```py
+class Person:
+    name = None # 这里的name和age都可以删掉或保留
+    age = None
+    def __init__(self,name,age): # 这里有了参数列表
+        print(f"init被执行了，{name},{age}")
+        # 也可以把接收到的内容赋给属性
+        self.name = name
+        self.age = age
+
+p1 = Person("lucy",20) # 此处就需要传入对应的参数
+print(f"当前实例的name={p1.name}，age={p1.age}")
+
+# 输出结果：
+init被执行了，lucy,20
+```
 
 
 
+#### 3.1 构造方法的注意事项
+
+1. <u>一个类中只能有一个构造方法</u>，如果写了多个，只有**最后一个会生效**（注意区分其他编程语言，不一定只限一个构造方法）
+
+   ```py
+   class Person:
+       def __init__(self):
+           print("构造方法1被执行")
+   
+       def __init__(self):
+           print("构造方法2被执行")
+   
+   p1 = Person()
+   p1.__init__() # 即便直接调用也只会使用最后一个
+   
+   # 输出结果：
+   构造方法2被执行
+   构造方法2被执行
+   ```
+
+   从结果可以看到，只有构造方法2被执行了
+
+2. 通过特殊方法也可以在python中实现多个构造方法：[多个构造方法的实现](https://www.cnblogs.com/kingwz/p/16335499.htm)
+
+3. 构造方法**不能返回值**，如果返回值会报错typeError
+
+   ```py
+   class Person:
+       def __init__(self):
+           print("构造方法1被执行")
+           return 0
+   
+   p1 = Person()
+   
+   # 输出结果：
+   构造方法1被执行
+   ...
+   TypeError: __init__() should return None, not 'int'
+   ```
+
+​	从报错结果可以看到，init是不能返回值的
 
 
 
+## *. 应用案例：
 
+1. 判断书籍价格并修改价格：
 
+```py
+# 2、编写类Book，定义方法update price,实现更改某本书的价格，具体:
+# 如果价格>150,则更改为150，如果价格>100,更改为100
+class Book:
+    price = None
+    name = None
+    def __init__(self, price,name):
+        self.price = price
+        self.name = name
+    def update_book(self):
+        if self.price > 150:
+            self.price = 150
+        elif self.price > 100:
+            self.price = 100
+        else:
+            pass
+        return self.price
+    def info(self):
+        print(f"书的信息是：{self.name},{self.price}")
+        
+book1 = Book(180,"红楼梦")
+book1.update_book() # 这里先修改书籍信息，根据前面的传参原理，后面再打印书价格的时候会变成修改后的价格
+book1.info()
+```
 
+2. 传参理解补充：
+
+```py
+class Demo :
+    i =100
+    def m(self):
+        self.i +=  1
+        j= self.i
+        print("i=", self.i)
+        print("j=",j)
+d1 = Demo()
+d2 = d1 # 这里很重要，因为d2和d1指向同一个数据空间，所以d2更改，d1也会受影响
+d2.m()
+print(d1.i) # 这里要注意i也是101，因为d2和d1指向同一个数据空间
+print(d2.i)
+
+# 输出结果：
+i= 101
+j= 101
+101
+101
+```
 
 [^补充1]: 补充1：关于浮点数：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容
 
