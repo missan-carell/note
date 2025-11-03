@@ -4432,6 +4432,8 @@ hanoi_tower(3,"A","B","C")
 
 ### 1.3 局部变量和全局变量
 
+注意：在函数里尽量少使用全局变量，否则代码会十分依赖这个全局变量，更好的处理办法是通过函数传参把变量传入
+
 1. 定义：
    - 全局变量：在整个程序范围内都可以访问，**定以在函数外**，拥有全局作用域的变量
    - 局部变量：只能在其被声明的函数范围内访问，**定义在函数内部**，拥有局部作用域的变量
@@ -7114,11 +7116,27 @@ pip install -i  https://mirrors.aliyun.com/pypi/simple requests
 
 # 第八章：面对对象编程 OOP
 
+面向对象的三大特征： **封装，继承，多态**
+
+封装：[4. 封装](#4. 封装)
+
+
+
 ## 1. 类与实例
 
 1. 定义：类提供了把**数据和功能绑定**在一起的方法。创建新类时创建了新的数据类型，即<u>对象类型</u>，从而能够创建该类型的新实例。
 
    优势：相比于字典，类可以添加功能，同时对属性和实例的管理都更为方便
+
+   默认情况下，**类中的变量和方法都是公有的**，它们的名称前都没有下划线。公共的变量和方法，在类的外部、类的内部，都可以正常访问
+
+   ```py
+   class Test:
+       ....
+   a = Test() 
+   print(a.name) # 公有属性和方法可以在类的外部用名字调用
+   a.f1()
+   ```
 
 2. ==类与实例的关系：==（万物皆对象）
 
@@ -7844,6 +7862,218 @@ j= 101
 101
 101
 ```
+
+
+
+## 4. 封装
+
+### 4.1 封装基础：
+
+1. 定义：封装(encapsulation)就是把抽象出的数据**[属性]**和对数据的操作**[方法]**封装在一起,数据被保护在内部。程序只有通过**被授权**的操作,才能对数据进行访问
+
+   - 可以这样理解：
+
+     在看电视的时候，需要把电视打开，然后选择频道，中间的实现过程其实很复杂，但是用户需要做的操作很简单。封装也是类似的原理：把复杂的内容打包在一起，用户只需要简单调用就可以使用内容功能。
+
+2. 优势：
+   - 隐藏细节： 程序员（提供方法）<------  用户调用（传入参数）
+   - 可以对数据进行验证(比如age:1~120、password 长度要求等)，保证安全合理
+   - 可以保护数据隐私(比如salary)，要求授权才可以访问：提供**公共方法**来访问私有属性
+
+#### 4.1.1 私有成员
+
+默认情况下，类中的变量和方法都是公有的，在类的外部、类的内部，都通过名称可以正常访问
+
+```py
+# 公有方法的调用案例
+class Test:
+    name = None
+
+    def f1(self):
+        print("hi")
+
+a = Test()
+print(a.name)
+a.f1()
+```
+
+1. **将类私有化：**类中的变量或方法以双下划线`__`开头命名，则该变量或方法为私有的。
+
+​			私有的变量或方法，<u>只能在本类内部使用</u>，类的外部无法使用
+
+2. 如何访问私有属性/方法:提供公共的方法，用于对私有成员的操作
+
+   案例：
+
+​	创建职员类(Clerk)，属性有 name,job,salary
+​	1)不能随便査看职员Clerk的职位和工资等隐私，比如职员("tiger","Python工程师",20000)
+
+```py
+class Clerk:
+    name = None
+    # 私有属性
+    __job = None
+    __salary = None
+
+    def __init__(self,name,job,salary):
+        self.name = name
+        self.__job = job # 注意这里的双下划线不要漏
+        self.__salary = salary
+	
+    def __hi(self): # 设置私有方法
+        print("hi")
+
+
+clerk = Clerk("tiger","python工程师",20000)
+# 公有属性在外部可以直接访问
+print(clerk.name)
+# 私有属性在外部不可直接访问
+print(clerk.__job)
+# 私有方法在外部也无法直接使用：
+clerk.hi()
+
+# 输出结果：
+tiger
+...
+AttributeError: 'Clerk' object has no attribute '__job' # 这里报错可以看到，它没有找到__job这个属性
+AttributeError: 'Clerk' object has no attribute '__hi'
+```
+
+**注意**：这里在调用job的时候如果这样写：
+
+```py
+clerk.__job ="Go工程师"
+print(f"job={clerk.__job}")
+```
+
+会发现不仅结果没有报错，job也被更改成了Go工程师，这里是因为python的动态性导致的，具体可查看:[4.1.2 私有成员的注意事项](#4.1.2 私有成员的注意事项)里第一条内容
+
+
+
+​	2）**在类中**提供公共方法来访问私有属性：
+
+```py
+	... # 类内其他部分同上
+	def set_job(self,job): # 给私有属性赋值
+    	self.__job = job
+
+	def get_job(self): # 访问私有属性的值
+    	return self.__job
+    
+    def get_hi(self): # 访问私有方法也是同理
+        return self.__hi()
+
+clerk.set_job("Java工程师") # 在外部调用时给私有变量赋值
+print(clerk.get_job()) # 在外部访问私有变量
+clerk.get_hi()
+
+# 输出结果：
+Java工程师
+hi
+```
+
+==应用理解==: 通过私有属性可以防止用户在使用时随意的调用或者访问一些私密的数据，同时也可以通过在设置方法时限制用户的输入来实现校验数据的效果（如限制密码位数，用户名等）
+
+```py
+# 通过私有成员限制密码位数
+class Clerk: 
+    __passwd = "当前无密码"
+    
+	def set_passwd(self,passwd): # 设置密码不大于6位
+    	if len(passwd) > 6 :
+        	print("密码不能大于6位")
+    	else:
+        	self.__passwd = passwd
+            
+    def get_passwd(self): 
+        return self.__passwd    
+    
+clerk = Clerk()
+clerk.set_passwd("1234567")
+print(clerk.get_passwd())
+
+# 输出结果：
+密码不能大于6位
+当前无密码
+
+clerk = Clerk()
+clerk.set_passwd("123456")
+print(clerk.get_passwd())
+
+# 输出结果：
+123456
+```
+
+
+
+#### 4.1.2 私有成员的注意事项
+
+1. Python语言的动态特性，会出现伪私有属性的情况。
+
+   python中的私有属性其实并非强制的，而更像一种“约定”，是否遵循看程序员
+
+代码：
+
+```py
+class Clerk:
+    #公共属性
+    name = None
+    #私有属性
+    __job = None
+    __salary = None
+    #构造方法
+    def __init__(self, name, job, salary):
+        self.name = name
+        self.__salary = salary
+        self.__job = job
+
+    def get_job(self):
+        return self.__job
+
+clerk = Clerk("apple","Python工程师",20000)
+
+clerk.__job ="Go工程师" # 此处却可以访问
+print(f"job={clerk.__job}")
+print("ok")
+```
+
+如果这样使用，因为Python语言的动态特址，会动态的创建属性 `__job`，但是这个属性和我们在类中定义的私有属性`__job` 并不是同一个变量
+
+我们在类中定义的job私有性完整的名字是 `_Clerk__job`
+
+在最后一行断点，通过debug后的evaluate我们可以看到，真正的私有属性`_Clerk__job` 是“pyhon工程师”，而动态创建的`__job`是”Go工程师“
+
+![image-20251103175255857](./.assets/image-20251103175255857.png)
+
+只有获取_Clerk__job才能获取真正的私有属性：
+
+```py
+...
+clerk.__job ="Go工程师" # 这里是伪私有
+print(f"job={clerk.__job}")
+print(f"job={clerk.get_job()}") # 这才是真正的私有属性
+
+# 输出结果：
+job=Go工程师
+job=Python工程师
+ok
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [^补充1]: 补充1：关于浮点数：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容
 
