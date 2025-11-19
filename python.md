@@ -8061,11 +8061,426 @@ ok
 
 
 
+## 5. 继承 inheritance
+
+1. 定义：当多个类存在**相同的属性(成员变量)和方法时**,可以从这些类中抽象出<u>父类</u>,在父类中定义这些相同的属性和方法，所有的子类不需要重新定义这些属性和下。
+
+   - 派生类（子类）：会继承所有父类的属性和方法，同时父类的属性发生改变，派生类所继承的部分也会改变。父类不影响派生类自			    己特有放到方法属性
+   - 基类（父类）：基类的方法属性全是公共的，会继承给派生类
+
+   **注意：**如果子类和父类有重名的属性/方法，在调用子类的时候，子类的同名属性方法不会被覆盖，可以理解为：在调用子类的时候，	   如果a属性/方法存在，就直接使用该子类内部的，如果不存在，则一层层向上查找
+
+   ```py
+   class Grandpa:
+       name = "大头爷爷"
+       hobby = "旅游"
+   
+   class Father(Grandpa):
+       name="大头爸爸"
+       age= 39
+   
+   class Son(Father):
+       name ="大头儿子"
+       
+   son = Son()
+   print(f"son.name={son.name} son.age={son.age} son.hobby={son.hobby}")
+   
+   # 输出结果
+   son.name=大头儿子 son.age=39 son.hobby=旅游 # 可以看到，大头儿子的名字没有被覆盖，而其他属性则来自爸爸和爷爷
+   ```
+
+2. 应用场景：继承可以避免大量的重复工作,例如：需要两个类，大学生和小学生，其中大部分属性和方法相同，就可以通过继承来避免  重复繁琐的定义过程。
+
+   - 代码复用性提高
+   - 代码的可维护性变强
+
+3. 继承图解：
+
+   <img src="./.assets/image-20251118183333286.png" alt="image-20251118183333286" style="zoom:50%;" />
+
+4. 基础语法：
+
+```py
+class 子类名(父类名):
+    属性
+    方法
+```
+
+**在子类中可以调用父类的属性和方法**：详细可见：[5.2 调用父类成员的注意事项](#5.2 调用父类成员的注意事项)
+
+```py
+class 子类(父类):
+    ...
+    def __init__(self,传入参数)
+    	super.__init__(传入参数) # 可以用这个方法调用父类的构造器，注意上面要有self，super后面的不用
+    
+    def test(self):
+        父类方法() # 这里也可以调用父类构造器以外的公共方法
+        父类属性()
+```
+
+- 这样可以增加代码的可读性，和可扩展性
+
+5. 查看层级结构：把光标放在需要查看的类上，快捷键ctrl+H 就可以看到对应的继承关系：
+
+   ![image-20251119141356363](./.assets/image-20251119141356363.png)
+
+   由图我们可以看到，Sub类是Base的子类，而Base又是object的子类，这里我们并没有创建object类，而<u>object可以视为所有类的基类</u>
+
+6. 应用案例：
+
+   案例1：
+
+```py
+# 编写父类：
+class Student: # 父类
+    name = None
+    age = None
+    __score = None
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def show_info(self):
+        print(f"name={self.name} age={self.age} score={self.__score}")
+
+    def set_score(self, score):
+        self.__score = score
+
+
+class Stu1(Student):# 子类，在括号里设置父类
+
+    def test(self):
+        print("大学生在考高等数学")
+
+
+class Stu2(Student):
+    def test(self):
+        print("小学生在考小学数学")
+
+
+f1 = Stu1("lucy",12)
+f2 = Stu2("jack",20)
+f1.test()
+f1.set_score(70) # 这里就可以直接调用父类的方法
+f2.test()
+f2.set_score(100)
+f1.show_info()
+f2.show_info()
+
+# 输出结果：
+大学生在考高等数学
+小学生在考小学数学
+name=lucy age=12 score=70
+name=jack age=20 score=100
+```
 
 
 
+​	案例2：在子类中调用父类构造器
+
+```py
+# 2、编写computer类，包含CPU、内存、硬盘等属性
+# 1)get details方法用于返回Computer的详细信息
+# 2)编写PC子类，继承Computer类，添加特有属性【品牌brand】
+# 3)编写NotePad子类，继承Computer类，添加特有属性【color】4)完成测试，创建PC和NotePad对象，
+# 分别给对象中特有的属性赋值，以及从Computer类继承的属性赋值，并使用方法打印输出信息
+
+class Computer:
+
+    def __init__(self, cpu, memory, hard):
+        self.cpu = cpu
+        self.memory = memory
+        self.hard = hard
+
+    def get_details(self):
+        return f"cpu是{self.cpu}，内存是{self.memory}，硬盘是{self.hard}"
+
+class Pc(Computer):
+    brand = "a品牌"
+    def __init__(self,cpu,memory,hard):
+        super().__init__(cpu, memory, hard)
+
+    def get_info(self):
+        print(self.brand, self.get_details())
+
+class NotePad(Computer):
+    color = "black"
+    def __init__(self,cpu,memory,hard):
+        super().__init__(cpu,memory,hard)
+
+    def get_info(self):
+        print(self.color, self.get_details())
+        
+pc = Pc("cpu1","显卡1","硬盘1")
+notepad = NotePad("cpu2","显卡2","硬盘2")
+
+pc.brand = "b品牌"
+notepad.color = "white"
 
 
+pc.get_info()
+notepad.get_info()
+
+# 输出结果：
+b品牌 cpu是cpu1，内存是显卡1，硬盘是硬盘1
+white cpu是cpu2，内存是显卡2，硬盘是硬盘2
+```
+
+### 5.1 继承的注意事项和细节
+
+1. 子类继承了所有的属性和方法，非私有的属性和方法可以在子类直接访问,但是私有属性和方法不能在子类直接访问，要
+   通过父类提供公共的方法去访问
+   
+   但是父类的私有属性其实子类也是继承的，通过debug可以看到，只是无法直接调用而已
+
+案例：
+
+```py
+class Base:
+    n1 = 1 # 公有属性
+    __n2 = 2 # 私有属性
+    def __init__(self):
+        print("父类base")
+
+    def __hi(self): # 私有方法
+        print("hi,base")
+
+    def hello(self): # 共有方法
+        print("hello,base")
+
+
+
+class Sub(Base):
+    def __init__(self):
+        print("子类：Sub")
+
+    def ok(self):
+        print("ok",self.n1) # 子类里可以直接访问父类的公有属性
+        self.hello() # 子类里也可以调用父类的公有方法
+        self.__hi() # 调用父类的私有方法会报错
+
+
+sub = Sub()
+sub.ok()
+
+# 输出结果：
+子类：Sub
+ok 1
+hello,base
+....
+AttributeError: 'Sub' object has no attribute '_Sub__hi'
+```
+
+通过父类的提供的方法，可以访问父类的私有属性/方法:
+
+```py
+class Base:
+    __n2 = 2 # 私有属性
+
+    def __hi(self): # 私有方法
+        print("hi,base")
+
+    def test(self):
+        print(self.__n2)#在父类中设置方法访问私有方法， 属性
+        self.__hi()#在父类中设置方法访问私有方法， 属性
+
+class Sub(Base):
+    ...
+    def __init__(self):
+    	pass
+    
+    def ok(self):
+        self.test()
+        
+sub = Sub()
+sub.ok()
+
+# 输出结果：
+2
+hi,base
+```
+
+
+
+2. python支持多重继承：
+
+   python中，一个子类可以继承多个基类（注意，多数语言是单继承）
+
+   注意：**在多重继承中，如果有同名的成员,遵守从左到右的继承优先级(即:写左边的父类优先级高,写在右边的父类优先级低)**
+
+   基础语法：
+
+```py
+class 子类a(基类1，基类2...基类n)
+```
+
+​	应用案例：
+
+```py
+class A:
+    n1 = 100
+    def sing(self):
+        print("A sing()...",self.n1)
+
+
+class B:
+    n2 = 200
+    def dance(self):
+        print("B dance()...",self.n2)
+
+class C(A,B): # 继承了两个父类
+    pass
+
+c = C()
+c.sing()
+c.dance()
+
+# 输出结果：
+A sing()... 100
+B dance()... 200
+```
+
+​	案例2：如果出现同名属性方法，会遵从左边父类优先级高的原则
+
+```py
+class A:
+    n1 = 100
+    def sing(self):
+        print("A sing()...",self.n1)
+
+
+class B:
+    n2 = 200
+    n1 = 300 # 两个基类里面有重名的属性
+    def dance(self):
+        print("B dance()...",self.n2)
+
+    def sing(self): # 两个基类中有同名的方法
+        print("B sing()...",self.n1)
+
+class C(A,B): # 这个时候A在左边，所以A的优先级高，A的属性n1,sing会覆盖B的n1,sing
+    pass
+
+c = C()
+c.sing()
+c.dance()
+
+# 输出结果
+A sing()... 100
+B dance()... 200
+```
+
+
+
+### 5.2 调用父类成员的注意事项
+
+
+
+1. 如果子类出现和父类**同名**的成员/方法，如何调用父类的成员方法: <u>super或父类名</u>
+
+- super：super代表的是第一分级，即这个函数的直接父类，如小张是小明的父类，那super就代表去找小张的成员，而不会跳过小张  去找小明的爷爷。注意super后面的方法不用加self
+
+- 基础语法：
+
+```py
+#方法1：
+super().父类方法() # super的方法不带self
+super().父类成员
+
+# 方法2：
+父类名.方法名()
+父类名.成员(self) # 注意这里要加self
+```
+
+​	注意：
+
+- 如果子类里面没有同名的方法，那可以不用super直接调用
+- 调用父类构造器必须用super，否则会被识别为子类的构造器而报错
+
+案例1：
+
+```py
+class A:
+    n1 = 100
+    def run(self):
+        print("A-run()....")
+
+class B(A):
+    # 这里定义两个和A父类中重名的成员和方法
+    n1 = 200
+
+    def run(self):
+        print("B-run()....")
+
+    def say(self):
+        # 通过父类名访问父类成员
+        print(f"父类的n1 {A.n1}，本类的n1 {self.n1}")
+        # 用父类名调用父类的run
+        A.run(self)
+        # 调用本类的run
+        self.run()
+
+    def hi(self):
+        print(f"父类的n1 {super().n1}")
+        # 用super调讯父类run
+        super().run()
+
+b = B()
+b.hi()
+b.say()
+
+# 输出结果：
+父类的n1 100
+A-run()....
+父类的n1 100，本类的n1 200
+A-run()....
+B-run()....
+```
+
+2. 子类不能访问父类的私有成员
+
+   此处可见：[5.1 继承的注意事项和细节](#5.1 继承的注意事项和细节)中第一条
+
+
+
+3. 访问**不限于直接父类**，而是建立从子类向上级父类的查找关系： A->B->C..
+
+   如A是子类，那会优先从A中查找，若找不到则会去父类B，还是找不到则去B的父类C，以此类推
+
+```py
+class Base:
+    n3=800
+    def fly(self):
+        print("Base-fly()...")
+
+class A(Base):
+    n1=100
+    n2=600
+    def run(self):
+        print("A-run()....")
+    def jump(self):
+        print("A-jump()...")
+class B(A):
+    def say(self):
+        print("say()....")
+        #访间不限于直接父类，而是建立从子类向上级类的查关系A->B->Base.
+        print(Base.n3, A.n3, super().n3)# A类应该是没有n3的，但是这里不会报错，因为继续往上可以看到n3在Base里有
+        Base.fly(self)
+
+b = B()
+b.say()
+
+# 输出结果
+say()....
+800 800 800
+Base-fly()...
+```
+
+==注意：==
+
+- 建议使用 super() 的方式，因为如果使用父类名的方式,一旦父类变化，类名统一需要修改
+- 直接使用父类名的情况，一般是多个类里有重名的成员/方法，用父类名可以直接指定使用哪个，如果没有这种特殊需求，多数情况以super()为主
 
 
 
