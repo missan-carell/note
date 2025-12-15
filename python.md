@@ -8177,7 +8177,7 @@ name=jack age=20 score=100
 
 
 
-​	案例2：在子类中调用父类构造器
+​	案例2：**在子类中调用父类构造器**
 
 ```py
 # 2、编写computer类，包含CPU、内存、硬盘等属性
@@ -8282,8 +8282,8 @@ class Base:
         print("hi,base")
 
     def test(self):
-        print(self.__n2)#在父类中设置方法访问私有方法， 属性
-        self.__hi()#在父类中设置方法访问私有方法， 属性
+        print(self.__n2)#在父类中设置方法访问私有属性
+        self.__hi()#在父类中设置方法访问私有方法
 
 class Sub(Base):
     ...
@@ -8384,13 +8384,13 @@ B dance()... 200
 - 基础语法：
 
 ```py
-#方法1：
+#方法1：更为常用
 super().父类方法() # super的方法不带self
 super().父类成员
 
-# 方法2：
-父类名.方法名()
-父类名.成员(self) # 注意这里要加self
+# 方法2：一般用于有多个父类，且有同名的情况下
+父类名.方法名(self)# 注意这里要加self
+父类名.成员 
 ```
 
 ​	注意：
@@ -8480,11 +8480,58 @@ Base-fly()...
 ==注意：==
 
 - 建议使用 super() 的方式，因为如果使用父类名的方式,一旦父类变化，类名统一需要修改
+
 - 直接使用父类名的情况，一般是多个类里有重名的成员/方法，用父类名可以直接指定使用哪个，如果没有这种特殊需求，多数情况以super()为主
 
+- super()不支持链式调用，如果使用`super().super() `会报错
 
+  
 
+4. 子类创建构造器的时候，一定要调用父类构造器，否则会报错：
 
+   案例：
+
+   ```py
+   class Person():
+       name = None
+       age = None
+       def __init__(self, name, age):
+           self.name = name
+           self.age = age
+   
+       def say(self):
+           print(f"我的名字是{self.name},年龄是：{self.age}")
+   
+   class Student(Person):
+       id = None
+       score = None
+       def __init__ (self, name, age, id, score):
+           super().__init__(name, age) # 这里的构造器一定要加上父类构造器
+           self.id = id
+           self.score = score
+   ```
+
+### 5.3 重写：override
+
+1. 定义：重写又称覆盖(override)，即子类继承父类的属性和方法后,根据业务需要,再重新定义同名的属性或方法
+
+```py
+class Father():
+    n1 = 100
+    def fly(self):
+        print("fly")
+
+class Son(Father):
+    n1 = 200 # 这里定义了重名的属性和方法，其实就是对父类的重写
+    def fly(self):
+        print("run")
+```
+
+在pycharm中，将鼠标光标停留在覆写对象前面的圆圈上，可以看到被覆写的内容：
+
+此处以属性为例
+
+![image-20251215180551860](./.assets/image-20251215180551860.png)
 
 
 
