@@ -8,7 +8,7 @@
 
 本笔记适用于对计算机零基础的新人，因此讲述会比较冗余。笔记内容会持续更新
 
-感谢b站韩顺平老师的网课，该笔记内有部分图片来自网课内容，菜鸟教程等。部分题目来自马蹄集
+感谢**b站韩顺平**老师的网课，该笔记内有部分图片来自网课内容，菜鸟教程等。部分题目来自马蹄集
 
 学习时间跨度较久，所以前期的笔记在格式不是很美观，请见谅
 
@@ -6441,6 +6441,17 @@ sort(bubble , ls , 8)
 - import尽量写在文件的开头
 - 使用:模块.xx方式来使用相关功能，**.** 表示层级关系，即 模块中的xx功能
 
+快捷方式：在代码中直接写未导入的模块会有告警提示，将鼠标放在对应语句上，使用`Enter+Alt` 可以快速导入对应模块：
+
+![image-20260119163155915](./.assets/image-20260119163155915.png)
+
+选择导入对应的模块即可:
+
+```py
+from typing import Union
+a : Union[str,int] = 100
+```
+
 2. **查看系统模块库：**
 
 - 直接查看：通过python手则查看模块库10. 标准库简介 — Python 3.12.10 文档
@@ -7120,7 +7131,11 @@ pip install -i  https://mirrors.aliyun.com/pypi/simple requests
 
 封装：[4. 封装](#4. 封装)
 
+继承：[5. 继承 inheritance](#5. 继承 inheritance)
 
+多态：[7. 多态](#7. 多态)
+
+==注意==：在python的oop编程中，子类的对象/方法是可以传给父类的，此处在[多态](#7. 多态)还会再讲到
 
 ## 1. 类与实例
 
@@ -8373,7 +8388,7 @@ B dance()... 200
 
 
 
-### 5.2 调用父类成员的注意事项
+### 5.2 调用父类成员的注意事项 super
 
 
 
@@ -8532,6 +8547,561 @@ class Son(Father):
 此处以属性为例
 
 ![image-20251215180551860](./.assets/image-20251215180551860.png)
+
+- 案例：
+
+```py
+class Person():
+    name = None
+    age = None
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def say(self):
+        return f"我的名字是{self.name},年龄是：{self.age}" 
+    	# 注意这里要使用return，使用print会导致无返回结果，而在最后返回空值
+
+class Student(Person):
+    id = None
+    score = None
+    def __init__ (self, name, age, id, score):
+        super().__init__(name, age)
+        self.id = id
+        self.score = score
+        
+    def say (self):
+        return f"id：{self.id},成绩：{self.score}，{super().say()}"
+    	# 这里使用super调用父类里say的内容，可以简化代码
+
+person = Person("tom", 19)
+print(person.say())
+
+student = Student("lucy", 18, 18, "<UNK>")
+print(student.say())
+
+# 输出结果：
+我的名字是tom,年龄是：19
+id：18,成绩：90，我的名字是lucy,年龄是：18
+```
+
+
+
+## 6. 类型注解: type_hint
+
+1. 定义：在较大的项目中，为了避免搞混需要传入参数类型，通过使用对类型注解可以避免类型的错误使用。用于后期维护时可读性更高
+
+   类型注解是提示性的，并非强制性的，只会给出黄色的警告，实际运行时不会因为和注解的不同而报错。当然如果这个数据的类型影响了代码的运行，那还是会报错的
+
+   ```py
+   n1 : str = 10 # 这样虽然会给警告，但是不影响代码运行
+   
+   def test(a :str): 
+       for ele in a :
+           print(ele)
+           
+   test(100) # 传入的不是一个可遍历对象，所以会报错
+   ```
+
+   （辅助理解：类似于c语言中，定义变量时要先申明变量类型：）
+
+   ```c
+   ...
+   int age;
+   age = 10;
+   ...
+   ```
+
+   
+
+2. 功能：
+
+   1)类型提示：防止运行时出现参数类型、返回值类型、变量类型不符合。
+
+   2)作为开发文档附加说明，方便使用者调用时传入和返回参数类型。
+
+   3)加入后并<u>不会影响程序的运行</u>，不会报正式的错误，只有提醒
+
+   4)PvCharm支持类型注解，参数类型错误会黄色提示
+
+   ```py
+   def test(a :str): # 这里的 :str 的意思是，对a进行类型注解，表示需要传入的参数是一个字符串
+       for ele in a :
+           print(ele)
+   
+   test("abc")
+   ```
+
+   此处可以看到，传入错误的类型会有告警
+
+   ![image-20260119145718478](./.assets/image-20260119145718478.png)
+
+   
+
+3. 基础语法：
+
+   ```py
+   参数 : 类型
+   ```
+
+   - 可以在函数的形参处注解：`def test(a : int ):`
+   - 也可以在赋值的时候注解：`a: int = 1`
+
+4. 案例：
+
+   ```py
+   n1:int = 10
+   ```
+
+
+
+### 6.1 不同的类型的注解
+
+1. 对基础数据类型进行注解：
+
+- 案例：
+
+```py
+n1:int = 10
+n2:float = 10.1
+is_pass: bool = True
+name:str ="小明"
+```
+
+
+
+2. **对实例对象类型注解：**
+
+- 给类进行注解：注意对类注解的时候，不要用class，而要用类名标注
+
+```py
+# 定义一个类
+class Cat:
+    pass
+
+# 对mimi类型注解，mimi的类型是Cat
+mimi: Cat = Cat()
+```
+
+
+
+3. **对数据容器类型注解：**
+
+```py
+my_list: list = [100, 200, 300]
+my_tuple:tuple = ("run","sing","fly")
+my_set:set = {"jack", "tim", "hsp"}
+my_dict:dict ={"no1":"北京","no2":"上海"}
+```
+
+如果要对容器内的数据进一步注解，则要用以下格式：
+
+```py
+容器名: 容器类型[容器内数据类型] = ...
+```
+
+- 对list和set详细注解：直接用`[]`标注需要注解的类型即可
+
+```py
+my_list2: list[int] = [100, 200, 300]
+my_set2:set[str] = {"jack", "tim", "hsp"}
+```
+
+
+
+- 对元组（tuple）注解的时候要注意，要**给每个元素分别注解**，元素类型可以不一样
+
+```py
+my_tuple2:tuple[str,str,str,float] = ("run","sing","fly",10.1) # 如最后的10.1是一个浮点数，也需要在注解时说明
+```
+
+
+
+- 对字典注解的时候，要**分别注解**关键字（key）和元素（value）的类型：
+
+```py
+my_dict2:dict[str:int] ={"no1":100,"no2":200}
+```
+
+注意：如果元素有一个符合注解，就不会提示，只有全部不符合的情况才会提示：
+
+```py
+my_dict2:dict[str,int] ={"no1":"hhh","no2":"200","no3":300} # 这种情况是不会提示的
+my_dict2:dict[str,int] ={"no1":"hhh","no2":"200","no3":300} # 这样才会有黄色的告警信息
+```
+
+
+
+4. **在注释中注解：**
+
+   基础语法：`# type: 类型`
+
+```py
+n = 90.9 # type: float
+cat = "Tom" # type: str
+# 下面这句也会有黄色的告警
+dog = 2 # type: str
+```
+
+
+
+5. **在函数（方法）中的类型注解**：
+
+   基础语法：
+
+```py
+def 函数/方法名(形参名:类型，形参名:类型) -> 类型 : # 后面这个->是对返回值进行类型的标注
+    函数/方法体
+```
+
+```py
+def fun2(n1:int, n2:int) -> int:
+    return n1*n2
+
+print(f"结果是：{fun2(2,3)}")
+```
+
+
+
+### 6.2 Union 联合类型
+
+1. 定义：Union[X，Y] 等价于 X|Y(即x或者y），意味着满足X或Y之一。
+
+2. 功能：
+
+   1)Union类型可以定义**联合类型注解**
+
+   2)在变量、函数(方法)都可以使用Union联合类型注解
+
+   3)使用的时候，需要先导入 Union: `from typing import Union`
+
+3. 基础语法：
+
+```py
+Union[类型，类型，类型....]
+```
+
+```py
+from typing import Union
+
+# 使用Union联合注解，这样a可以是多个类型，也不会告警
+a : Union[str,int] = 100
+b : Union[str,int] = "ok"
+
+# 对列表这种有多个元素的容器更为实用
+list1 : list[Union[int,str]] = [1,2,3,"abc"]
+
+# 返回值类型也可用Union
+def sum1(n1:Union[int,float],
+        n2:Union[int,float],) -> Union[int,float]:
+    return n1 + n2
+
+print(sum1(10,20.1))
+```
+
+
+
+## 7. 多态
+
+1. 定义：多态，即多种状态，**不同的对象调用相同的方法，表现出不同的状态**，称为多态。多态通常作用在**继承**关系上
+
+   （辅助理解：一个父类，具有多个子类，不同的子类对象调用相同的方法，执行的时候产生不同的状态，就是多态）
+
+   
+
+2. 使用情况：在这个案例里，需要实现feed这个方法的函数内容相差不大，但是需要分别写出来，若子类数量太多，会导致代码非常冗余：
+
+   ```py
+   ...
+   class Master:
+   
+       def __init__(self,name):
+           self.name = name
+   
+       def feed_cat(self,cat: Cat, fish: Fish): # 这里使用注解，可以避免代码较多的情况下搞混
+           print(f"主人{self.name}给猫{cat.name}喂{fish.name}")
+   
+       def feed_dog(self,dog: Dog, bone: Bone):
+           print(f"主人{self.name}给狗{dog.name}喂{bone.name}")
+   
+   master = Master("lucy")
+   dog = Dog("jack")
+   cat = Cat("ten")
+   fish = Fish("fish")
+   bone = Bone("bone")
+   master.feed_cat(cat, fish)
+   master.feed_dog(dog, bone)
+   
+   # 输出结果：
+   主人lucy给猫ten喂fish
+   主人lucy给狗jack喂bone
+   ```
+
+   为了减少代码的重复部分，增强可扩展性，这里引入多态的方法
+
+   ```py
+   class Animal:
+       def __init__(self,name):
+           self.name = name
+   
+   class Dog(Animal):
+       pass
+   
+   class Cat(Animal):
+       pass
+   
+   class Food:
+       def __init__(self, name):
+           self.name = name
+   
+   class Fish(Food):
+       pass
+   
+   class Bone(Food):
+       pass
+   
+   
+   class Master:
+   
+       def __init__(self,name):
+           self.name = name
+   
+       def feed(self,animal: Animal, food: Food): # 使用多态，就可以用一个方法完成同样的功能
+           print(f"主人{self.name}给{animal.name}喂{food.name}")
+   
+   
+   master = Master("lucy")
+   dog = Dog("jack")
+   cat = Cat("ten")
+   fish = Fish("fish")
+   bone = Bone("bone")
+   master.feed(cat, fish)
+   master.feed(dog, bone)
+   
+   # 输出结果：
+   主人lucy给猫ten喂fish
+   主人lucy给狗jack喂bone
+   ```
+
+3. 案例：
+
+```py
+class Animal:
+    def cry(self):
+        print("这个动物没有叫声")
+
+
+class Dog(Animal):
+    def cry(self): # 这里重写一下父类里的cry方法
+        print("汪汪")
+
+class Cat(Animal):
+    def cry(self):
+        print("喵喵")
+        
+class Snake(Animal):
+    pass
+
+# 这里形参的名字是否叫animal都不影响结果，但是后面注解的内容如果改变了，下方cat传入的时候会有告警
+def func(animal: Animal): 
+    print(f"animal的类型是：{type(animal)}")
+    animal.cry() # 虽然Animal类的cry是一个空方法，但是此处并非Animal类，而是给这个函数传入的类。
+
+# 这里可以看到，虽然func中传入的是参数注解应该是Animal类，但是却没有告警信息
+# 是因为python中的oop编程，子类的对象方法可以传入给父类
+func(Cat())
+func(Dog())
+func(Snake()) # 如果这个类里没有对应的方法，则会去父类找，并执行对应方法
+
+# 输出结果：
+animal的类型是：<class '__main__.Cat'> # 可以看到func函数里，传入的类型就是cat
+喵喵
+animal的类型是：<class '__main__.Dog'>
+汪汪
+animal的类型是：<class '__main__.Snake'>
+这个动物没有叫声
+```
+
+**案例注解：**此处func函数的调用逻辑是这样的：func函数的形参animal叫什么不影响运行结果，但是如果注解了Animal类，那就只能传入Animal，或是它的子类 cat或dog。在执行func时，会优先从传入的参数找 cry方法执行，如Cat里面的cry。
+
+若Cat里面没有cry方法，func才会去父类寻找，如最后一个案例 Snake
+
+优点：
+
+- 增加了程序的灵活性，无论怎么变化，使用者都是同一种形式去调用（调用func）
+- 增加了程序的可扩展性：如果新增了子类，无需更改父类内容，只要在子类里写好对应方法，用func(animal)调用即可
+
+
+
+### 7.1 多态的注意事项
+
+1. 因为python是动态语言，所以函数/方法的参数是没有类型限制的，所以多态在python中的体现并不是很严谨(比如:和java等强类型语言比)
+
+   Python**并不要求严格的继承体系**，关注的不是对象的类型本身，而是它是否具有要调用的方法(行为)
+
+```py
+class A:
+    def test(self):
+        print("a")
+
+class B:
+    def test(self):
+        print("b")
+
+def func2(obj):
+    obj.test()
+
+a = A()
+b = B()
+func2(a)
+func2(b)
+
+# 输出结果：
+a
+b
+```
+
+可以在这个案例中看到：即便A和B**并没有继承关系**，依然不影响结果的运行
+
+
+
+2. **当调用对象成员的时候，会和对象本身动态关联：**(此特性十分重要，可配合案例理解)
+
+```py
+class A:
+    i = 10
+    def sum(self):
+        return self.getI() + 10
+
+    def sum1(self):
+        return self.i + 10
+
+    def getI(self):
+        return self.i
+
+class B(A):
+    i = 20
+    def getI(self):
+        return self.i
+
+b =B()
+print(b.sum())
+'''
+ 结果分析：
+    1. 此处可以看到，B类型里并没有sum()方法，所以会优先去B的父类A里面去找sum()方法
+    2. A中的sum()方法调用了getI()方法，而A，B中都有getI()
+    3. 根据类的对象的动态关联性可知，这里使用的是b.sum(),所以会优先使用B中的getI()
+'''
+print(b.sum1())
+'''
+ 结果分析：
+    1. 与上面同理，会去A里找sum1()
+    2. 在A的sum1()中所调用的self.i依然是B的i，所以结果是30
+'''
+
+# 输出结果：
+30
+30
+```
+
+### 7.2 isinstance函数
+
+1. 功能：isinstance()用于判断对象是否为某个类或其子类的对象
+
+2. 基础语法：
+
+   ```py
+   isinstance(obiect判断对象, classinfo类型)
+   ```
+
+   - classinfo:可以是类名、基本类型或者由它们组成的元组
+
+3. 案例：
+
+   ```py
+   class A:
+       pass
+   
+   class B(A):
+       pass
+   
+   class C:
+       pass
+   
+   
+   n1 = A()
+   n2 = B()
+   n3 = C()
+   
+   print(f"n1是A的对象：{isinstance(n1,A)}")
+   print(f"n2是A的对象：{isinstance(n2,A)}") # n2的B类是A的子类，所以此条对
+   print(f"n3是A的对象：{isinstance(n3,A)}") # n3和A没有继承关系，所以n3不是A的对象
+   
+   n4 = 1
+   print(f"n4是int类的对象：{isinstance(n4,int)}") # 在python中万物皆类，所以正确
+   print(f"n4是str类的对象：{isinstance(n4,str)}") # 在python中万物皆类，所以正确
+   
+   # isinstance也可以判断目标是否符合元组中任意一个类
+   print(f"n4是int/str/float类中一个的对象：{isinstance(n4,(str,float,int))}")
+   
+   # 输出结果：
+   n1是A的对象：True
+   n2是A的对象：True
+   n3是A的对象：False
+   n4是int类的对象：True
+   n4是str类的对象：False
+   n4是int/str/float类中一个的对象：True
+   ```
+
+
+
+# 第{Null}章：**爬虫** Web Scraping
+
+1. 定义：Python 爬虫（Python 爬虫（Web Scraping）是指通过编写 Python 程序从互联网上自动提取信息的过程。
+
+   爬虫的基本流程通常包括发送 HTTP 请求获取网页内容、解析网页并提取数据，然后存储数据。
+
+2. 基础流程：
+
+   - **发送 HTTP 请求**：爬虫通过 HTTP 请求从目标网站获取 HTML 页面，常用的库包括 `requests`。
+   - **解析 HTML 内容**：获取 HTML 页面后，爬虫需要解析内容并提取数据，常用的库有 `BeautifulSoup`、`lxml`、`Scrapy` 等。
+   - **提取数据**：通过定位 HTML 元素（如标签、属性、类名等）来提取所需的数据。
+   - **存储数据**：将提取的数据存储到数据库、CSV 文件、JSON 文件等格式中，以便后续使用或分析。
+
+   
+   
+3. 案例演示：
+
+   ```py
+   import requests
+   from bs4 import BeautifulSoup # 先导入所需要的库
+   
+   url = 'https://cn.bing.com/' # 目标网址
+   response = requests.get(url) # 使用request 访问目标网址，并把返回值储存在response里面
+   response.encoding = 'utf_8' # 确定编码格式，避免中文乱码
+   
+   
+   print(response.url)
+   print(response.cookies) # 演示可以从http请求中获取的内容，除此之外还可以获取其他信息
+   
+   if response.status_code == 200: # 确保请求成功
+       soup = BeautifulSoup(response.text, 'lxml')
+       title = soup.find('title') # 找到标签为title的内容
+   
+       if title:
+           print(f"返回标题：{title}")
+   
+       else:
+           print("未找到对应标题")
+   ```
+
+
+
+### 随笔记（后续需自己整理）
+
+状态码对应内容：
+
+![image-20260116174749947](./.assets/image-20260116174749947.png)
 
 
 
