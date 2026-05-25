@@ -23,6 +23,8 @@
 
 9. [VsCode笔记](vscode.md)
 
+10. [blender笔记](blender.md)
+
 作者：missan-carell
 
 联系方式：2587078474@qq.com

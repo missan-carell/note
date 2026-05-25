@@ -8585,6 +8585,8 @@ print(student.say())
 id：18,成绩：90，我的名字是lucy,年龄是：18
 ```
 
+---
+
 
 
 ## 6. 类型注解: type_hint
@@ -8967,6 +8969,8 @@ b
 
 2. **当调用对象成员的时候，会和对象本身动态关联：**(此特性十分重要，可配合案例理解)
 
+   注意：在java中，只有调用方法是动态关联的，**python中方法和属性都为动态关联**
+
 ```py
 class A:
     i = 10
@@ -9053,7 +9057,282 @@ print(b.sum1())
    n4是int/str/float类中一个的对象：True
    ```
 
+---
 
+
+
+## 8. 魔术方法
+
+1. 定义：在Python中，所有以双下划线`__`包起来的方法，统称为Magic Method(魔术方法)，它是一种的特殊方法，普通方法需要调用，**而魔术方法不需要调用就可以自动执行。**
+
+   魔术方法在类或对象的某些事件发生时会自动执行，如果希望根据自己的程序定制特殊功能的类，那么就需要对这些方法进行重写。
+
+2. 常见魔术方法：
+
+   | 名称                   | 功能                                           |
+   | ---------------------- | ---------------------------------------------- |
+   | `__init__`             | 初始化对象的成员(构造器)                       |
+   | `__str_(self)__`       | 定义对象转字符串行为: print(对象)或者str(对象) |
+   | `__eq_(self,other)__`  | 定义等于号的行为:x==y                          |
+   | `__lt_(self,other)__`  | 定义小于号的行为:x<y                           |
+   | `__le_(self,other)__`  | 定义小于等于号的行为:x<=y                      |
+   | `__ne_(self, other)__` | 定义不等号的行为:x!=y                          |
+   | `__gt_(self,other)__`  | 定义大于号的行为:x>y                           |
+   | `__ge_(self,other)__`  | 定义大于等于号的行为:x>=y                      |
+
+
+
+### 8.1 str方法
+
+1) 功能：`__str__`方法其实是存在于所有对象的父类`obj()`类中的一个方法，在打印对象的时候，会默认调用父类中的`__str__`方法，然后返回: `类型名+对象内存地址(十六进制) `。如案例1中的：`<__main__.Monster object at 0x0000024E0F7A8590>`
+
+   如果我们在使用过程中，希望打印对象时返回的不是默认内容，那可以通过子类重写`__str__`，用于返回对象的属性信息
+
+   重写`__str__`方法，print(对象)或str(对象)时，都会自动调用该对象的`__str__`
+
+2) 案例演示：
+
+- 默认情况下的打印结果：
+
+```py
+class Monster:
+
+    def __init__ (self, name, age, gender):
+        self.name = name
+        self.age = age
+        self.gender = gender
+
+
+m = Monster("蜘蛛精","女",100)
+print(m) # 正常这样打印，会返回类型名和内存地址(十六进制)
+
+# 输出结果
+<__main__.Monster object at 0x0000024E0F7A8590>
+```
+
+- 重写str以达到返回对象属性信息的方法：
+
+  ```py
+  # __str__方法返回的内容是可以自己定义的
+  class Monster:
+  
+      def __init__ (self, name, age, gender):
+          self.name = name
+          self.age = age
+          self.gender = gender
+  
+      def __str__(self):
+          return "此处的内容可以根据需要自定义"
+  
+  m = Monster("蜘蛛精","女",100)
+  print(m)
+  
+  # 输出结果：
+  此处的内容可以根据需要自定义
+  
+  # 根据需求，我们让他返回对象的属性
+  
+  ...
+      def __str__(self):
+          return f"对象的名称：{self.name},性别：{self.age},年龄{self.gender}"
+  
+  m = Monster("蜘蛛精","女",100)
+  print(m) 
+  
+  # 输出结果：
+  对象的名称：蜘蛛精,性别：女,年龄：100
+  ```
+
+
+
+### 8.2 eq方法
+
+1. 功能：== 是一个比较运算符 : 对象之间进行比较时，比较的是内存地址是否相等，**即判断是不是同一个对象**
+
+   - 重写`__eq__`方法，可以用于判断对象内容/属性是否相等
+   - 默认的`__eq__`方法是从当前类的父类中去调用，即`obj()`类
+
+   图解：
+
+   <img src="./.assets/image-20260525173309714.png" alt="image-20260525173309714" style="zoom: 67%;" />
+
+   
+
+2. 案例：
+
+   ```py
+   # 未重写equ前，“==”比较的是内存地址
+   class Person:
+   
+       def __init__(self, name, age, gender):
+           self.name = name
+           self.age = age
+           self.gender = gender
+   
+   
+   p1 = Person("lucy",20,"female")
+   p2 = Person("lucy",20,"female")
+   
+   print(f"p1=p2 is {p1 == p2}")
+   
+   # 输出结果：
+   p1=p2 is False
+   
+    # 使用equ就可以判断多个变量的值是否相等
+   class Person:
+   
+       ...
+   
+      
+       def __eq__(self,other): # 此处self相当于p1，other是比较时的另一个对象p2
+           return (self.name == other.name and
+                   self.age == other.age and
+                   self.gender == other.gender)
+   
+   
+   
+   p1 = Person("lucy",20,"female")
+   p2 = Person("lucy",20,"female")
+   
+   print(f"p1=p2 is {p1 == p2}")
+   
+   # 输出结果：
+   p1=p2 is True
+   ```
+
+3. 拓展：如果对比的对象不属于一个类，在定义了`__equ__`之后依然可能返回True
+
+   案例：
+
+   ```py
+   class Person:
+   
+       def __init__(self, name, age, gender):
+           self.name = name
+           self.age = age
+           self.gender = gender
+   
+       
+       def __eq__(self,other): 
+           return (self.name == other.name and
+                   self.age == other.age and
+                   self.gender == other.gender)
+   
+   class Dog: # 新增dog类
+      
+       def __init__(self, name, age, gender):
+           self.name = name
+           self.age = age
+           self.gender = gender
+   
+   p1 = Person("lucy",20,"female")
+   p2 = Person("lucy",20,"female")
+   dog = Dog("lucy",20,"female") # 可以看到dog和p1的值依然是一样的
+   
+   print(f"p1=dog is {p1 == dog}")
+   
+   # 输出结果：
+   p1=dog is True
+   ```
+
+   如果要避免跨类的比较，则可以通过`isinstance`来规避
+
+   ```py
+   ...
+   	# 只要在重定义eq的方法里使用isinstance来判断是否是同一类即可
+       def __eq__(self,other): # 此处self相当于p1，other是比较时的另一个对象p2
+           if isinstance(other,Person):
+               return (self.name == other.name and
+                       self.age == other.age and
+                       self.gender == other.gender)
+           else:
+               return False
+   ...
+   ```
+
+
+
+### 8.3 其他魔术方法
+
+其他魔术方法与上使用方法一致，这里简单说明
+
+1. `__lt__`：比较 `x<y`
+
+   ```py
+   class Person:
+   
+       def __init__(self, name, age, gender):
+           self.name = name
+           self.age = age
+           self.gender = gender
+   
+         def __lt__(self, other):
+           if isinstance(other,Person):
+               return self.age < other.age
+           else:
+               return False
+   
+   class Dog:
+       def __init__(self, name, age, gender):
+           self.name = name
+           self.age = age
+           self.gender = gender
+   
+   
+   p1 = Person("lucy",20,"female")
+   p2 = Person("lucy",22,"female")
+   dog = Dog("lucy",22,"female")
+   print(f"p1.age < p2.age is {p1 < p2 }")
+   print(f"p1.age < dog.age is {p1 < dog }") # 注意这里不要加上.age，否则会直接取age的值比较，因而返回True
+   
+   # 输出结果：
+   p1.age < p2.age is True
+   p1.age < dog.age is False
+   ```
+
+2. `__ne__`：表示`x != y`
+
+   ```py
+   class Person:
+   
+       def __init__(self, name, age, gender):
+           self.name = name
+           self.age = age
+           self.gender = gender
+           
+        def __eq__(self,other): # 此处self相当于p1，other是比较时的另一个对象p2
+           if isinstance(other,Person):
+               return (self.name == other.name and
+                       self.age == other.age and
+                       self.gender == other.gender)
+           else:
+               return False
+   
+       def __ne__(self,other):
+           if isinstance(other, Person):
+               # 这里直接返回相等的反值，
+               return not self.__eq__(other) # 注意，这里使用这个方法需要在上面重定义__eq__
+           else:
+               return "不是同一类无法判断"
+   
+   class Dog:
+       def __init__(self, name, age, gender):
+           self.name = name
+           self.age = age
+           self.gender = gender
+   
+   p1 = Person("lucy",20,"female")
+   p2 = Person("jam",22,"male")
+   dog = Dog("lucy",22,"female") 
+   
+   print(f"p1 != p2 is {p1 != p2}")
+   print(f"p1 != dog is {p1 != dog}")
+   
+   # 输出结果：
+   p1 != p2 is True
+   p1 != dog is 不是同一类无法判断
+   
+   ```
 
 # 第{Null}章：**爬虫** Web Scraping
 
@@ -9105,7 +9384,88 @@ print(b.sum1())
 
 
 
+### 7.3 多态的综合训练
 
+
+
+```py
+'''
+定义员工类Employee，包含私有属性(姓名和月工资，以及计算年工资get_annual的方法
+普通员工(Worker)和经理(Manager)继承员工类，经理类多了奖金bonus属性和管理manage方法，普通员工类多了work方法，
+普通员工和经理类要求根据需要重写get_annual方法3)编写函数show_emp_annual(e :Employee),实现获取任何员工对象的年工资，
+如果是普通员则调用work方法，如果是经理，则调用manage方法
+'''
+
+class Employee:
+    __name = None
+    __month_salary = None
+
+    def __init__(self,name,month_salary):
+        self.__name = name
+        self.__month_salary = month_salary
+
+
+    def get_annual(self):
+        return self.__month_salary *12
+
+    def set_name(self,name):
+        self.__name = name
+
+    def set_month_salary(self,month_salary):
+        self.__month_salary = month_salary
+
+
+    def get_name(self):
+        return self.__name
+
+    def work(self):
+        pass
+
+    def manage(self):
+        pass
+
+class Worker(Employee):
+    def work(self):
+        return f"员工{self.get_name()}正在工作" # 注意要用专门的方法调用私有属性
+        # 此处self，super都可以使用，是因为本类里没有get_name的同名方法，如果有同名，就必须要用super调用父类
+
+class Manager(Employee):
+    __bonus = None
+
+    def __init__(self,bonus,name,salary):
+        super().__init__(name,salary)
+        self.__bonus = bonus
+
+    def manage(self):
+        return f"经理{self.get_name()}正在管理"
+
+    def get_annual(self):
+        return super().get_annual() + self.__bonus
+
+def show_emp_annual(e:Employee):
+    print(f"{e.get_name() }的年工资是：{e.get_annual()}")
+
+def working(e:Employee):
+    if isinstance(e,Worker):# 注意这里不要用if判断，这里需要判断类型
+        print(e.work())
+
+    elif isinstance(e,Manager):
+        print(e.manage())
+
+worker = Worker("lucy",1000)
+manager = Manager(1000,"joy",10000)、
+
+show_emp_annual(manager)
+show_emp_annual(worker)
+working(manager)
+working(worker)
+
+# 输出结果：
+joy的年工资是：121000
+lucy的年工资是：12000
+经理joy正在管理
+员工lucy正在工作
+```
 
 [^补充1]: 补充1：关于浮点数：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容
 
