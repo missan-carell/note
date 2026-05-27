@@ -3192,6 +3192,45 @@ hi
 a = None
 ```
 
+#### 1.*.6 time
+
+```py
+import time
+
+time.time()
+```
+
+该模块返回以浮点数表示的从[^epoch]开始的**秒数形式**的时间。
+
+1. 应用案例：
+
+   用于计量某一功能使用的时间：
+
+```py
+import time
+
+start = time.time()
+print("start=",start)
+for i in range(9000):
+    print(i)
+
+end = time.time()
+print("end=",end)
+
+print("共计用时：",str(end - start))
+
+# 输出结果：
+start= 1779846236.1704261
+0
+1
+2
+...
+8998
+8999
+end= 1779846236.288739
+共计用时： 0.11831283569335938
+```
+
 
 
 ## 2. 应用进阶：
@@ -9020,42 +9059,128 @@ print(b.sum1())
 
    - classinfo:可以是类名、基本类型或者由它们组成的元组
 
+
 3. 案例：
 
-   ```py
-   class A:
-       pass
-   
-   class B(A):
-       pass
-   
-   class C:
-       pass
-   
-   
-   n1 = A()
-   n2 = B()
-   n3 = C()
-   
-   print(f"n1是A的对象：{isinstance(n1,A)}")
-   print(f"n2是A的对象：{isinstance(n2,A)}") # n2的B类是A的子类，所以此条对
-   print(f"n3是A的对象：{isinstance(n3,A)}") # n3和A没有继承关系，所以n3不是A的对象
-   
-   n4 = 1
-   print(f"n4是int类的对象：{isinstance(n4,int)}") # 在python中万物皆类，所以正确
-   print(f"n4是str类的对象：{isinstance(n4,str)}") # 在python中万物皆类，所以正确
-   
-   # isinstance也可以判断目标是否符合元组中任意一个类
-   print(f"n4是int/str/float类中一个的对象：{isinstance(n4,(str,float,int))}")
-   
-   # 输出结果：
-   n1是A的对象：True
-   n2是A的对象：True
-   n3是A的对象：False
-   n4是int类的对象：True
-   n4是str类的对象：False
-   n4是int/str/float类中一个的对象：True
-   ```
+```py
+class A:
+    pass
+
+class B(A):
+    pass
+
+class C:
+    pass
+
+
+n1 = A()
+n2 = B()
+n3 = C()
+
+print(f"n1是A的对象：{isinstance(n1,A)}")
+print(f"n2是A的对象：{isinstance(n2,A)}") # n2的B类是A的子类，所以此条对
+print(f"n3是A的对象：{isinstance(n3,A)}") # n3和A没有继承关系，所以n3不是A的对象
+
+n4 = 1
+print(f"n4是int类的对象：{isinstance(n4,int)}") # 在python中万物皆类，所以正确
+print(f"n4是str类的对象：{isinstance(n4,str)}") # 在python中万物皆类，所以正确
+
+# isinstance也可以判断目标是否符合元组中任意一个类
+print(f"n4是int/str/float类中一个的对象：{isinstance(n4,(str,float,int))}")
+
+# 输出结果：
+n1是A的对象：True
+n2是A的对象：True
+n3是A的对象：False
+n4是int类的对象：True
+n4是str类的对象：False
+n4是int/str/float类中一个的对象：True
+```
+
+### 7.3 多态的综合训练
+
+
+
+```py
+'''
+定义员工类Employee，包含私有属性(姓名和月工资，以及计算年工资get_annual的方法
+普通员工(Worker)和经理(Manager)继承员工类，经理类多了奖金bonus属性和管理manage方法，普通员工类多了work方法，
+普通员工和经理类要求根据需要重写get_annual方法3)编写函数show_emp_annual(e :Employee),实现获取任何员工对象的年工资，
+如果是普通员则调用work方法，如果是经理，则调用manage方法
+'''
+
+class Employee:
+    __name = None
+    __month_salary = None
+
+    def __init__(self,name,month_salary):
+        self.__name = name
+        self.__month_salary = month_salary
+
+
+    def get_annual(self):
+        return self.__month_salary *12
+
+    def set_name(self,name):
+        self.__name = name
+
+    def set_month_salary(self,month_salary):
+        self.__month_salary = month_salary
+
+
+    def get_name(self):
+        return self.__name
+
+    def work(self):
+        pass
+
+    def manage(self):
+        pass
+
+class Worker(Employee):
+    def work(self):
+        return f"员工{self.get_name()}正在工作" # 注意要用专门的方法调用私有属性
+        # 此处self，super都可以使用，是因为本类里没有get_name的同名方法，如果有同名，就必须要用super调用父类
+
+class Manager(Employee):
+    __bonus = None
+
+    def __init__(self,bonus,name,salary):
+        super().__init__(name,salary)
+        self.__bonus = bonus
+
+    def manage(self):
+        return f"经理{self.get_name()}正在管理"
+
+    def get_annual(self):
+        return super().get_annual() + self.__bonus
+
+def show_emp_annual(e:Employee):
+    print(f"{e.get_name() }的年工资是：{e.get_annual()}")
+
+def working(e:Employee):
+    if isinstance(e,Worker):# 注意这里不要用if判断，这里需要判断类型
+        print(e.work())
+
+    elif isinstance(e,Manager):
+        print(e.manage())
+
+worker = Worker("lucy",1000)
+manager = Manager(1000,"joy",10000)、
+
+show_emp_annual(manager)
+show_emp_annual(worker)
+working(manager)
+working(worker)
+
+# 输出结果：
+joy的年工资是：121000
+lucy的年工资是：12000
+经理joy正在管理
+员工lucy正在工作
+```
+
+
 
 ---
 
@@ -9334,6 +9459,300 @@ print(m) # 正常这样打印，会返回类型名和内存地址(十六进制)
    
    ```
 
+---
+
+## 9.class对象
+
+1. 定义：**类本身也是对象**，即class对象
+
+2. 案例：
+
+   通过debug可以看到，虽然没给Monster定义对象，但是Monster本身就是对象（class），且已经有值了
+
+   <img src="./.assets/image-20260526111002993.png" alt="image-20260526111002993" style="zoom: 50%;" />
+
+因此可以通过类对象来引用属性或成员内的静态方法：
+
+```py
+class Monster:
+    name = "蝎子精"
+    age = 100
+
+    def hi(self):
+        print(f"hi(){self.name}--{self.age}")
+
+
+print(f"name:{Monster.name}--age:{Monster.age}")
+# 如需引用静态方法，在self的位置需要填入类
+Monster.hi(Monster)
+
+# 输出结果：
+name:蝎子精--age:100
+hi()蝎子精--100
+```
+
+---
+
+## 10. 抽象类
+
+1. 定义：当父类的一些方法不能确定时，可以使用@abstractmethod声明(说明:@abstractmethod用于声明抽象方法的装饰器)，同时继承ABC类，那么这个类就是抽象类。**抽象类不能实例化**
+
+   文档：https://docs.python.org/zh-cn/3.12/library/abc.html#abstractmethod
+
+- 默认情况下，Python 不提供抽象类,Python 附带个模块，该模块为定义抽象基类提供了基础，该模块名称为**abc**
+
+- 当我们需要抽象基类时，让类继承**ABC**(abc模块的ABC类),使用 @abstractmethod 声明抽象方法(@abstractmethod用于声明抽象方法的装饰器，在abc模块中)，那么这个类就是抽象类
+- 抽象类的价值更多作用是在于设计，是设计者设计好后让子类继承并实现抽象类的抽象方法
+
+
+
+2. 应用场景：
+
+- 当父类的某些方法需要声明，但是又不确定如何实现时
+- 不需要实例化父类对象，父类主要的是用于设计和制定规范，让其它类来继承并实现
+
+
+
+3. 案例：把Animal作为抽象类，让子类Tiger实现
+
+```py
+from abc import ABCMeta, ABC, abstractmethod
+
+
+class Animal(ABC):
+    def __init__(self,name,age):
+        self.name = name
+        self.age = age
+
+    @abstractmethod
+    def cry(self):
+        print("不知道是什么动物，无法对应叫声")
+
+class Tiger(Animal):
+    # 抽象方法一定要实现，这里使用重写来实现
+    def cry(self):
+        print(f"老虎{self.name} 嗷嗷")
+
+# 抽象类不能实例化,此处会报错：
+animal = Animal(name="<UNK>",age=18)
+# TypeError: Can't instantiate abstract class Animal without an implementation for abstract method 'cry'
+
+# 这里Tiger已经实现了抽象方法，所以可以实例化
+tiger = Tiger("jam",5)
+tiger.cry()
+
+# 输出结果：
+老虎jam 嗷嗷
+
+```
+
+
+
+### 10.1 抽象类的注意事项
+
+1. **抽象类需要继承ABC，并且需要至少一个抽象方法**
+2. 抽象类不能被实例化：如上一案例
+3. 抽象类中可以有普通方法
+4. 抽象方法的子类需要实现所有抽象方法（即包括在父类中的抽象方法）
+
+```py
+from abc import abstractmethod, ABC
+
+
+class A(ABC):
+    @abstractmethod
+    def func1(self):
+        print(f"a")
+
+class B(A):
+    def func2(self):
+        print(f"b")
+
+
+b = B() # 直接这样写会报错，因为B只实现了func2，而没有父类中的func1
+TypeError: Can't instantiate abstract class B without an implementation for abstract methods 'func1'
+```
+
+需要这样修改：
+
+```py
+from abc import abstractmethod, ABC
+
+
+class A(ABC):
+    @abstractmethod
+    def func1(self):
+        print(f"a")
+
+class B(A):
+    def func2(self):
+        print(f"b")
+	
+    # 在抽象类的子类中，把父类的抽象方法也写入即可
+    def func1(self):
+        print(f"a")
+
+
+b = B()
+b.func1()
+b.func2()
+
+# 输出结果：
+a
+b
+```
+
+### 10.2 抽象类案例：
+
+```py
+from abc import ABC, abstractmethod
+
+
+
+class Employee(ABC):
+    def __init__(self, name, id_,salary):
+        self.name = name
+        self.id = id
+        self.salary = salary
+
+    @abstractmethod
+    def work(self):
+        pass
+
+
+class Manager(Employee):
+
+    def __init__(self, name,id_,salary,bonus):
+        super().__init__(name,id_,salary)
+        self.bonus = bonus
+
+    def work(self):
+        print(f"经理{self.name} 正在工作中")
+
+
+class Worker(Employee):
+
+    def work(self):
+        print(f"员工{self.name} 正在工作中")
+
+manager = Manager("lucy",1,10000,1000)
+worker = Worker("jack",2,8000)
+
+manager.work()
+worker.work()
+
+# 输出结果：
+经理lucy 正在工作中
+员工jack 正在工作中
+```
+
+---
+
+## 11. 设计模式
+
+1. 定义：设计模式是在大量的实践中总结和理论化之后优选的代码结构、编程风格、以及解决问题的思考方式
+
+
+
+### 11.1 模版设计模式
+
+1. 定义：抽象类体现的就是一种模板模式的设计，抽象类作为多个子类的通用模板，子类在抽象类的基础上进行扩展、改造，但
+   子类总体上会保留抽象类的行为方式
+
+2. 功能：
+
+- 当功能内部一部分实现是确定，一部分实现是不确定的。这时可以把不确定的部分暴露出去，让子类去实现。
+- 编写一个抽象父类，父类提供了多个子类的通用方法，并把一个或多个方法留给其子类实现，就是一种模板模式.
+
+3. 案例:
+
+   使用模版设计前：
+
+```py
+import time
+
+class A:
+    def job(self):
+        start = time.time()
+        a = 0
+        for i in range(100):
+            a += 1
+        end = time.time()
+        print("共计用时：", str(end - start))
+
+class B:
+    def job(self):
+        start = time.time()
+        b = 0 
+        for i in range(100):
+            b -= 1
+        end = time.time()
+        print("共计用时：", str(end - start))
+
+if __name__ == "__main__":
+    A().job()
+    B().job()
+    
+# 输出结果：
+共计用时： 5.0067901611328125e-06
+共计用时： 4.0531158447265625e-06
+```
+
+图解：多个类中，执行的方法内容差别不大，重复量大，维护困难
+
+<img src="./.assets/image-20260527102800148.png" alt="image-20260527102800148" style="zoom: 67%;" />
+
+使用模版设计：
+
+```py
+from abc import ABC, abstractmethod
+
+import time
+
+# 抽象类-模版类
+class Template(ABC):
+
+    @abstractmethod
+    def job(self):
+        pass
+
+    def cala_time(self):
+        start = time.time()
+        self.job() # 由于python是动态语言，所以这里谁调用，就会传入谁的self
+        end = time.time()
+        print("共计用时：", str(end - start))
+
+class A(Template):
+
+    # 子类中只需要保留任务
+    def job(self):
+        a = 0
+        for i in range(100):
+            a += 1
+
+class B(Template):
+    def job(self):
+        b = 0
+        for i in range(100):
+            b -= 1
+
+if __name__ == "__main__":
+    a = A()
+    b = B()
+    a.cala_time()
+    b.cala_time()
+    
+# 输出结果
+共计用时： 5.7220458984375e-06
+共计用时： 5.0067901611328125e-06
+```
+
+图解：
+
+<img src="./.assets/image-20260527105819586.png" alt="image-20260527105819586" style="zoom:50%;" />
+
+
+
 # 第{Null}章：**爬虫** Web Scraping
 
 1. 定义：Python 爬虫（Python 爬虫（Web Scraping）是指通过编写 Python 程序从互联网上自动提取信息的过程。
@@ -9384,88 +9803,7 @@ print(m) # 正常这样打印，会返回类型名和内存地址(十六进制)
 
 
 
-### 7.3 多态的综合训练
 
-
-
-```py
-'''
-定义员工类Employee，包含私有属性(姓名和月工资，以及计算年工资get_annual的方法
-普通员工(Worker)和经理(Manager)继承员工类，经理类多了奖金bonus属性和管理manage方法，普通员工类多了work方法，
-普通员工和经理类要求根据需要重写get_annual方法3)编写函数show_emp_annual(e :Employee),实现获取任何员工对象的年工资，
-如果是普通员则调用work方法，如果是经理，则调用manage方法
-'''
-
-class Employee:
-    __name = None
-    __month_salary = None
-
-    def __init__(self,name,month_salary):
-        self.__name = name
-        self.__month_salary = month_salary
-
-
-    def get_annual(self):
-        return self.__month_salary *12
-
-    def set_name(self,name):
-        self.__name = name
-
-    def set_month_salary(self,month_salary):
-        self.__month_salary = month_salary
-
-
-    def get_name(self):
-        return self.__name
-
-    def work(self):
-        pass
-
-    def manage(self):
-        pass
-
-class Worker(Employee):
-    def work(self):
-        return f"员工{self.get_name()}正在工作" # 注意要用专门的方法调用私有属性
-        # 此处self，super都可以使用，是因为本类里没有get_name的同名方法，如果有同名，就必须要用super调用父类
-
-class Manager(Employee):
-    __bonus = None
-
-    def __init__(self,bonus,name,salary):
-        super().__init__(name,salary)
-        self.__bonus = bonus
-
-    def manage(self):
-        return f"经理{self.get_name()}正在管理"
-
-    def get_annual(self):
-        return super().get_annual() + self.__bonus
-
-def show_emp_annual(e:Employee):
-    print(f"{e.get_name() }的年工资是：{e.get_annual()}")
-
-def working(e:Employee):
-    if isinstance(e,Worker):# 注意这里不要用if判断，这里需要判断类型
-        print(e.work())
-
-    elif isinstance(e,Manager):
-        print(e.manage())
-
-worker = Worker("lucy",1000)
-manager = Manager(1000,"joy",10000)、
-
-show_emp_annual(manager)
-show_emp_annual(worker)
-working(manager)
-working(worker)
-
-# 输出结果：
-joy的年工资是：121000
-lucy的年工资是：12000
-经理joy正在管理
-员工lucy正在工作
-```
 
 [^补充1]: 补充1：关于浮点数：%.2f表示保留两位小数，若没有两位，则会用0替代，根据自己的需求改变f前的内容
 
@@ -9478,3 +9816,4 @@ lucy的年工资是：12000
 [^斐波那契数列]: 即：1,1,2,3,5,8,13 .... 的数列，从第三位起，由前两位相加构成
 [^Unicode 码]: 一种字符编码，能够表示的数量为65536个字符，是国际组织制定的可以容纳世界上所有文字和符号的字符编码方案。
 [^**@staticmethod**]: 相关文档：https://docs.python.org/zh-cn/3.12/library/functions.html?highlight=staticmethod#staticmethod
+[^epoch]: epoch是起始的时间点，即time.gmtime(0)的返回值。这在所有平台上都是**1970-01-01,00:00:00**
