@@ -1,14 +1,10 @@
-
-
-
-
 # python学习
 
 前言：
 
 本笔记适用于对计算机零基础的新人，因此讲述会比较冗余。笔记内容会持续更新
 
-感谢**b站韩顺平**老师的网课，该笔记内有部分图片来自网课内容，菜鸟教程等。部分题目来自马蹄集
+感谢**b站韩顺平**老师的网课，该笔记内有部分图片来自网课内容，菜鸟教程等。
 
 学习时间跨度较久，所以前期的笔记在格式不是很美观，请见谅
 
@@ -3951,6 +3947,123 @@ def change_method(input_method,name_d,dict_name):
     if len(new_value) > 0:
         dict_name[input_method] = new_value
 ```
+
+2. 根据oop分层管理：
+
+```py
+from house_view import*
+
+if __name__ == '__main__':
+    house_view = HouseView()
+    house_view.main_menu()
+```
+
+```py
+from house import *
+
+class Houseservice:
+    # 编写属性来存放数据
+    house = []
+    id_counter = 0
+    def __init__(self):
+        house = House(1,'lucy',12,1,'100','已出租')
+        self.house.append(house)
+
+    def get_house(self):
+        return self.house
+
+    def add(self,new_house:House):
+        self.id_counter += 1
+        new_house.id_counter = self.id_counter
+
+        self.house.append(new_house)
+```
+
+```py
+class House:
+    def __str__(self):
+        return f"{self.house_id}\t\t{self.name}\t\t{self.phone}\t\t{self.ad}\t\t{self.cost}\t\t{self.state}"
+
+    def __init__(self,house_id,name,phone,ad,cost,state):
+        self.house_id = house_id
+        self.name = name
+        self.phone = phone
+        self.ad= ad
+        self.cost= cost
+        self.state = state
+```
+
+```py
+from chuzu_oop.house_service import *
+
+
+class HouseView:
+    house_operation : Houseservice = Houseservice()
+
+    def list_house(self):
+
+        house = self.house_operation.get_house()
+
+        print("房屋列表".center(16, "="))
+        print("编号\t\t房主\t\t电话\t\t地址\t\t月租\t\t状态（已出租/未出租）")
+        for i in house:  # 从列表中取出字典
+            print(i)
+
+        print("房屋列表显示完毕".center(16, "="))
+
+    def add_house(self):
+        print("添加房屋".center(16, "="))
+        name = input("请输入姓名:")
+        phone = int(input("请输入电话:"))
+        ad = input("请输入地址:")
+        cost = int(input("请输入房租:"))
+        state = input("请输入出租状态:")
+        houses = House(0,name,phone,ad,cost,state)
+        self.house_operation.add(houses)
+
+        print("房屋添加成功！".center(16, "="))
+
+
+
+    def main_menu(self):
+        print()
+        print("房屋出租系统菜单".center(16, "="))
+        print("\t\t\t1.新 增 房 源")
+        print("\t\t\t2.查 找 房 屋 信 息 ")
+        print("\t\t\t3.删 除 房 屋 信 息")
+        print("\t\t\t4.修 改 房 屋 信 息")
+        print("\t\t\t5.房 屋 列 表")
+        print("\t\t\t6.退 出")
+
+        while 1:
+            op = input("请输入你的选项（1-6）：")
+            if op in ["1", "2", "3", "4", "5", "6"]:
+                if op == "1":
+                    self.add_house()
+
+                elif op == "2":
+                    pass
+                    # find_house_id()
+                elif op == "3":
+                    pass
+                    # del_house()
+                elif op == "4":
+                    pass
+                    # change_info()
+                elif op == "5":
+                    self.list_house()
+
+                elif op == "6":
+                    # if read_confirm("确认要退出系统吗？(Y/N):").lower() == "y":
+                    print("退出程序，欢迎下次使用")
+                    break
+            else:
+                print("请输入正确选项！")
+```
+
+
+
+
 
 # 第五章：函数和数据容器
 
@@ -10077,13 +10190,573 @@ king-18-学生
 - lambda: 为匿名函数，ele表示把my_list的每个元素依次取出来赋给ele，ele.age 表示从 ele 中取出age元素进行排序比较
 - reverse= True ：表示从大到小排序
 
-# 第十章：应用训练
+# 第九章：错误和异常
 
-1. 项目设计流程（模块）：
-   1)在项目开发前，先进行设计，从功能上进行模块/文件划分
-   2)程序框架图:系统有哪些模块/文件I明确相互间的调用关系
+1. 语法错误：又称解析错误
+
+   案例：
+
+   ```py
+   while True print("1")
+   
+   # 错误提示：
+   ...
+   SyntaxError: invalid syntax
+   ```
 
 
+
+2. 异常：程序使用了正确的语法，但在**执行时**仍然产生错误
+   与语法错误区别：**语法错误**在**执行前**编译器中可以直接检测到，但是异常只能在编译时才能检测到
+
+   **注意**：<u>无论是错误还是异常，在发生时都会退出程序，无法继续执行后面的内容</u>
+
+   ```py
+   num1 = 10
+   num2 = 0
+   result = num1/num2 # 此处的语法虽然没有问题，但是Num2=0 不可作为分母，所以依然会报错
+   
+   # 错误提示：
+   ...
+   ZeroDivisionError: division by zero
+   ```
+
+---
+
+## 1 异常处理机制
+
+1. 需求：如果在生产中需要在产生异常时不退出程序，继续执行后面的语句，则需要使用异常处理机制。可见 [2.1 异常处理try：](#2.1 异常处理try：)
+
+   
+
+### 1.1 捕获异常try：
+
+1. <u>基础语法</u>：
+
+```py
+try:
+	代码
+except [异常 as 别名]:
+	发生异常时的处理代码
+[else:]
+	未发生异常时运行的代码
+[finally:]
+	无论是否发生异常都要运行的代码
+```
+
+- [异常 as 别名] 此为可选项，可以将异常接收为一个自定的别名，也可根据别名获取具体的异常信息。前面的异常也根据需要填写，可查看[9.2 内置异常：](#9.2 内置异常：)
+- except [异常 as 别名]: 注意，这里若没有捕获到**指定**的异常，则**不会执行后续内容**！
+
+案例：
+
+1.正常捕获处理异常
+
+```py
+try:
+    num1 = 10
+    num2 = 0
+    result = num1/num2
+except Exception as e: 
+    # 这里表示捕获的是：Exception类，或其子类的异常
+    # 此处e可根据需要命名，捕获异常后自行处理
+    print(f"运算错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+
+print("程序运行中")
+
+# 输出结果：
+运算错误，请检查数值是否正确，异常信息division by zero，类型是<class 'ZeroDivisionError'>
+程序运行中
+```
+
+​	2.未能捕获异常
+
+- ```py
+  try:
+      num1 = 10
+      num2 = 0
+      result = num1/num2
+  except AttributeError as e: # 此处写的异常名并不是可能会发生的异常
+      # 此处e可根据需要命名，捕获异常后自行处理
+      print(f"运算错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+  
+  print("程序运行中")
+  
+  # 错误提示：
+  ZeroDivisionError: division by zero
+  # 根据结果，会直接根据异常部分报错
+  ```
+
+2. 可选项的应用：
+
+   - else：如果没有发生异常时需要执行特定代码，则需要用else
+
+   ```py
+   try:
+       num1 = 10
+       num2 = 1
+       result = num1/num2
+   except Exception as e:
+       print(f"运算错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+   
+   else:
+       print("未检测到异常")
+       
+   # 输出结果：
+   未检测到异常
+   ```
+
+   - finally: 无论是否发生异常都要运行的代码，使用finally。注意，如果同时存在else，finally需要存在于else后。即使发生报错，finally也能正常执行
+
+   ```py
+   try:
+       num1 = 10
+       num2 = 0
+       result = num1/num2
+       print("hello") # 这句话在异常语法后，则不会被执行
+   except Exception as e:
+       # 此处e可根据需要命名，捕获异常后自行处理
+       print(f"运算错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+   
+   else:
+       print("未检测到异常")
+   
+   finally:
+       print("执行完毕")
+       
+   # 运行结果：
+   运算错误，请检查数值是否正确，异常信息division by zero，类型是<class 'ZeroDivisionError'>
+   执行完毕
+   ```
+
+   ```py
+   try:
+       num1 = 10
+       num2 = 1
+       result = num1/num2 
+       str_1 = "123"
+       print(str_1[100]) # 发生异常的语句
+   
+   finally:
+       print("执行finally")
+       
+   # 运行结果：
+   执行finally 
+   IndexError: string index out of range # 报错内容
+   ```
+
+### 1.2 处理异常的注意事项
+
+1. 如果异常发生了，则**不会执行异常后面的代码**，而是直接进入except
+
+```py
+try:
+    num1 = 10
+    num2 = 0
+    result = num1/num2 # 异常语句
+
+except Exception as e:
+    print(f"运算错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+
+# 输出结果：
+运算错误，请检查数值是否正确，异常信息division by zero，类型是<class 'ZeroDivisionError'>
+程序运行中
+```
+
+
+
+2. 如果没有发生异常，则会正常顺序执行，而不进入到except中
+
+```py
+try:
+    num1 = 10
+    num2 = 1
+    result = num1/num2
+    print("hello")
+except Exception as e:
+    print("此句不会被执行")
+    
+# 输出结果：
+hello
+程序运行中
+```
+
+
+
+3. 一个try后可以有**多个except**来捕获，但在运行过程中只匹配第一处出现异常的语句。因此在复杂代码中，可以用于查看最早出现错误的地方
+
+   建议把具体的异常写在前面，基类异常在后，比如(IndexError 在前，Exception在后)，这样当具体异常匹配不到时，再由基类异常匹配
+
+```py
+try:
+    num1 = 10
+    num2 = 1
+    result = num1/num2 # 这里如果有异常，则不会继续执行下面的内容
+    str_1 = "123"
+    print(str_1[100])
+
+except ZeroDivisionError as e:
+    # 这里把具体的异常写在前面
+    print(f"运行错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+
+except IndexError as e:
+    print(f"运行错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+
+
+except Exception as e:
+    # 基类异常在后
+    print(f"运行错误，请检查数值是否正确，异常信息{e}，类型是{type(e)}")
+
+# 输出结果：
+运行错误，请检查数值是否正确，异常信息string index out of range，类型是<class 'IndexError'>
+# 这里优先匹配了它对应的具体异常
+```
+
+
+
+4. 可以把多个except放在一起，但执行顺序和结果同分开处理
+
+```py
+try:
+    num1 = 10
+    num2 = 0
+    result = num1/num2 # 这里如果有异常，则不会继续执行下面的内容
+    str_1 = "123"
+    print(str_1[100])
+
+except (ZeroDivisionError,IndexError) as e:
+    print(f"异常信息{e}，类型是{type(e)}")
+
+# 输出结果：
+异常信息division by zero，类型是<class 'ZeroDivisionError'>
+```
+
+
+
+5. 异常可以传递：
+
+```py
+def f3():
+    print("f3 start")
+    print(10/0) # 异常发生处
+    print("f3 end") # 因为发生异常，此句不会被执行
+    
+def f2():
+    print("f2 start")
+    f3() # 调用异常函数但未捕获
+    print("f2 start") # f3的异常传递了过来，所以这条也不会被执行
+    
+def f1():
+    try: # 捕获异常函数
+        f2() 
+    except Exception as e:
+        print(f"发现异常{e}")
+
+f1()
+
+# 输出结果：
+f2 start
+f3 start
+发现异常division by zero
+```
+
+### 1.3 主动触发异常
+
+1. 基础语法：
+
+```py
+raise 异常名("内容")
+```
+
+2. 应用案例：
+
+```py
+try:
+    raise ZeroDivisionError("主动触发异常")
+except (ZeroDivisionError,IndexError) as e:
+    print(f"异常信息：{e}，类型是{type(e)}")
+    
+# 输出结果：
+异常信息：主动触发异常，类型是<class 'ZeroDivisionError'>
+
+```
+
+
+
+
+
+## 2. 内置异常：
+
+1. 文档地址：https://docs.python.org/zh-cn/3.12/library/exceptions.html#bltin-exceptionst
+2. 基类：被用作其他异常的基类，其他的异常继承了此类异常，如 **Exception**
+3. 具体异常：经常被引发的异常，如**IndexError**， **KeyError**等
+
+4. **层级结构（基层关系）：**
+
+   - 如何快速查询一个异常的继承关系：
+
+     1. 选取一个异常，如**TabError**
+
+     2. 复制去编译器后，选中，Ctrl+H即可查看
+
+     3. 该方法可用于在发生报错后，用于捕获异常，避免后续出现同类异常
+     
+        <img src="./.assets/image-20260831171715360.png" alt="image-20260831171715360" style="zoom: 67%;" />
+   
+   ```
+   BaseException
+    ├── BaseExceptionGroup
+    ├── GeneratorExit
+    ├── KeyboardInterrupt
+    ├── SystemExit
+    └── Exception
+         ├── ArithmeticError
+         │    ├── FloatingPointError
+         │    ├── OverflowError
+         │    └── ZeroDivisionError
+         ├── AssertionError
+         ├── AttributeError
+         ├── BufferError
+         ├── EOFError
+         ├── ExceptionGroup [BaseExceptionGroup]
+         ├── ImportError
+         │    └── ModuleNotFoundError
+         ├── LookupError
+         │    ├── IndexError
+         │    └── KeyError
+         ├── MemoryError
+         ├── NameError
+         │    └── UnboundLocalError
+         ├── OSError
+         │    ├── BlockingIOError
+         │    ├── ChildProcessError
+         │    ├── ConnectionError
+         │    │    ├── BrokenPipeError
+         │    │    ├── ConnectionAbortedError
+         │    │    ├── ConnectionRefusedError
+         │    │    └── ConnectionResetError
+         │    ├── FileExistsError
+         │    ├── FileNotFoundError
+         │    ├── InterruptedError
+         │    ├── IsADirectoryError
+         │    ├── NotADirectoryError
+         │    ├── PermissionError
+         │    ├── ProcessLookupError
+         │    └── TimeoutError
+         ├── ReferenceError
+         ├── RuntimeError
+         │    ├── NotImplementedError
+         │    └── RecursionError
+         ├── StopAsyncIteration
+         ├── StopIteration
+         ├── SyntaxError
+         │    └── IndentationError
+         │         └── TabError
+         ├── SystemError
+         ├── TypeError
+         ├── ValueError
+         │    └── UnicodeError
+         │         ├── UnicodeDecodeError
+         │         ├── UnicodeEncodeError
+         │         └── UnicodeTranslateError
+         └── Warning
+              ├── BytesWarning
+              ├── DeprecationWarning
+              ├── EncodingWarning
+              ├── FutureWarning
+              ├── ImportWarning
+              ├── PendingDeprecationWarning
+              ├── ResourceWarning
+              ├── RuntimeWarning
+              ├── SyntaxWarning
+              ├── UnicodeWarning
+              └── UserWarning
+   ```
+
+### 2.1 常见异常
+
+1. **IndexError：**当序列抽取超出范围时将被引发，也就是索引错误
+
+   ```py
+   a ="123"
+   print(a[4])
+   
+   # 错误提示：
+   IndexError: string index out of range
+   ```
+
+2. **KeyError:**当在现有键集合中找不到指定的映射(字典)键时，将被引发
+
+   ```py
+   dic_1 = {"name" :"jack","age" :18}
+   print(dic_1["sex"])
+   
+   # 错误提示：
+   KeyError: 'sex'
+   ```
+
+3. **NameError:**当某个局部或全局名称未找到时将被引发，比如使用了一个**没有定义**的变量名.
+
+   ```py
+   print(a)
+   
+   # 错误提示：
+   NameError: name 'a' is not defined
+   ```
+
+4. **TypeError:**当一个操作或函数使用了类型不适当的对象时将被引发
+
+   ```py
+   a ="1"
+   b = 2
+   print(a+b)
+   
+   # 错误提示
+   TypeError: can only concatenate str (not "int") to str
+   ```
+
+5. **ValueError**:当操作或函数接收到具有正确类型但值不适合的参数 时将被引发
+
+   ```py
+   print(int("abc"))
+   print(str(123))
+   
+   # 错误提示
+   ValueError: invalid literal for int() with base 10: 'abc'
+   ```
+
+6. **FileNotFoundError**:请求的文件或目录不存在时将被引发
+
+   ```py
+   f = open("d://ttt/t.txt", "r")
+   
+   # 错误提醒
+   FileNotFoundError: [Errno 2] No such file or directory: 'd://ttt/t.txt'
+   ```
+
+7. **AttributeError**:当属性引用或赋值失败时将被引发
+
+   ```py
+   class A:
+       def hi(self):
+           pass
+   a=A
+   print(a.name)
+   
+   # 错误提示：
+   AttributeError: type object 'A' has no attribute 'name'
+   ```
+
+
+
+
+
+
+
+## 3 自定义异常
+
+1. 文档：[8.6. 用户自定义异常](https://docs.python.org/zh-cn/3.12/tutorial/errors.html#user-defined-exceptions)
+2. 定义：
+
+- 使用时要与主动触发异常配合使用
+
+- 程序可以通过创建新的异常类命名自己的异常。不论是以直接还是间接的方式，异常都应从 [`Exception`](https://docs.python.org/zh-cn/3.12/library/exceptions.html#Exception) 类派生。
+
+- 异常类可以被定义成能做其他类所能做的任何事，但**通常应当保持简单**，它往往只提供一些属性，允许相应的异常处理程序提取有关错误的信息，根据业务需求来指定。
+
+- 大多数异常命名都以 “Error” 结尾，类似标准异常的命名，但**不要使用内置异常名**。
+
+- 许多标准模块定义了自己的异常，以报告他们定义的函数中可能出现的错误。
+
+3. 基础语法：
+
+```py
+class 异常名(Exception):
+    pass
+
+try:
+    ...
+    raise 异常名("异常内容")
+except 异常名 as e:
+    ...  
+```
+
+
+
+3. 应用案例：
+
+​	要求：需要接受person的年龄，（1-100）间为合格，其余判定为异常，并给出提示：请输入正确年龄
+
+```py
+class AgeError(Exception):
+    pass
+
+while True:
+    try:
+        a =int(input("请输入年龄（1-100)："))
+
+        # 可以先写正确范围，再取反，代码会变得更加清晰
+        if not (1<= a <= 100):
+            raise AgeError("年龄要在1-100之间")
+
+        break # 这里不用else是因为如果数字输入异常，就不会执行这里内容
+    except ValueError as e:
+        print("请输入范围内的整数！")
+    except AgeError as e:
+        print(f"请输入正确的年龄，{e}")
+
+```
+
+
+
+# 第十章 ：文件
+
+## 1. 文件相关概念
+
+### 1.1 输入和输出：
+
+1.定义：
+
+- 输入: 数据从数据源(文件)到程序(内存)
+
+- 输出:数据从程序(内存)到数据源(文件)
+
+图例：
+
+<img src="./.assets/image-20260902115834641.png" alt="image-20260902115834641" style="zoom: 67%;" />
+
+### 1.2 I/O 类型
+
+1. 定义：即input/output类型。Python 用于处理各种 I/O 类型,主要的I/0类型分别为:**文本I/O,二进制I/O**
+
+   也分别对应处理的文件对象类别:**文本文件、进制文件**。处理不同类型的文件时，需要用对应的方式打开处理
+
+   - 文本文件:通常是记事本可以直接打开的,比如py.txt等文件
+   - 二进制文件:比如图片、视频、音频等
+     
+
+### 1.3 文字编码
+
+1. 定义：文件编码也称为字符编码，规定了如何将**内容翻译成二进制**，以及如何将二进制翻译成可识别的内容
+
+2. 常用编码：计算机中常见的编码，UTF-8是现代事实上的标准，使用的最多。
+
+- UTF-8
+- GBK
+- BIG5
+
+不同的编码，将内容翻译成二进制也是不同的，假如文件是utf-8编码保存的，以big5编码方式打开，就会出现乱码
+
+3. 图例：
+
+若要查看文件，则逆向处理
+
+<img src="./.assets/image-20260902122158833.png" alt="image-20260902122158833" style="zoom:67%;" />
+
+4. 查看文件编码（win）：在保存文件时选择另存为，在格式下的框中即可查看文件编码
+
+   <img src="./.assets/image-20260902122844686.png" alt="image-20260902122844686" style="zoom:50%;" />
+
+   
 
 # 第{Null}章：**爬虫** Web Scraping
 
@@ -10125,7 +10798,7 @@ king-18-学生
            print("未找到对应标题")
    ```
 
-
+4. 
 
 ### 随笔记（后续需自己整理）
 
