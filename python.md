@@ -10744,7 +10744,7 @@ while True:
 - GBK
 - BIG5
 
-不同的编码，将内容翻译成二进制也是不同的，假如文件是utf-8编码保存的，以big5编码方式打开，就会出现乱码
+不同的编码，将内容翻译成二进制也是不同的，假如文件是utf-8编码保存的，以big5编码方式打开，就会出现乱码。**因此对应编码的文件不可用其他编码打开，否则就会出现乱码**
 
 3. 图例：
 
@@ -10757,6 +10757,429 @@ while True:
    <img src="./.assets/image-20260902122844686.png" alt="image-20260902122844686" style="zoom:50%;" />
 
    
+
+
+
+## 2. 常见文件操作
+
+注意：其中所有的f前缀都代表之前用于打开文件的参数名
+
+| 语法                         | 功能                                                         |
+| :--------------------------- | :----------------------------------------------------------- |
+| **f.read(size)**             | 可用于读取文件内容，它会读取一些数据，并返回字符串（文本模式），或字节串对象（在二进制模式下）。 size 是可选的数值参数。省略 size 或 size 为负数时，读取并返回整个文件的内容 |
+| **f.readline()**             | 从文件中读取单行数据；字符串末尾保留换行符 (\n)              |
+| **list(f) 或 f.readlines()** | 以**列表形式**读取文件中的**所有行**                         |
+| **for line in ：**           | 从文件中读取多行时，可以用循环遍历整个文件对象。这种操作能高效利用内存，快速，且代码简单，示例:                                                                                                                                                                                      for line in f:                                                                                                                                                                                                        print(line, end='') |
+| **f.write(string)**          | 把 string 的内容写入文件，并返回写入的字符数                 |
+| **f.flush()**                | 刷新流的写入缓冲区                                           |
+| **f.close()**                | 刷新并关闭此流。即可**释放文件占用的系统资源**，如果文件已经关闭，则此方法无效。文件关闭后，对文件的任何操作(例如读取或写入)都会引发ValueError |
+| **with open() as f:**        | 在处理文件对象时，最好使用with关键字。优点是，子句体结束后，**文件会自动关闭** |
+
+### 2.1 创建文件：
+
+1. python文档：https://docs.python.org/zh-cn/3.12/library/functions.html#open
+2. 基础语法：打开file并返回对应的file object（文件**对象**）。如果该文件不能被打开，则引发OSError。注意，**打开的文件类型是对象**。若文件不存在，则会自动创建一个文件
+
+```py
+open(file, mode='r', buffering=- 1, encoding=None, errors=None, newline=None,closefd=True, opener=None)
+```
+
+- file :要打开文件的路径(绝对路径或者相对当前工作目录的路径)
+
+- mode：打开文件的模式，选项如图。若不指定，默认是文本模式 "t"。如果要创建新文件，
+
+  - **注意**：w"：若文件不存在则会自动创建文件，如果存在同名文件，则会截断原有文件内容(即**覆盖原有文件内容**)。如果想要在文件末尾追加内容，需要使用 "a" 模式
+
+  <img src="./.assets/image-20260916155528996.png" alt="image-20260916155528996" style="zoom:67%;" />
+
+- buffering ：一个可选的整数,用于设置缓冲策略
+
+- encoding :指定文件编码，默认和文件相关，多数情况是utf-8
+
+注意：打开文件后记得及时关闭，否则会导致占用资源导致无法打开其他文件。在处理文件对象时，最好使用with关键字,子句体结束后，文件会自动关闭
+
+3. 应用案例：
+   在d盘的a目录下创建一个txt文件：
+
+```py
+f1 = open("d://a//hi.txt","w",encoding="utf-8") # 注意指定编码的时候一定要带上前缀
+print(f"文件创建成功，文件格式是{type(f1)}")
+
+# 如果a目录不存在，则会报错：FileNotFoundError: [Errno 2] No such file or directory: 'd://a//hi.txt'
+# 输出结果：
+文件创建成功，文件格式是<class '_io.TextIOWrapper'>
+```
+
+### 2.1 读取文件
+
+1. 基础语法：
+
+   `````py
+   f.read() # 不指定size，则一次性返回全部文件内容
+   `````
+
+2. 应用案例：
+
+```py
+f1 = open("d://a//hi.txt","r",encoding="utf-8") # 记得这里要改成可读的模式，如r
+content = f1.read() # 这里read前的前缀一定要和上面打开文件的参数一样
+print("f1文件的内容")
+print(content)
+
+# 输出结果： 这里会把hi文件的全部内容都打印出来
+f1文件的内容
+### 1.2 I/O 类型
+
+1. 定义：即input/output类型。Python 用于处理各种 I/O 类型,主要的I/0类型分别为:**文本I/O,二进制I/O**
+
+   也分别对应处理的文件对象类别:**文本文件、进制文件**。处理不同类型的文件时，需要用对应的方式打开处理
+
+   - 文本文件:通常是记事本可以直接打开的,比如py.txt等文件
+   - 二进制文件:比如图片、视频、音频等
+```
+
+3.  限制读取:
+
+- size : 限制读取字符
+
+```py
+f1 = open("d://a//hi.txt","r",encoding="utf-8") 
+content = f1.read(20) # 这里代表读取文件的前20个字符
+print("f1文件的内容")
+print(content)
+
+# 输出结果：
+f1文件的内容
+### 1.2 I/O 类型
+
+1. 定
+```
+
+- f.readline: 读取行
+
+```py
+f1 = open("d://a//hi.txt","r",encoding="utf-8") # 记得这里要改成可读的模式，如r
+
+l1 = f1.readline() # 保留换行符 (\n)
+l2 = f1.readline() # 这样会接着上面读取下一行的内容
+print("f1文件的第一行是:",l1)
+print("f1文件的第二行是:",l2) # 空行也会占用一行
+
+
+# 输出结果：
+f1文件的第一行是: ### 1.2 I/O 类型
+
+f1文件的第二行是: 
+```
+
+- f.readlines :以列表形式读取文件所有内容。可以看到输出的结果保留了换行符 `\n`
+
+```py
+f1 = open("d://a//hi.txt","r",encoding="utf-8")
+lines = f1.readlines()
+print(f"文件的类型是：{type(lines)},输出结果：{lines}")
+
+# 输出结果：
+文件的类型是：<class 'list'>,输出结果：['### 1.2 I/O 类型\n', '\n', '1. 定义：即input/output类型。Python 用于处理各种 I/O 类型,主要的I/0类型分别为:**文本I/O,二进制I/O**\n', '\n', '   也分别对应处理的文件对象类别:**文本文件、进制文件**。处理不同类型的文件时，需要用对应的方式打开处理\n', '\n', '   - 文本文件:通常是记事本可以直接打开的,比如py.txt等文件\n', '   - 二进制文件:比如图片、视频、音频等']
+
+```
+
+```py
+f1 = open("d://a//hi.txt","r",encoding="utf-8")
+lines = f1.readlines()
+for   l3 in lines: 
+    print(l3,end="") # 这里的end可以避免print的空行
+
+f1.close()  # 文件处理完毕后关闭文件
+
+# 输出结果：
+### 1.2 I/O 类型
+
+1. 定义：即input/output类型。Python 用于处理各种 I/O 类型,主要的I/0类型分别为:**文本I/O,二进制I/O**
+
+   也分别对应处理的文件对象类别:**文本文件、进制文件**。处理不同类型的文件时，需要用对应的方式打开处理
+
+   - 文本文件:通常是记事本可以直接打开的,比如py.txt等文件
+   - 二进制文件:比如图片、视频、音频等
+```
+
+- 也可以直接遍历文件：
+
+```python
+f1 = open("d://a//hi.txt","r",encoding="utf-8")
+for  l4 in f1:
+    print(l4,end="") # 这里的end可以避免print的空行
+
+
+f1.close()  # 文件处理完毕后关闭文件
+
+# 输出结果：
+### 1.2 I/O 类型
+
+1. 定义：即input/output类型。Python 用于处理各种 I/O 类型,主要的I/0类型分别为:**文本I/O,二进制I/O**
+
+   也分别对应处理的文件对象类别:**文本文件、进制文件**。处理不同类型的文件时，需要用对应的方式打开处理
+
+   - 文本文件:通常是记事本可以直接打开的,比如py.txt等文件
+   - 二进制文件:比如图片、视频、音频等
+```
+
+
+
+### 2.2 写入和删除文件
+
+1. 基础语法：
+
+- **写入文件**
+
+`````py
+f1 = open("文件路径","w",encoding="utf-8") # 这里的mode要选择一个可写入的模式，w，a，+ 根据需求选择
+
+f.write("需要写入文件的内容")  # 默认不换行，如果用循环语句写了多条内容，会导致输出在同一行
+`````
+
+- **删除文件：**
+
+  python文档：
+  
+  [os.path.exists](https://docs.python.org/zh-cn/3.12/library/os.path.html)
+  
+  [os.remove](https://docs.python.org/zh-cn/3.12/library/os.html#module-os)
+
+```py
+import os
+os.path.exists("文件路径") # 判断文件/目录是否存在，如果存在，则返回True，反之则是False
+os.remove("文件路径") # 删除文件/目录
+```
+
+2. 应用案例：
+
+- 案例1：w，覆写文件
+
+```py
+f1 = open("d://a//abc.txt","w",encoding="utf-8")
+# 这里原先没有abc文件，可用w来创建。但若原先有abc文件，会导致原文件的内容被清空
+
+for i in range(3):
+    f1.write(f"你好\n") # 这里有 \n 才能让每次写入的内容都换行
+
+f1.close()
+```
+
+执行完成后可以在d盘的a目录下看到abc.txt 文件，并且得到的结果如下：
+
+```
+你好
+你好
+你好
+```
+
+可以看到写入的内容后是有换行的
+
+如果想要把当前的文件内容改成 "hi", 因为当前的mode是w模式，所以直接覆写即可
+
+```py
+f1 = open("d://a//abc.txt","w",encoding="utf-8")
+for i in range(3):
+    f1.write(f"hi\n")
+
+f1.close()
+```
+
+文件内容被完全截断(覆写)了
+
+```py
+hi
+hi
+hi
+```
+
+- 案例2 ：a，追加内容
+
+如果已存在目标文件，可使用a来追加内容
+
+```py
+f2 = open("d://a//abc.txt","a",encoding="utf-8") # 上一个案例创建过了abc.txt,这里直接用a来追加内容
+for i in range(2):
+    f2.write(f"你好\n")
+
+f2.close()
+```
+
+文件内容：
+
+`````
+hi
+hi
+hi
+你好
+你好
+`````
+
+- 案例3：判断并删除目标文件
+
+```py
+import os
+if os.path.exists("d://a//abc.txt"):
+    os.remove("d://a//abc.txt")
+    print("删除成功！")
+else:
+    print("文件不存在，无法删除")
+    
+# 输出结果：
+删除成功！
+```
+
+此时再去a目录里查看，会发现abc.txt  已经被删除了
+
+---
+
+### 2.3 目录的相关操作
+
+1. 基础语法：[mkdir()](https://docs.python.org/zh-cn/3.12/library/os.html#module-os)，注意，以下代码都需要导入os模块
+
+- **创建目录: mkdir()**
+
+  如果目录已经存在，FileExistsError会被提出。如果路径中的父目录不存在，则会引发FileNotFoundError
+
+```py
+os.mkdir(path, mode=0o777,*, dir_fd=None) # 创建一个名为path的目录，应用以数字表示的权限模式mode。
+```
+
+- **删除单级目录 :rabbit::rmdir**
+
+```py
+os.rmdir(path)
+```
+
+
+
+- **递归目录创建函数: makekidrs()**
+
+  注意结尾有s，避免拼写错误
+
+```py
+os.makedirs(name, mode=eo777, exist_ok=False)
+```
+
+​	与mkdir()类似，但会自动创建到达最后一级目录所需要的中间目录。
+
+- **递归删除目录: removedirs**
+
+  注意结尾有s，避免拼写错误
+
+`````py
+os.removedirs (name)
+`````
+
+类似于rmdir()，不同之处在于，如果成功删除了末尾一级目录，removedirs()会尝试依次删除path中提到的**每个父目录**，直到抛出错误为止(但该错误会被忽略，因为这通常表示父目录不是空目录)。
+
+如果用该方法直接删除第一级的父目录，会导致报错
+
+例如,os.removedics('foo/bar/baz’)将首先删除目录‘foo/bar/baz'，然后如果'foo/bar’和‘foo’为空，则继续删除它们。如果无法成功删除末尾一级目录，则抛出OsError异常。
+
+- **判断目录是否存在：isdir()**
+
+```py
+os.path.isdir(path)
+```
+
+如果path是现有的目录，则返回True。本方法会跟踪符号链接，因此，对于同一路径，islink()和isdir()都可能为True
+
+
+
+2. 应用案例：
+
+- 案例1：创建单级目录
+
+```py
+import os
+if os.path.isdir("d://aaa"): # 判断目标目录是否存在
+    print("目录已存在")
+
+else:
+    os.mkdir("d://aaa")
+    print("目录创建成功")
+```
+
+- 案例2：创建多级目录
+
+```py
+if not (os.path.isdir("d://bbb//ccc")): # 这里可以反写，功能和案例1相同
+    os.makedirs("d://bbb//ccc")
+    print("目录创建成功")
+
+else:
+    print("目录已存在")
+```
+
+如果创建多级目录的时候使用了`mkdir`，会导致报错
+
+- 案例3 ：删除单级目录
+
+```py
+if os.path.isdir("d://aaa"):
+    os.rmdir("d://aaa")
+    print("删除成功")
+else:
+    print("文件不存在，无法删除")
+```
+
+- 案例4：删除多级目录
+
+```py
+if os.path.isdir("d://bbb//ccc"):
+    os.removedirs("d://bbb//ccc")
+    print("删除成功")
+else:
+    print("文件不存在，无法删除")
+```
+
+注意：这里会从ccc目录开始向上删除，直到无法删除为止，因此该语句执行后bbb目录也已经被删除
+
+​	    但如果直接从bbb目录开始删除，且该目录非空，那样会导致报错：`OSError: [WinError 145] 目录不是空的。: 'd://bbb'`
+
+
+
+### 2.4 获取文件的相关信息
+
+1. 基础语法:[python文档](https://docs.python.org/zh-cn/3.12/library/os.html#module-os)
+
+获取文件或文件描述符的状态 , 并返回一个**stat_result** 对象.
+
+```py
+os.stat(path,*, dir_fd=None, follow_symlinks=True)
+```
+
+2. stat_result 对象：
+
+- `st_size`:文件大小(以字节为单位)，文件可以是常规文件或符号链接。符号链接的大小是它包含的路径的长度，不包括末尾的空字节。
+
+- `st_atime`:时间戳,最近的访问时间，以秒为单位。可以用`time.ctime()`将返回来的时间戳转为**字符串**
+- `st_mtime`: 最近的修改时间，以秒为单位。
+- `st_ctime`:  取决于平台:
+  - 在Unix上表示最近的元数据更改时间，
+  - 在Windows上表示创建时间，以秒为单位。
+
+3. 应用案例：
+
+```py
+import os
+import time
+f_stat = os.stat("d://a//hi.txt")
+print(f"文件的大小:{f_stat.st_size}\n"
+      f"文件的最近访问时间:{time.ctime(f_stat.st_atime)}\n" # 用ctime把时间戳转化为字符串
+      f"文件的最近修改时间:{time.ctime(f_stat.st_mtime)}\n"
+      f"文件的创建时间:{time.ctime(f_stat.st_ctime)}")
+
+# 输出结果：
+文件的大小:441
+文件的最近访问时间:Wed Sep 16 16:30:31 2026
+文件的最近修改时间:Tue Sep 15 16:49:59 2026
+文件的创建时间:Tue Sep 15 16:34:21 2026
+```
+
+
 
 # 第{Null}章：**爬虫** Web Scraping
 
