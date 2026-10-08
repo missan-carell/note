@@ -10935,7 +10935,7 @@ f1.close()  # 文件处理完毕后关闭文件
 `````py
 f1 = open("文件路径","w",encoding="utf-8") # 这里的mode要选择一个可写入的模式，w，a，+ 根据需求选择
 
-f.write("需要写入文件的内容")  # 默认不换行，如果用循环语句写了多条内容，会导致输出在同一行
+f1.write("需要写入文件的内容")  # 默认不换行，如果用循环语句写了多条内容，会导致输出在同一行
 `````
 
 - **删除文件：**
@@ -11032,113 +11032,6 @@ else:
 
 此时再去a目录里查看，会发现abc.txt  已经被删除了
 
----
-
-### 2.3 目录的相关操作
-
-1. 基础语法：[mkdir()](https://docs.python.org/zh-cn/3.12/library/os.html#module-os)，注意，以下代码都需要导入os模块
-
-- **创建目录: mkdir()**
-
-  如果目录已经存在，FileExistsError会被提出。如果路径中的父目录不存在，则会引发FileNotFoundError
-
-```py
-os.mkdir(path, mode=0o777,*, dir_fd=None) # 创建一个名为path的目录，应用以数字表示的权限模式mode。
-```
-
-- **删除单级目录 :rabbit::rmdir**
-
-```py
-os.rmdir(path)
-```
-
-
-
-- **递归目录创建函数: makekidrs()**
-
-  注意结尾有s，避免拼写错误
-
-```py
-os.makedirs(name, mode=eo777, exist_ok=False)
-```
-
-​	与mkdir()类似，但会自动创建到达最后一级目录所需要的中间目录。
-
-- **递归删除目录: removedirs**
-
-  注意结尾有s，避免拼写错误
-
-`````py
-os.removedirs (name)
-`````
-
-类似于rmdir()，不同之处在于，如果成功删除了末尾一级目录，removedirs()会尝试依次删除path中提到的**每个父目录**，直到抛出错误为止(但该错误会被忽略，因为这通常表示父目录不是空目录)。
-
-如果用该方法直接删除第一级的父目录，会导致报错
-
-例如,os.removedics('foo/bar/baz’)将首先删除目录‘foo/bar/baz'，然后如果'foo/bar’和‘foo’为空，则继续删除它们。如果无法成功删除末尾一级目录，则抛出OsError异常。
-
-- **判断目录是否存在：isdir()**
-
-```py
-os.path.isdir(path)
-```
-
-如果path是现有的目录，则返回True。本方法会跟踪符号链接，因此，对于同一路径，islink()和isdir()都可能为True
-
-
-
-2. 应用案例：
-
-- 案例1：创建单级目录
-
-```py
-import os
-if os.path.isdir("d://aaa"): # 判断目标目录是否存在
-    print("目录已存在")
-
-else:
-    os.mkdir("d://aaa")
-    print("目录创建成功")
-```
-
-- 案例2：创建多级目录
-
-```py
-if not (os.path.isdir("d://bbb//ccc")): # 这里可以反写，功能和案例1相同
-    os.makedirs("d://bbb//ccc")
-    print("目录创建成功")
-
-else:
-    print("目录已存在")
-```
-
-如果创建多级目录的时候使用了`mkdir`，会导致报错
-
-- 案例3 ：删除单级目录
-
-```py
-if os.path.isdir("d://aaa"):
-    os.rmdir("d://aaa")
-    print("删除成功")
-else:
-    print("文件不存在，无法删除")
-```
-
-- 案例4：删除多级目录
-
-```py
-if os.path.isdir("d://bbb//ccc"):
-    os.removedirs("d://bbb//ccc")
-    print("删除成功")
-else:
-    print("文件不存在，无法删除")
-```
-
-注意：这里会从ccc目录开始向上删除，直到无法删除为止，因此该语句执行后bbb目录也已经被删除
-
-​	    但如果直接从bbb目录开始删除，且该目录非空，那样会导致报错：`OSError: [WinError 145] 目录不是空的。: 'd://bbb'`
-
 
 
 ### 2.4 获取文件的相关信息
@@ -11178,6 +11071,536 @@ print(f"文件的大小:{f_stat.st_size}\n"
 文件的最近修改时间:Tue Sep 15 16:49:59 2026
 文件的创建时间:Tue Sep 15 16:34:21 2026
 ```
+
+
+
+## 3. 文件的注意事项
+
+### 3.1 f.flush
+
+1. 定义： f.flush() **表示刷新流的写入缓冲区到文件**。调用f.write()，内容并没有真正写入到文件，而是<u>先积损到缓存区</u>。当调用flush()时，内容会**真正写入到文件**
+
+   这样是为了避免频繁的操作硬盘，导致效率低 (积攒一定量的数据，一次性写入文件，提高效率)
+
+2. 图解：
+
+   <img src="./.assets/image-20260921153802173.png" alt="image-20260921153802173" style="zoom: 50%;" />
+
+3. 应用实例：
+
+如果没有f.flush() ，在sleep的时间里可以看到，hi.txt文件虽然被创建了，但write 的内容并没有被立刻写入文件，
+
+```py
+import time
+f = open("d://a//hi.txt", "w",encoding="utf-8")
+f.write("你好,python~")
+f.write("你好,python~\n")
+f.write("你好,python~\n")
+print("----等待----")
+time.sleep(100000)
+print("----等待 end----")
+```
+
+而在加入了f.flush() 之后，则能在hi.txt中看到被写入的文件了
+
+```py
+import time
+f = open("d://a//hi.txt", "w",encoding="utf-8")
+f.write("你好,python~")
+f.write("你好,python~\n")
+f.write("你好,python~\n")
+#测试f.fush()将缓冲区数据剧新，写入文件
+f.fLush()
+print("----等待----")
+time.sleep(100000)
+print("----等待 end----")
+```
+
+
+
+### 3.2 f.close()
+
+1. 定义：刷新并关闭此流。其中**f.close() 内置了 f.flush() 的功能**，因此在使用f.close() 关闭文件的时候，同时也会把缓冲区的内容刷新并写入
+
+2. 应用： 用**with**子句打开文件，**在使用结束后会自动关闭文件**
+3. 基础语法：
+
+```py
+with open(文件)  as f:
+    # 对文件的操作
+```
+
+4. 应用案例：
+
+```py
+with open("d://a//hi.txt", "r",encoding= "utf-8") as f: # 意思是将文件存储为f对象
+    lines = f.readlines()
+    print("----文件内容--")
+    for line in lines:
+        print(line, end="")
+
+print("文件是否关闭\n",f.closed) # 判断文件是否被关闭
+
+# 输出结果：
+----文件内容--
+你好,python~你好,python~文件是否关闭
+ True
+```
+
+
+
+### 3.3 分隔符
+
+1. 目录分隔符号：在windows下`/`和`//`都可以,比如`"d://aaa//bbb//hi.txt"`和`"d:/aaa/bbb/hi.txt"`
+
+   ​			   linux/unix 是` /` ,如` /root/home/aa.log`。  因此建议目录分隔符，为了兼容linux和windows都使用/
+
+## 4. 目录的相关操作
+
+python语法：[mkdir()](https://docs.python.org/zh-cn/3.12/library/os.html#module-os)，注意，以下代码都需要导入os模块
+
+1. **创建目录: mkdir()**
+
+如果目录已经存在，FileExistsError会被提出。如果路径中的父目录不存在，则会引发FileNotFoundError
+
+```py
+os.mkdir(path, mode=0o777,*, dir_fd=None) # 创建一个名为path的目录，应用以数字表示的权限模式mode。
+```
+
+
+
+2.  **删除单级目录 :rabbit::rmdir**
+
+```py
+os.rmdir(path)
+```
+
+3.  **返回目录里所有内容：listdir**
+
+  返回一个包含由pa名定目录中条里名称组成的列表，该列表按任意顺序排列，并且不包括特殊条目".'和".."  ，即使它们存在于目录中。
+
+  如果有文件在调用此函数期间在被移除或添加到目录中，是否要包括该文件的名称并没有规定
+
+```py
+os.listdir(path='.')
+```
+
+
+
+4. **递归目录创建函数: makekidrs()**
+
+注意结尾有s，避免拼写错误
+
+```py
+os.makedirs(name, mode=eo777, exist_ok=False)
+```
+
+​	与mkdir()类似，但会自动创建到达最后一级目录所需要的中间目录。
+
+5. **递归删除目录: removedirs**
+
+  注意结尾有s，避免拼写错误
+
+`````py
+os.removedirs (name)
+`````
+
+类似于rmdir()，不同之处在于，如果成功删除了末尾一级目录，removedirs()会尝试依次删除path中提到的**每个父目录**，直到抛出错误为止(但该错误会被忽略，因为这通常表示父目录不是空目录)。
+
+如果用该方法直接删除第一级的父目录，会导致报错
+
+例如,os.removedics('foo/bar/baz’)将首先删除目录‘foo/bar/baz'，然后如果'foo/bar’和‘foo’为空，则继续删除它们。如果无法成功删除末尾一级目录，则抛出OsError异常。
+
+
+
+6. **判断目录是否存在：isdir()**
+
+```py
+os.path.isdir(path)
+```
+
+如果path是现有的目录，则返回True。本方法会跟踪符号链接，因此，对于同一路径，islink()和isdir()都可能为True
+
+- 该方法也可以用于判断目标是否是目录文件
+
+### 4.2 应用案例：
+
+1. 案例1：创建单级目录
+
+```py
+import os
+if os.path.isdir("d://aaa"): # 判断目标目录是否存在
+    print("目录已存在")
+
+else:
+    os.mkdir("d://aaa")
+    print("目录创建成功")
+```
+
+2. 案例2：创建多级目录
+
+```py
+if not (os.path.isdir("d://bbb//ccc")): # 这里可以反写，功能和案例1相同
+    os.makedirs("d://bbb//ccc")
+    print("目录创建成功")
+
+else:
+    print("目录已存在")
+```
+
+如果创建多级目录的时候使用了`mkdir`，会导致报错
+
+3. 案例3 ：删除单级目录
+
+```py
+if os.path.isdir("d://aaa"):
+    os.rmdir("d://aaa")
+    print("删除成功")
+else:
+    print("文件不存在，无法删除")
+```
+
+4. 案例4：删除多级目录
+
+```py
+if os.path.isdir("d://bbb//ccc"):
+    os.removedirs("d://bbb//ccc")
+    print("删除成功")
+else:
+    print("文件不存在，无法删除")
+```
+
+注意：这里会从ccc目录开始向上删除，直到无法删除为止，因此该语句执行后bbb目录也已经被删除
+
+​	    但如果直接从bbb目录开始删除，且该目录非空，那样会导致报错：`OSError: [WinError 145] 目录不是空的。: 'd://bbb'`
+
+5. 案例5：查看文件里的内容
+
+- 应用案例：
+
+```py
+import os
+
+dir_path = "d:/a"
+content_list = os.listdir(dir_path)
+print(content_list)
+
+# 输出结果
+['hi.txt', 'picture.jpg', 'picture2.jpg']
+```
+
+
+
+
+
+
+
+## 5.  文件的应用案例：
+
+1. 把目录a下的图片或音频文件，移动到目录b中
+
+```py
+p_src_path = "d:/a/picture.jpg"
+d_dst_path = "d:/b/picture.jpg"
+f_src = open(p_src_path,"rb") # 打开原文件，b表示用二进制打开
+data = f_src.read() # 读取源文件
+f_dst = open(d_dst_path,"wb")
+f_dst.write(data)
+f_dst.close()
+f_src.close() 
+```
+
+
+
+用with...open会更加简明一点：
+
+```py
+with open ("d:/a/picture.jpg","rb") as p_src:
+    with open("d:/b/picture2.jpg", "wb") as p_dst:
+        data  = p_src.read()
+        p_dst.write(data)
+```
+
+
+
+2. 遍历某个文件夹，分辨他们到底是目录还是文件
+
+- 步骤一：遍历一级目录
+
+  通过输出结果可以看到，这里已经成功输出了一级目录a里的内容，但是目录abc的内容并没有被遍历
+
+```py
+import os
+
+dir_path = "d:/a"
+content_list = os.listdir(dir_path)
+for ele in content_list:
+    path_ele = dir_path + "/"
+    if os.path.isdir(path_ele + ele):
+        # 这里ele前面的内容是在遍历的时候，为里面的文件/目录添加完整路径，这样才能正常判断
+        print("这是一个目录：",ele)
+    else:
+        print("这不是一个目录：",ele)
+        
+# 输出结果：
+这是一个目录： abc
+这不是一个目录： hi.txt
+这不是一个目录： picture.jpg
+```
+
+- 步骤 2：因此在函数中引入一个递归，来实现对子目录的遍历
+
+```py
+import os
+
+dir_path = "d:/a"
+
+# print(content_list)
+
+def f1(path_list):
+    ele_path = os.listdir(path_list)
+    for ele in ele_path:
+        path_ele = path_list + "/"+ ele
+        if os.path.isdir(path_ele ):
+            print("这是一个目录：",path_ele)
+            f1(path_ele) # 注意这里传入的是一个路径，而不是字符
+        else:
+            print("这不是一个目录：",path_ele)
+
+
+f1(dir_path)
+
+# 输出结果：
+这是一个目录： d:/a/abc
+这是一个目录： d:/a/abc/123
+这不是一个目录： d:/a/abc/123/1.txt
+这不是一个目录： d:/a/abc/picture2.jpg
+这不是一个目录： d:/a/hi.txt
+这不是一个目录： d:/a/picture.jpg
+```
+
+可以看到输出结果里，即便是abc目录的子目录也会被遍历
+
+
+
+3. 用文件的相关操作实现登录功能：
+
+   方法一：用一个函数完成
+
+```py
+import os
+import time
+
+info = ['lucy','jack','123','1']
+
+
+
+def login():
+    while True:
+        name = input("请输入名称：")
+        try:
+            passwd = int(input("请输入密码："))
+        except ValueError:
+            print("请输入整数密码！")
+        else:
+            if name in info and passwd == 888:
+                print("登录成功！")
+                store = open("d:/a/data.txt","a",encoding="utf-8")
+                store_stat = os.stat("d://a//data.txt")
+                store.write(f"登录成功，登录用户：{name},登录时间：{time.ctime(store_stat.st_mtime)}\n")
+                store.close()
+                while True:
+
+                    print("—————请选择操作！————\n"
+                          "1.查看当前登录用户\n"
+                          "2.查看登录日志\n"
+                          "3.退出登录\n"
+                          "4.退出系统")
+                    choose = int(input("请输入选项："))
+                    if choose == 1:
+                        print(f"当前登录用户：{name}")
+                        continue
+                    elif choose == 2:
+                        store = open("d:/a/data.txt", "r", encoding="utf-8")
+                        content = store.read()
+                        print(content)
+                        continue
+
+                    elif choose == 3:
+                        print("退出登录成功！请重新登录 ")
+                        break
+
+                    else:
+                        print("已退出，欢迎下次使用！")
+                        return 0
+
+
+
+            else:
+                    print("登录失败，请输入正确的用户名/密码")
+                    store = open("d:/a/data.txt", "a", encoding="utf-8")
+                    store_stat = os.stat("d://a//data.txt")
+                    store.write(f"登录失败，登录用户：{name},登录时间：{time.ctime(store_stat.st_mtime)}\n")
+                    store.close()
+
+
+
+login()
+
+# 运行结果（部分）
+请输入名称：0
+请输入密码：o
+请输入整数密码！
+请输入名称：lucy
+请输入密码：888
+登录成功！
+—————请选择操作！————
+1.查看当前登录用户
+2.查看登录日志
+3.退出登录
+4.退出系统
+请输入选项：2
+登录失败，登录用户：0,登录时间：Thu Oct  8 10:06:58 2026
+登录失败，登录用户：tom,登录时间：Thu Oct  8 10:07:58 2026
+登录成功，登录用户：jack,登录时间：Thu Oct  8 10:08:02 2026
+登录成功，登录用户：lucy,登录时间：Thu Oct  8 10:08:05 2026
+```
+
+方法2：用多个函数完成
+
+```py
+import os
+import time
+
+info = ['lucy','jack','123','1']
+
+def menu():
+    print("—————请选择操作！————\n"
+          "1.查看当前登录用户\n"
+          "2.查看登录日志\n"
+          "3.退出系统")
+
+def log(user,stat):
+    with open("d:/a/data.txt", "a", encoding="utf-8") as f:
+        s = f"{stat}，登录用户：{user},登录时间：{time.strftime('%m-%d-%H-%M', time.localtime(time.time()))}\n"
+        # 这里用的time.strftime() 可以用于规定时间输出的格式，具体查看python文档
+        f.write(s)
+def read_log():
+    with open("d:/a/data.txt", "r", encoding="utf-8") as f:
+        for line in f:
+            print(line)
+
+if __name__ == "__main__":
+    user = input("请输入名称：")
+    try:
+        passwd = int(input("请输入密码："))
+    except ValueError:
+        print("请输入整数密码！")
+        log(user, "登录失败")
+    else:
+        if user in info and passwd == 888:
+            log(user,"登录成功")
+            while True:
+                menu()
+                choose = int(input("请输入选项："))
+                if choose == 1:
+                            print(f"当前登录用户：{user}")
+                            continue
+
+                elif choose == 2:
+                            read_log()
+                            continue
+
+                else:
+                            print("已退出，欢迎下次使用！")
+                            break
+
+        else:
+                log(user, "登录失败")
+                print("登录失败，请输入正确的用户名/密码")
+
+
+```
+
+
+
+# 第十一章：pyecharts
+
+1. 相关文档：https://pyecharts.org/#/zh-cn/
+
+​	pyecharts_gallery :https://gallery.pyecharts.org/#/README (应用实例)
+
+2. 功能：该网页提供了多种图表工具，可视化内容的api，方便调用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
