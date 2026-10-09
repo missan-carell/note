@@ -104,7 +104,7 @@ file->settings ->keymap（快捷键）->搜索run，找到Run-Run->右键Run，�
 5. alt +r 运行当前代码（需要自定义，具体查看[应用配置](#_1.应用配置：)），默认ctrl+shift+F10或shift+F10
 6. ctrl +H 查看一个类的层级关系（OOP继承常用）
 
-**7.**   **ctrl +F** **查找** **（win****内通用）**
+**7.**   **ctrl +F** **查找** **（win**内通用）**
 
 **8.**   ctrl +R 替换 ，如图所示：其中replace是单独替换，从光标处往下替换
 
@@ -113,6 +113,8 @@ file->settings ->keymap（快捷键）->搜索run，找到Run-Run->右键Run，�
 **9.**   table 代码向右移动，shift+table 向左移动。将多行代码选中后使用，可以实现一起移动
 
 <img src=".assets/image-20250327091213109.png" alt="image-20250327091213109" style="zoom:67%;" />
+
+10.  选中+`ctrl`+B, 则会自动跳转至其对应的模块库
 
 # **第三章：pycharm的进阶使用：**
 
@@ -1733,6 +1735,18 @@ end
 ## 1. 基础命令：
 
 注意：在python中，单引号和双引号的使用完全一样
+
+- tips：如果在遇到复杂语句无法快速判断时，可以试着用pirnt将其结果输出
+
+  案例：
+
+  ```python
+  .add("", [list(z) for z in zip(Faker.choose(), Faker.values())]) # 该语句比较复杂，没法一下判断作用
+  
+  print([list(z) for z in zip(Faker.choose(), Faker.values())])
+  # 输出结果：注意，该案例引用了外部库，所以能够得到以下结果
+  [['哈士奇', 54], ['萨摩耶', 112], ['泰迪', 32], ['金毛', 142], ['牧羊犬', 145], ['吉娃娃', 104], ['柯基', 49]]
+  ```
 
 ### 1.1 print
 
@@ -7429,6 +7443,22 @@ pip install requests
 
 检验是否安装成功：在pythoncharm中Import这个函数，如果能成功import，则代表成功（如果安装好没有提示，重启pycharm即可）
 
+5. 不可用的情况：
+
+如果在电脑环境中出现如下的报错，且python和pip在检查过后都是存在的，可能是由于pip不在环境变量中导致的错误
+
+![image-20261008155514728](./.assets/image-20261008155514728.png)
+
+遇到如上情况可用该方法解决：
+
+```py
+python -m pip 安装内容
+```
+
+- python -m 就是指定了python的路径，如果python本体在环境变量中，那通过这个方法可以解决pip找不到的问题
+
+
+
 #### 3.1.2 指定pip源
 
 在python中的默认pip源：https://pypi.python.org/simple ，因为在国外，所以安装速度较慢。为避免下载较大库时安装速度过慢，可通过指定pip源来解决这个问题。
@@ -11522,6 +11552,8 @@ if __name__ == "__main__":
 
 ```
 
+---
+
 
 
 # 第十一章：pyecharts
@@ -11530,63 +11562,411 @@ if __name__ == "__main__":
 
 ​	pyecharts_gallery :https://gallery.pyecharts.org/#/README (应用实例)
 
-2. 功能：该网页提供了多种图表工具，可视化内容的api，方便调用
+2. 功能：该网页提供了多种图表工具，可视化内容的api。**支持链式调用**
+
+3. 安装pyecharts：
+
+- 在cmd中使用pip安装：
+
+```cmd
+pip install pyecharts
+```
 
 
 
+## 1. 使用细节
+
+1. 案例：
+
+- 案例1：
+  - 根据文档中的注释可以得知，该代码会生成一个html文件在当前目录，用浏览器打开后即可得到对应的图表
+
+```python
+# 案例来自pyecharts官方文档
+from pyecharts.charts import Bar
+
+bar = Bar()
+bar.add_xaxis(["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"])
+bar.add_yaxis("商家A", [5, 20, 36, 10, 75, 90])
+# render 会生成本地 HTML 文件，默认会在当前目录生成 render.html 文件
+# 也可以传入路径参数，如 bar.render("mycharts.html")
+bar.render()
+```
+
+![image-20261008163534339](./.assets/image-20261008163534339.png)											
+
+（执行后生成的render文件）
+
+- 链式调用
+  - pyecharts同时支持链式调用，因此可以这样改写，运行结果同上
+
+```py
+from pyecharts.charts import Bar
+
+(
+    Bar()
+    .add_xaxis(["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"])
+    .add_yaxis("商家A", [5, 20, 36, 10, 75, 90])
+    .render("myrender.html")# 根据注释的提示，这里可以改用写路径和名称
+    # 如果在执行新代码时这里使用的同名同路径的文件，那会更新该文件，而不是创建新文件
+)
+
+```
 
 
 
+2. 全局配置项：
+
+   在使用过程中，可能需要更改一些细节的内容（如主标题，副标题等）此时则需要通过修改全局配置项来得到需要的效果
+
+- 基础语法：
+
+```py
+from pyecharts.charts import Bar
+from pyecharts import options as opts # 除了bar以外，还有导入opts
+
+.set_global_opts([需要修改的部分])
+```
+
+修改部分的具体语法可以查看文档中【全局配置项】，来对应参考
+
+- 应用案例：案例来自官方文档
+
+```py
+bar = (
+    Bar()
+    .add_xaxis(["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"])
+    .add_yaxis("商家A", [5, 20, 36, 10, 75, 90])
+    .set_global_opts(title_opts=opts.TitleOpts(title="主标题", subtitle="副标题"))
+   	# 这里可以注意到使用了TitleOpts来修改了主副标题
+    # 或者直接使用字典参数
+    # .set_global_opts(title_opts={"text": "主标题", "subtext": "副标题"})
+)
+bar.render()
+
+```
 
 
 
+3. 主题：
+
+pyecharts提供了多样的主题，若不配置，则会使用默认主题
+
+- 基础语法：
+
+```py
+from pyecharts.charts import Bar
+from pyecharts import options as opts 
+from pyecharts.globals import ThemeType
+
+Bar([相关主题可查看文档])
+```
 
 
 
+- 应用案例：
+
+```py
+from pyecharts.charts import Bar
+from pyecharts import options as opts 
+# 内置主题类型可查看 pyecharts.globals.ThemeType
+from pyecharts.globals import ThemeType
+
+
+bar = (
+    Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT))
+    .add_xaxis(["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"])
+    .add_yaxis("商家A", [5, 20, 36, 10, 75, 90])
+    .add_yaxis("商家B", [15, 6, 45, 20, 35, 66])
+    .set_global_opts(title_opts=opts.TitleOpts(title="主标题", subtitle="副标题"))
+)
+```
 
 
 
+---
 
 
 
+## 2. 使用案例
+
+1. 饼状图
+
+- 首先从gallery中找到官方提供的饼状图代码：
+
+```py
+from pyecharts import options as opts
+from pyecharts.charts import Pie
+from pyecharts.faker import Faker
+
+c = (
+    Pie() # 创建Pie对象
+    .add("", [list(z) for z in zip(Faker.choose(), Faker.values())])
+    # 给饼状图添加数据。"" 表示给饼状图的名字，如果为空，则是没有名字
+
+    .set_colors(["blue", "green", "yellow", "red", "pink", "orange", "purple"])
+
+    .set_global_opts(title_opts=opts.TitleOpts(title="Pie-设置颜色"))
+    # 设置全局变量，此处只给饼状图设置了一个主标题
+
+    .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
+    # 设置系列配置项，即标签格式为 {名称} : {值}，例如：狮子:121
+    .render("pie_sale.html")
+)
+```
+
+在运行后会发现，饼状图的数据由库提供，并不是我们想要的数据
+
+<img src="./.assets/image-20261009112917217.png" alt="image-20261009112917217" style="zoom:50%;" />
 
 
 
+为了查看和修改数据，我们找到给饼状图提供数据的代码
+
+```python
+.add("", [list(z) for z in zip(Faker.choose(), Faker.values())])
+```
+
+分别通过ctrl+B 进入 Faker.choose() 和 Faker.values() 库中查看
+
+```py
+#Faker.choose()
+def choose(self) -> list:
+    return random.choice( # 从列表中随机选取返回
+        [
+            self.clothes, # 此处再次ctrl+B则可看到clothes等对象内部的值，这里不做演示
+            self.drinks,
+            self.phones,
+            self.fruits,
+            self.animal,
+            self.dogs,
+            self.week,
+        ]
+    )
+```
+
+```py
+# Faker.values() 
+def values(start: int = 20, end: int = 150) -> list: # 数据范围 20-150
+    return [random.randint(start, end) for _ in range(7)] # 返回伪随机整数
+```
 
 
 
+- 为了得到我们想要的效果，需要做如下的修改：商品数据，饼状图名称
+
+```py
+from pyecharts import options as opts
+from pyecharts.charts import Pie
+
+# 我们把想要的数据放在data里
+data=[['衬衫',138],['毛衣',401],['领带',74],['裤子',112],
+      ['风衣',147],['高跟鞋',104],['袜子',65]]
+
+c = (
+    Pie() 
+    # 这里就不需要用Faker库里的工具了，直接改为我们的字典
+    .add("",data) 
+    .set_colors(["blue", "green", "yellow", "red", "pink", "orange", "purple"])
+    # 给图表旁边加入了工具栏	
+    .set_global_opts(title_opts=opts.TitleOpts(title="Pie-商品销售情况"),
+                         toolbox_opts=opts.ToolboxOpts(is_show = True))  
+    # 调整字体大小
+    .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}",font_size=16))
+    .render("pie_sale.html")
+)
+```
+
+最终可以得到我们想要效果：
+
+<img src="./.assets/image-20261009121332429.png" alt="image-20261009121332429" style="zoom:50%;" />
 
 
 
+2. 折线图
+
+- 首先去官网找到最接近想要效果的折线图：
+
+```py
+import pyecharts.options as opts
+from pyecharts.charts import Line
+
+
+x_data = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+y_data = [820, 932, 901, 934, 1290, 1330, 1320]
+y_data2 = [821, 132, 901, 934, 1290, 1330, 1320] # 因为我们需要多条折线，所以这里要增加y轴的数量
+
+
+(
+    Line()
+    .set_global_opts(
+        tooltip_opts=opts.TooltipOpts(is_show=False),
+        xaxis_opts=opts.AxisOpts(type_="category"),
+        yaxis_opts=opts.AxisOpts(
+            type_="value",
+            axistick_opts=opts.AxisTickOpts(is_show=True),
+            splitline_opts=opts.SplitLineOpts(is_show=True),
+        ),
+    )
+    .add_xaxis(xaxis_data=x_data)
+    .add_yaxis(
+        series_name="",
+        y_axis=y_data,
+        symbol="emptyCircle",
+        is_symbol_show=True,
+        label_opts=opts.LabelOpts(is_show=False),
+    )
+
+    # 因为我们多加了折线，这里也需要再复制一份
+    .add_yaxis(
+        series_name="",
+        y_axis=y_data2,
+        symbol="emptyCircle",
+        is_symbol_show=True,
+        label_opts=opts.LabelOpts(is_show=False),
+    )
+    .render("basic_line_chart.html")
+)
+
+```
+
+- 根据官方给出的样式，我们根据自己的要求完成折线图的设计：
+
+```py
+import pyecharts.options as opts
+from pyecharts.charts import Line
+
+line = Line()
+f = open("C:/Users/25870/Downloads/分省年度数据.csv","r",encoding="utf-8")
+line_data = f.readlines() # 先把数据存为一个列表
+f.close()
+# 先删除前几行多余数据（元素）
+for i in range(2):
+    line_data.pop(0) # 不填0，pop会默认从最后开始移除
+
+# 从文件中截取x轴数据
+# 用pop返回第一组元素，把斜杠替换为空，用逗号做拆分成为一个列表
+x = line_data.pop(0).replace("\n","").replace("\t","").split(",")
+x.pop(0)
+x.reverse() # 反转列表，得到从小到大的年份
+x.pop(0)
+
+# 从文件中截取y轴数据
+# 需要创建四个列表，存放前四个城市的数据
+y_bj = []
+y_tj = []
+y_hb = []
+y_sx = []
+
+for lines in line_data:
+    lines = lines.replace("\n","").replace("\t","").split(",")
+    if lines[0] == "北京市":
+        lines.pop(0)
+        lines.reverse()
+        lines.pop(0)
+        y_bj = lines
+    elif lines[0] == "天津市":
+        lines.pop(0)
+        lines.reverse()
+        lines.pop(0)
+        y_tj = lines
+    elif lines[0] == "河北省":
+        lines.pop(0)
+        lines.reverse()
+        lines.pop(0)
+        y_hb = lines
+    elif lines[0] == "山西省":
+        lines.pop(0)
+        lines.reverse()
+        lines.pop(0)
+        y_sx = lines
+
+# 添加y轴数据
+line.add_xaxis(xaxis_data=x)
+line.add_yaxis(
+        series_name="北京市",
+        y_axis=y_bj,
+        symbol="emptyCircle",
+        is_symbol_show=True,
+        label_opts=opts.LabelOpts(is_show=False),
+    )
+line.add_yaxis(
+        series_name="天津市",
+        y_axis=y_tj,
+        symbol="emptyCircle",
+        is_symbol_show=True,
+        label_opts=opts.LabelOpts(is_show=False),
+    )
+line.add_yaxis(
+        series_name="河北省",
+        y_axis=y_hb,
+        symbol="emptyCircle",
+        is_symbol_show=True,
+        label_opts=opts.LabelOpts(is_show=False),
+    )
+
+line.add_yaxis(
+        series_name="山西省",
+        y_axis=y_sx,
+        symbol="emptyCircle",
+        is_symbol_show=True,
+        label_opts=opts.LabelOpts(is_show=False),
+    )
+# 调整主标题的位置和大小
+line.set_global_opts(title_opts=opts.TitleOpts(title="2016-2025人口折线图"
+                                               ,pos_left="center",pos_bottom="-1%"))
+line.render("population.html")
+```
+
+<img src="./.assets/image-20261009144214175.png" alt="image-20261009144214175" style="zoom:50%;" />
 
 
 
+3. 地图：
 
+```py
+from pyecharts import options as opts
+from pyecharts.charts import Map
+from pyecharts.faker import Faker
+with open("C:/Users/25870/Downloads/分省年度数据.csv","r",encoding="utf-8") as f:
+    data_map = f.readlines()
 
+# 删除前四个元素
+for i in range(3):
+    data_map.pop(0)
 
+# 创建空列表用于存放数据
+map_list = []
+for lines in data_map:
+    # print(lines)
+    data_list = lines.replace("\t", "").replace("\n", "").split(",")
 
+    try: # 因为最后几行有可能有多余数据，导致报错，这里需要一个异常处理
+        map_list.append((data_list[0],data_list[1])) # 一次性只能添加一个元素，因此这里要多一个括号组成元组
+    except Exception as e:
+        continue # 遇到异常内容直接跳过
 
+maps = (
+    Map()
+    .add("2025中国人口分布", map_list, "china")
+    .set_global_opts(
+        title_opts=opts.TitleOpts(title="2025各省市人口情况"),
+        # VisualMapOpts：视觉映射配置项
+        visualmap_opts = opts.VisualMapOpts(
+            min_= 100, # 数据范围为人口的范围
+            max_= 15000,# 关键词后面不能有空格，需要用下划线
+            pos_left= "10%",
+            pos_bottom= "30%"
+        )
+    )
+    # 系列配置
+    .set_series_opts(label_opts=opts.LabelOpts(font_size=8))
+    .render("map_base.html")
 
+)
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<img src="./.assets/image-20261009155935061.png" alt="image-20261009155935061" style="zoom:50%;" />
 
 
 
